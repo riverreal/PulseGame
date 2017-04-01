@@ -1,0 +1,135 @@
+﻿Build started 4/1/2017 11:09:22 PM.
+     1>Project "C:\Users\Nextgen\Desktop\PulseGame\Project_Light\Project_Light.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"C:\Users\Nextgen\Desktop\PulseGame\External Soruce\Assimp\include\assimp" /I"C:\Users\Nextgen\Desktop\PulseGame\External Soruce\irrKlang\include" /I"C:\Users\Nextgen\Desktop\DirecctX\DX11 win10\Project_Light\External Soruce\Assimp\include" /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _WIN32_WINNT=0x0601 /D WINVER=0x0601 /D WIN32 /D NDEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt "..\External Soruce\DDSTextureLoader\DDSTextureLoader.cpp" "..\External Soruce\imgui\examples\directx11_example\imgui_impl_dx11.cpp" "..\External Soruce\imgui\imgui.cpp" "..\External Soruce\imgui\imgui_demo.cpp" "..\External Soruce\imgui\imgui_draw.cpp" "..\External Soruce\WICTextureLoader\WICTextureLoader.cpp" ..\GameSource\PulseGame.cpp ..\Source\Graphics\BasicShapes.cpp ..\Source\Graphics\BlendState.cpp ..\Source\Graphics\CameraManager.cpp ..\Source\Graphics\DeferredLightShader.cpp ..\Source\Graphics\DeferredRendering.cpp ..\Source\Graphics\DeferredShader.cpp ..\Source\Graphics\Light.cpp ..\Source\Graphics\ModelManager.cpp ..\Source\Graphics\OrthoManager.cpp "..\Source\Graphics\Post-processingShader.cpp" ..\Source\Graphics\ShadowMap.cpp ..\Source\Graphics\ShadowMapShader.cpp ..\Source\Graphics\SkyDome.cpp ..\Source\Graphics\Terrain.cpp ..\Source\Graphics\TextureLoader.cpp ..\Source\Graphics\TextureManager.cpp ..\Source\Helper\MathHelper.cpp ..\Source\main.cpp ..\Source\System\Audio\AudioManager.cpp ..\Source\System\BaseApp.cpp ..\Source\System\Components\Render3DComponent.cpp ..\Source\System\Components\TransformComponent.cpp ..\Source\System\Editor\ElixirEditor.cpp ..\Source\System\FileIO.cpp ..\Source\System\GameManager.cpp ..\Source\System\GameObject.cpp ..\Source\System\IElixirGame.cpp ..\Source\System\Scene.cpp ..\Source\System\SceneManager.cpp ..\Source\System\Systems\IScriptSystem.cpp ..\Source\System\Systems\TestScript.cpp ..\Source\System\Systems\TransformSystem.cpp ..\Source\System\Timer.cpp
+         DDSTextureLoader.cpp
+         imgui_impl_dx11.cpp
+         imgui.cpp
+         imgui_demo.cpp
+         imgui_draw.cpp
+         WICTextureLoader.cpp
+         PulseGame.cpp
+     1>c:\users\nextgen\desktop\pulsegame\source\includes\../System/BaseApp.h(27): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>c:\users\nextgen\desktop\pulsegame\source\includes\../System/BaseApp.h(149): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+         BasicShapes.cpp
+     1>..\Source\Graphics\BasicShapes.cpp(9): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+         BlendState.cpp
+         CameraManager.cpp
+         DeferredLightShader.cpp
+         DeferredRendering.cpp
+     1>..\Source\Graphics\DeferredRendering.cpp(37): warning C4101: 'i': unreferenced local variable
+         DeferredShader.cpp
+         Light.cpp
+         ModelManager.cpp
+         OrthoManager.cpp
+         Post-processingShader.cpp
+     1>..\Source\Graphics\Post-processingShader.cpp(68): warning C4101: 'result': unreferenced local variable
+     1>..\Source\Graphics\Post-processingShader.cpp(308): warning C4018: '<': signed/unsigned mismatch
+     1>..\Source\Graphics\Post-processingShader.cpp(390): warning C4244: '=': conversion from 'float' to 'UINT', possible loss of data
+     1>..\Source\Graphics\Post-processingShader.cpp(391): warning C4244: '=': conversion from 'float' to 'UINT', possible loss of data
+     1>..\Source\Graphics\Post-processingShader.cpp(646): warning C4018: '<': signed/unsigned mismatch
+     1>..\Source\Graphics\Post-processingShader.cpp(753): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+     1>..\Source\Graphics\Post-processingShader.cpp(758): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+         ShadowMap.cpp
+     1>..\Source\Graphics\ShadowMap.cpp(113): warning C4244: '=': conversion from 'UINT' to 'FLOAT', possible loss of data
+     1>..\Source\Graphics\ShadowMap.cpp(114): warning C4244: '=': conversion from 'UINT' to 'FLOAT', possible loss of data
+         ShadowMapShader.cpp
+         SkyDome.cpp
+         Compiling...
+         Terrain.cpp
+         TextureLoader.cpp
+         TextureManager.cpp
+         MathHelper.cpp
+         main.cpp
+     1>c:\users\nextgen\desktop\pulsegame\source\includes\../System/BaseApp.h(27): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>c:\users\nextgen\desktop\pulsegame\source\includes\../System/BaseApp.h(149): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>..\Source\main.cpp(129): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>..\Source\main.cpp(177): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>..\Source\main.cpp(187): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>..\Source\main.cpp(196): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+         AudioManager.cpp
+         BaseApp.cpp
+     1>c:\users\nextgen\desktop\pulsegame\source\system\BaseApp.h(27): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>c:\users\nextgen\desktop\pulsegame\source\system\BaseApp.h(149): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>..\Source\System\BaseApp.cpp(46): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>..\Source\System\BaseApp.cpp(135): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>..\Source\System\BaseApp.cpp(137): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>..\Source\System\BaseApp.cpp(301): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>..\Source\System\BaseApp.cpp(319): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>..\Source\System\BaseApp.cpp(560): warning C4996: 'wcstombs': This function or variable may be unsafe. Consider using wcstombs_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdlib.h(1008): note: see declaration of 'wcstombs'
+     1>..\Source\System\BaseApp.cpp(424): warning C4101: 'screenAspect': unreferenced local variable
+     1>..\Source\System\BaseApp.cpp(424): warning C4101: 'fieldOfView': unreferenced local variable
+     1>..\Source\System\BaseApp.cpp(423): warning C4101: 'viewport': unreferenced local variable
+     1>..\Source\System\BaseApp.cpp(1061): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>..\Source\System\BaseApp.cpp(1314): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+         Render3DComponent.cpp
+         TransformComponent.cpp
+         ElixirEditor.cpp
+     1>..\Source\System\Editor\ElixirEditor.cpp(530): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+         FileIO.cpp
+         GameManager.cpp
+     1>c:\users\nextgen\desktop\pulsegame\source\includes\../System/BaseApp.h(27): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>c:\users\nextgen\desktop\pulsegame\source\includes\../System/BaseApp.h(149): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+         GameObject.cpp
+         IElixirGame.cpp
+         Scene.cpp
+     1>..\Source\System\Scene.cpp(17): warning C4316: 'Light': object allocated on the heap may not be aligned 16
+         SceneManager.cpp
+     1>..\Source\System\SceneManager.cpp(163): warning C4018: '<': signed/unsigned mismatch
+         IScriptSystem.cpp
+         TestScript.cpp
+         TransformSystem.cpp
+         Timer.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Nextgen\Desktop\PulseGame\Release\Project_Light.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Users\Nextgen\Desktop\PulseGame\External Soruce\irrKlang\lib\Win32-visualStudio" /LIBPATH:"C:\Users\Nextgen\Desktop\PulseGame\External Soruce\Assimp\lib\x86" /LIBPATH:"C:\Users\Nextgen\Desktop\DirecctX\DX11 win10\Project_Light\External Soruce\Assimp\lib\x86" assimp.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\Nextgen\Desktop\PulseGame\Release\Project_Light.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Nextgen\Desktop\PulseGame\Release\Project_Light.lib" /MACHINE:X86 /SAFESEH Release\Project_Light.res
+         Release\DDSTextureLoader.obj
+         Release\imgui_impl_dx11.obj
+         Release\imgui.obj
+         Release\imgui_demo.obj
+         Release\imgui_draw.obj
+         Release\WICTextureLoader.obj
+         Release\PulseGame.obj
+         Release\BasicShapes.obj
+         Release\BlendState.obj
+         Release\CameraManager.obj
+         Release\DeferredLightShader.obj
+         Release\DeferredRendering.obj
+         Release\DeferredShader.obj
+         Release\Light.obj
+         Release\ModelManager.obj
+         Release\OrthoManager.obj
+         "Release\Post-processingShader.obj"
+         Release\ShadowMap.obj
+         Release\ShadowMapShader.obj
+         Release\SkyDome.obj
+         Release\Terrain.obj
+         Release\TextureLoader.obj
+         Release\TextureManager.obj
+         Release\MathHelper.obj
+         Release\main.obj
+         Release\AudioManager.obj
+         Release\BaseApp.obj
+         Release\Render3DComponent.obj
+         Release\TransformComponent.obj
+         Release\ElixirEditor.obj
+         Release\FileIO.obj
+         Release\GameManager.obj
+         Release\GameObject.obj
+         Release\IElixirGame.obj
+         Release\Scene.obj
+         Release\SceneManager.obj
+         Release\IScriptSystem.obj
+         Release\TestScript.obj
+         Release\TransformSystem.obj
+         Release\Timer.obj
+         Generating code
+         All 4671 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+         Finished generating code
+         Project_Light.vcxproj -> C:\Users\Nextgen\Desktop\PulseGame\Release\Project_Light.exe
+     1>Done Building Project "C:\Users\Nextgen\Desktop\PulseGame\Project_Light\Project_Light.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:38.57
