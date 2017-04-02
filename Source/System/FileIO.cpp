@@ -430,6 +430,22 @@ Vec3f Elixir::FileIO::GetXYZFromString(std::string source)
 	return xyz;
 }
 
+void Elixir::FileIO::SaveFile(std::string filename, std::string content)
+{
+	std::fstream file;
+	file.open(filename, std::fstream::out);
+	file << content;
+	file.close();
+}
+
+std::string Elixir::FileIO::LoadFile(std::string filepath)
+{
+	std::ifstream ifs(filepath);
+	std::string content((std::istreambuf_iterator<char>(ifs)),
+		(std::istreambuf_iterator<char>()));
+	return content;
+}
+
 std::string Elixir::FileIO::OpenFile(TCHAR * extension)
 {
 	std::wstring path = OpenFileW(extension);

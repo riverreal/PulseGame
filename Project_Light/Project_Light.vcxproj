@@ -161,6 +161,7 @@
     <ClCompile Include="..\External Soruce\imgui\imgui.cpp" />
     <ClCompile Include="..\External Soruce\imgui\imgui_demo.cpp" />
     <ClCompile Include="..\External Soruce\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\External Soruce\jsoncpp\jsoncpp.cpp" />
     <ClCompile Include="..\External Soruce\WICTextureLoader\WICTextureLoader.cpp" />
     <ClCompile Include="..\GameSource\PulseGame.cpp" />
     <ClCompile Include="..\Source\Graphics\BasicShapes.cpp" />
@@ -206,7 +207,8 @@
     <ClInclude Include="..\External Soruce\imgui\stb_rect_pack.h" />
     <ClInclude Include="..\External Soruce\imgui\stb_textedit.h" />
     <ClInclude Include="..\External Soruce\imgui\stb_truetype.h" />
-    <ClInclude Include="..\External Soruce\json.hpp" />
+    <ClInclude Include="..\External Soruce\jsoncpp\json\json-forwards.h" />
+    <ClInclude Include="..\External Soruce\jsoncpp\json\json.h" />
     <ClInclude Include="..\External Soruce\WICTextureLoader\WICTextureLoader.h" />
     <ClInclude Include="..\GameSource\PulseGame.h" />
     <ClInclude Include="..\Source\Graphics\BasicShapes.h" />

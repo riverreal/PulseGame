@@ -30,6 +30,9 @@ namespace Elixir
 		void SaveSceneFile(SceneData scene);
 		Vec3f GetXYZFromString(std::string source);
 
+		void SaveFile(std::string filename, std::string content);
+		std::string LoadFile(std::string filepath);
+
 		enum FILE_TYPE
 		{
 			FILE_MATERIAL,

@@ -43,7 +43,7 @@ namespace Elixir
 			U32 SphereIcon;
 			U32 CylinderIcon;
 			U32 PlaneIcon;
-
+			U32 LinesIcon;
 		};
 
 		struct UITerm
@@ -110,10 +110,12 @@ namespace Elixir
 			EXIT_TEXT,
 			OK_BUTTON,
 			NO_BUTTON,
-			CANCEL_BUTTON
+			CANCEL_BUTTON,
+			SAVE_DOTS,
+			LOAD_DOTS
 		};
 
-		UITerm m_langTerm[33] = 
+		UITerm m_langTerm[35] = 
 		{
 			UITerm("File", "ファイル", "Archivo"),
 			UITerm("New Scene", "新しいシーン", "Nueva Escena"),
@@ -147,7 +149,9 @@ namespace Elixir
 			UITerm("Do you wish to Save the project?", "プロジェクトをセーブしますか。", "Deseas Guardar el projecto?"),
 			UITerm("Ok", "はい", "Ok"),
 			UITerm("No", "いいえ", "No"),
-			UITerm("Cancel", "キャンセル","Cancelar")
+			UITerm("Cancel", "キャンセル","Cancelar"),
+			UITerm("Save LineDots", "点線を保存","Guardar Puntos de linea"),
+			UITerm("Load LineDots", "点線を読み込む","Cargar Puntos de linea")
 		};
 
 		void InitIMGUI(void* hwnd, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
@@ -163,7 +167,6 @@ namespace Elixir
 
 		void TransformEditor();
 		void RenderEditor();
-
 		
 		void FPSOverlay();
 
@@ -171,6 +174,8 @@ namespace Elixir
 		void SetToolTip(const char* text);
 
 	private:
+		std::vector<GameObject*> m_lineDots;
+
 		LANGUAGES m_language;
 		UIImages m_uiImages;
 

@@ -2,6 +2,8 @@
 #include "../../Helper/GeneralHelper.h"
 #pragma execution_character_set("utf-8")
 
+#include "../../jsoncpp/json/json.h"
+
 Elixir::Editor::Editor()
 	:m_language(ENGLISH),
 	m_ScenePropOpen(false),
@@ -39,6 +41,7 @@ void Elixir::Editor::Initialize(void* hwnd, ID3D11Device* device, ID3D11DeviceCo
 	m_uiImages.SphereIcon = m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/sphereIcon.png");
 	m_uiImages.CylinderIcon = m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/cylinderIcon.png");
 	m_uiImages.PlaneIcon = m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/planeIcon.png");
+	m_uiImages.LinesIcon = m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/lineIcon.png");
 }
 
 void Elixir::Editor::Frame()
@@ -185,6 +188,63 @@ void Elixir::Editor::MainMenuBar()
 			if (ImGui::MenuItem("Log"))
 			{
 				m_logOpen ^= 1;
+			}
+
+			if (ImGui::MenuItem(m_langTerm[SAVE_DOTS].GetTerm(m_language).c_str()))
+			{
+				Json::Value lineData;
+
+				for (auto &dot : m_lineDots)
+				{
+					Json::Value position;
+					position["x"] = dot->GetTransform()->Position.x;
+					position["y"] = dot->GetTransform()->Position.y;
+					position["z"] = dot->GetTransform()->Position.z;
+
+					lineData[dot->GetName()] = position;
+				}
+				
+				m_sceneManager->GetFileManager()->SaveFile("NewLineData.pld", lineData.toStyledString());
+			}
+
+			if (ImGui::MenuItem(m_langTerm[LOAD_DOTS].GetTerm(m_language).c_str()))
+			{
+				std::wstring filename = L"";
+				TCHAR* extension = L"Pulse Line Data files(*.pld) \0*.pld;\0";
+				filename = m_sceneManager->GetFileManager()->OpenFileW(extension);
+				auto rootPath = m_sceneManager->GetFileManager()->GetExePathW();
+				//erasing full exe path -13 (13 is /bin/Debug/.exe)
+				auto numOfChar = rootPath.length() - 13;
+				filename.erase(0, numOfChar);
+
+				if (filename != L"")
+				{
+					auto jsonContent = m_sceneManager->GetFileManager()->LoadFile(ws2s(filename));
+					Json::Value lineData;
+					Json::Reader reader;
+
+					if (reader.parse(jsonContent, lineData))
+					{
+						for (auto dot : lineData)
+						{
+							auto obj = m_sceneManager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
+							obj->GetRenderer()->Model = m_sceneManager->GetModel()->AddGeometry(MODEL_TYPE_GEOSPHERE);
+							obj->GetRenderer()->ModelTypePrimitive = true;
+							obj->GetRenderer()->PrimitiveType = MODEL_TYPE_GEOSPHERE;
+							std::string name = "LineDot" + std::to_string(m_lineDots.size());
+							obj->SetName(name);
+							obj->GetTransform()->Scale = Vec3f(0.5f);
+							
+							obj->GetTransform()->Position.x = dot.get("x", 0).asFloat();
+							obj->GetTransform()->Position.y = dot.get("y", 0).asFloat();
+							obj->GetTransform()->Position.z = dot.get("z", 0).asFloat();
+
+							m_lineDots.push_back(obj);
+						}
+
+						m_sceneManager->ResetModel();
+					}
+				}
 			}
 
 			ImGui::EndMenu();
@@ -470,6 +530,23 @@ void Elixir::Editor::ObjectListWindow()
 					m_objectAddOpen = false;
 				}
 
+				ImGui::SameLine();
+				if (ImGui::ImageButton(m_sceneManager->GetTextureManager()->GetTexture(m_uiImages.LinesIcon), ImVec2(size, size)))
+				{
+					auto obj = m_sceneManager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
+					obj->GetRenderer()->Model = m_sceneManager->GetModel()->AddGeometry(MODEL_TYPE_GEOSPHERE);
+					obj->GetRenderer()->ModelTypePrimitive = true;
+					obj->GetRenderer()->PrimitiveType = MODEL_TYPE_GEOSPHERE;
+					std::string name = "LineDot" + std::to_string(m_lineDots.size());
+					obj->SetName(name);
+					obj->GetTransform()->Scale = Vec3f(0.5f);
+					if(!m_lineDots.empty())
+						obj->GetTransform()->Position = m_lineDots.back()->GetTransform()->Position;
+					m_lineDots.push_back(obj);
+					m_sceneManager->ResetModel();
+					m_objectAddOpen = false;
+				}
+
 				if (!ImGui::IsMouseHoveringWindow() && ImGui::IsMouseDown(0))
 				{
 					m_objectAddOpen = false;
@@ -478,8 +555,6 @@ void Elixir::Editor::ObjectListWindow()
 				ImGui::End();
 			}
 		}
-
-		
 
 		ImGui::Separator();
 

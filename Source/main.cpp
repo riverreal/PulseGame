@@ -148,12 +148,10 @@ void SimpleApp::Update(float dt)
 
 		if (GetAsyncKeyState('R') & 0x8000)
 		{
-			AudioManager::GetInstance().GetControlledMusic()->setIsPaused(false);
 		}
 
 		if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
 		{
-			AudioManager::GetInstance().GetControlledMusic()->setIsPaused(true);
 			m_speedMult = 4.0f;
 		}
 		else

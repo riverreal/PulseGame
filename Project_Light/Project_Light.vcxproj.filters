@@ -183,6 +183,9 @@
     <ClCompile Include="..\Source\System\IElixirGame.cpp">
       <Filter>Source Files\System\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\External Soruce\jsoncpp\jsoncpp.cpp">
+      <Filter>External Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\System\BaseApp.h">
@@ -356,7 +359,10 @@
     <ClInclude Include="..\Source\System\IElixirGame.h">
       <Filter>Source Files\System</Filter>
     </ClInclude>
-    <ClInclude Include="..\External Soruce\json.hpp">
+    <ClInclude Include="..\External Soruce\jsoncpp\json\json.h">
+      <Filter>External Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\jsoncpp\json\json-forwards.h">
       <Filter>External Source</Filter>
     </ClInclude>
   </ItemGroup>
