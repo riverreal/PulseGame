@@ -61,7 +61,12 @@ void Elixir::AudioManager::AddControlledMusic(std::string filename)
 
 ISound * Elixir::AudioManager::GetControlledMusic()
 {
-	return m_controlledMusic;
+	if (m_controlledMusic)
+	{
+		return m_controlledMusic;
+	}
+
+	return nullptr;
 }
 
 void Elixir::AudioManager::Init()

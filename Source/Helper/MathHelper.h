@@ -2,8 +2,14 @@
 
 #include <Windows.h>
 #include <DirectXMath.h>
+#include <vector>
 
 using namespace DirectX;
+
+namespace Elixir
+{
+	struct Vec3f;
+}
 
 class MathHelper
 {
@@ -31,5 +37,13 @@ public:
 
 	static XMFLOAT3 F3DotScalar(XMFLOAT3 x, float s);
 	static XMFLOAT3 F3MinusF3(XMFLOAT3 a, XMFLOAT3 b);
+
+	static XMFLOAT3 Vec3f2XMF3(Elixir::Vec3f vec3);
+
+	static float GetT(float t, Elixir::Vec3f p0, Elixir::Vec3f p1);
+
+	//Needs a set of points (minimum of 4 points) as parameters.
+	//Returns a smooth curve passing through each point.
+	static std::vector<Elixir::Vec3f> CatmullromSpline(std::vector<Elixir::Vec3f> points, int subdivision);
 
 };

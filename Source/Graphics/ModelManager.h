@@ -9,6 +9,7 @@
 #include "../../External Soruce/Assimp/include/assimp/Importer.hpp"
 #include "../../External Soruce/Assimp/include/assimp/scene.h"
 #include "../../External Soruce/Assimp/include/assimp/postprocess.h"
+#include "../Helper/TypeHelper.h"
 
 class Model
 {
@@ -20,6 +21,9 @@ public:
 	offsetData AddGeometry(int modelType);
 	offsetData AddCustomGeometry(std::wstring fileName);
 	offsetData AddModelFromFile(std::string fileName);
+	//Read a .pld file to get line data and generate a smooth tube.
+	//Returns the offset of the mesh, and the final output line as parameter.
+	offsetData AddTubeFromLineData(std::vector<Elixir::Vec3f> lines, float radius, std::vector<Elixir::Vec3f> outputLine);
 	bool Initialize(ID3D11Device* device);
 	void Shutdown();
 	void Render(ID3D11DeviceContext* deviceContext);

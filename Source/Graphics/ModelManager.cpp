@@ -4,6 +4,8 @@
 #include <fstream>
 #include <string>
 #include <iostream>
+#include "../System/GameManager.h"
+#include "../../jsoncpp/json/json.h"
 
 using namespace DirectX;
 
@@ -42,7 +44,7 @@ offsetData Model::AddGeometry(int modelType)
 		shapes.CreateCube(1.0f, 1.0f, 1.0f, meshData);
 		break;
 	case MODEL_TYPE_CYLINDER:
-		shapes.CreateCylinder(0.15f, 0.15f, 3.0f, 10, 10, meshData);
+		shapes.CreateCylinder(0.5f, 0.5f, 1.0f, 10, 10, meshData);
 		break;
 	case MODEL_TYPE_GEOSPHERE:
 		shapes.CreateGeosphere(0.5f, 2, meshData);
@@ -338,6 +340,63 @@ offsetData Model::AddModelFromFile(std::string fileName)
 	offset.vertexOffset = m_lastVertexOffset;
 
 	return offset;
+}
+
+offsetData Model::AddTubeFromLineData(std::vector<Elixir::Vec3f> lines, float radius, std::vector<Elixir::Vec3f> outputLine)
+{
+	float stackCount = lines.size() * 10.0f;
+	float sliceCount = 10.0f;
+
+	MeshData meshData;
+
+	int i = 0;
+	for (auto &dot : lines)
+	{
+		float dTheta = 2.0f * XM_PI / sliceCount;
+
+		for (UINT j = 0; j <= sliceCount; ++j)
+		{
+			Vertex vertex;
+
+			float c = cosf(j * dTheta);
+			float s = sinf(j * dTheta);
+
+			vertex.Position = XMFLOAT3(dot.x * c, dot.y, dot.z * s);
+
+			vertex.Tex.x = (float)j / sliceCount;
+			vertex.Tex.y = 1.0f - (float)i / stackCount;
+
+			vertex.TangentU = XMFLOAT3(-s, 0.0f, c);
+
+			XMFLOAT3 bitangent(0.0f, -1.0f, 0.0f);
+			XMVECTOR T = XMLoadFloat3(&vertex.TangentU);
+			XMVECTOR B = XMLoadFloat3(&bitangent);
+			XMVECTOR N = XMVector3Normalize(XMVector3Cross(T, B));
+			XMStoreFloat3(&vertex.Normal, N);
+
+			meshData.Vertices.push_back(vertex);
+		}
+
+		i++;
+	}
+
+	UINT ringVertexCount = sliceCount + 1;
+
+	for (UINT j = 0; j < sliceCount; ++j)
+	{
+		for (UINT k = 0; k < sliceCount; ++k)
+		{
+			meshData.Indices.push_back(j * ringVertexCount + k);
+			meshData.Indices.push_back((j + 1) * ringVertexCount + k);
+			meshData.Indices.push_back((j + 1) * ringVertexCount + k + 1);
+
+			meshData.Indices.push_back(j * ringVertexCount + k);
+			meshData.Indices.push_back((j + 1) * ringVertexCount + j);
+			meshData.Indices.push_back(j * ringVertexCount + k + 1);
+		}
+	}
+
+	return offsetData();
 }
 
 bool Model::Initialize(ID3D11Device* device)

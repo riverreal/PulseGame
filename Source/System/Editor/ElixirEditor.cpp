@@ -1,5 +1,6 @@
 #include "ElixirEditor.h"
 #include "../../Helper/GeneralHelper.h"
+#include "../../Helper/MathHelper.h"
 #pragma execution_character_set("utf-8")
 
 #include "../../jsoncpp/json/json.h"
@@ -225,7 +226,20 @@ void Elixir::Editor::MainMenuBar()
 
 					if (reader.parse(jsonContent, lineData))
 					{
+						std::vector<Vec3f> lineVec;
 						for (auto dot : lineData)
+						{
+							Vec3f point;
+
+							point.x = dot.get("x", 0).asFloat();
+							point.y = dot.get("y", 0).asFloat();
+							point.z = dot.get("z", 0).asFloat();
+
+							lineVec.push_back(point);	
+						}
+
+						auto smoothLine = MathHelper::CatmullromSpline(lineVec, 4);
+						for (auto &dot : smoothLine)
 						{
 							auto obj = m_sceneManager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
 							obj->GetRenderer()->Model = m_sceneManager->GetModel()->AddGeometry(MODEL_TYPE_GEOSPHERE);
@@ -234,10 +248,12 @@ void Elixir::Editor::MainMenuBar()
 							std::string name = "LineDot" + std::to_string(m_lineDots.size());
 							obj->SetName(name);
 							obj->GetTransform()->Scale = Vec3f(0.5f);
+
+							obj->GetTransform()->Position.x = dot.x;
+							obj->GetTransform()->Position.y = dot.y;
+							obj->GetTransform()->Position.z = dot.z;
+
 							
-							obj->GetTransform()->Position.x = dot.get("x", 0).asFloat();
-							obj->GetTransform()->Position.y = dot.get("y", 0).asFloat();
-							obj->GetTransform()->Position.z = dot.get("z", 0).asFloat();
 
 							m_lineDots.push_back(obj);
 						}
