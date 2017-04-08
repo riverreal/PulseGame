@@ -238,7 +238,22 @@ void Elixir::Editor::MainMenuBar()
 							lineVec.push_back(point);	
 						}
 
-						auto smoothLine = MathHelper::CatmullromSpline(lineVec, 4);
+						auto smoothLine = MathHelper::CatmullromSpline(lineVec, 20, false);
+						auto tangents = MathHelper::CatmullromSpline(lineVec, 20, true);
+
+						auto obj = m_sceneManager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
+						obj->GetRenderer()->Model = m_sceneManager->GetModel()->AddTubeFromLineData(smoothLine, tangents, 10.0f, smoothLine);
+						obj->SetName("Tube");
+						m_sceneManager->ResetModel();
+						/*
+						for (auto &dot : smoothLine)
+						{
+							dot = dot.FastNormalize();
+							Log() << dot.x << ", " << dot.y << ", " << dot.z << "\n";
+						}
+						*/
+
+						/*
 						for (auto &dot : smoothLine)
 						{
 							auto obj = m_sceneManager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
@@ -253,12 +268,12 @@ void Elixir::Editor::MainMenuBar()
 							obj->GetTransform()->Position.y = dot.y;
 							obj->GetTransform()->Position.z = dot.z;
 
-							
-
 							m_lineDots.push_back(obj);
 						}
 
 						m_sceneManager->ResetModel();
+
+						*/
 					}
 				}
 			}

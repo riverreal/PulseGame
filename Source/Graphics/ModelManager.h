@@ -23,7 +23,7 @@ public:
 	offsetData AddModelFromFile(std::string fileName);
 	//Read a .pld file to get line data and generate a smooth tube.
 	//Returns the offset of the mesh, and the final output line as parameter.
-	offsetData AddTubeFromLineData(std::vector<Elixir::Vec3f> lines, float radius, std::vector<Elixir::Vec3f> outputLine);
+	offsetData AddTubeFromLineData(std::vector<Elixir::Vec3f> lines, std::vector<Elixir::Vec3f> tangents, float radius, std::vector<Elixir::Vec3f> outputLine);
 	bool Initialize(ID3D11Device* device);
 	void Shutdown();
 	void Render(ID3D11DeviceContext* deviceContext);

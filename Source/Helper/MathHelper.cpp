@@ -67,6 +67,10 @@ XMFLOAT3 MathHelper::Vec3f2XMF3(Elixir::Vec3f vec3)
 
 float MathHelper::GetT(float t, Elixir::Vec3f p0, Elixir::Vec3f p1)
 {
+	//Uniform		alpha = 0
+	//Centripetal	alpha = 0.5
+	//Chordal		alpha = 1
+
 	float alpha = 0.5f;
 
 	float a = pow((p1.x - p0.x), 2.0f) + pow((p1.y - p0.y), 2.0f) + pow((p1.z - p0.z), 2.0f);
@@ -76,7 +80,7 @@ float MathHelper::GetT(float t, Elixir::Vec3f p0, Elixir::Vec3f p1)
 	return (c + t);
 }
 
-std::vector<Elixir::Vec3f> MathHelper::CatmullromSpline(std::vector<Elixir::Vec3f> line, int subdivision)
+std::vector<Elixir::Vec3f> MathHelper::CatmullromSpline(std::vector<Elixir::Vec3f> line, int subdivision, bool tangent)
 {
 	std::vector<Elixir::Vec3f> smoothCurve;
 
@@ -86,10 +90,8 @@ std::vector<Elixir::Vec3f> MathHelper::CatmullromSpline(std::vector<Elixir::Vec3
 	{
 		if (i == 0 || i + 2 == line.size())
 		{
-			//smoothCurve.push_back(line[i]);
 			continue;
 		}
-			
 
 		Elixir::Vec3f P0, P1, P2, P3;
 		P0 = i == 0 ? line[i] : line[i - 1];
@@ -113,9 +115,26 @@ std::vector<Elixir::Vec3f> MathHelper::CatmullromSpline(std::vector<Elixir::Vec3
 			B1 = A1 * ((t2 - t) / (t2 - t0)) + A2 * ((t - t0) / (t2 - t0));
 			B2 = A2 * ((t3 - t) / (t3 - t1)) + A3 * ((t - t1) / (t3 - t1));
 
-			C = B1 * ((t2 - t) / (t2 - t1)) + B2 * ((t - t1) / (t2 - t1));
+			if (!tangent)
+			{
+				C = B1 * ((t2 - t) / (t2 - t1)) + B2 * ((t - t1) / (t2 - t1));
+				smoothCurve.push_back(C);
 
-			smoothCurve.push_back(C);
+				continue;
+			}
+			
+			//Calculate derivatives--------------------
+
+			auto DA1 = (P1 - P0) * (1 / (t1 - t0));
+			auto DA2 = (P2 - P1) * (1 / (t2 - t1));
+			auto DA3 = (P3 - P2) * (1 / (t3 - t2));
+
+			auto DB1 = (A2 - A1) * (1 / (t2 - t0)) + DA1 * ((t2 - t) / (t2 - t0)) + DA2 * ((t - t0) / (t2 - t0));
+			auto DB2 = (A3 - A2) * (1 / (t3 - t1)) + DA2 * ((t3 - t) / (t3 - t1)) + DA3 * ((t - t1) / (t3 - t1));
+
+			auto DC = (B2 - B1) * (1 / (t2 - t1)) + DB1 * t * ((t2 - t) / (t2 - t1)) + DB2 * t * ((t - t1) / (t2 - t1));
+
+			smoothCurve.push_back(DC);
 		}
 	}
 

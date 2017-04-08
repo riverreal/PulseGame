@@ -9,6 +9,8 @@
 
 using namespace DirectX;
 
+using namespace Elixir;
+
 Model::Model()
 	:m_vertexBuffer(0),
 	m_indexBuffer(0),
@@ -342,61 +344,169 @@ offsetData Model::AddModelFromFile(std::string fileName)
 	return offset;
 }
 
-offsetData Model::AddTubeFromLineData(std::vector<Elixir::Vec3f> lines, float radius, std::vector<Elixir::Vec3f> outputLine)
+offsetData Model::AddTubeFromLineData(std::vector<Elixir::Vec3f> lines, std::vector<Elixir::Vec3f> tangents, float radius, std::vector<Elixir::Vec3f> outputLine)
 {
-	float stackCount = lines.size() * 10.0f;
-	float sliceCount = 10.0f;
-
 	MeshData meshData;
+	offsetData offset;
 
-	int i = 0;
-	for (auto &dot : lines)
+	UINT currentVertexCount;
+	UINT currentIndexCount;
+
+	int subdivision = 10;
+
+	//loop through the lines
+	for (int i = 0; i < lines.size() - 1; ++i)
 	{
-		float dTheta = 2.0f * XM_PI / sliceCount;
+		//skip the first and last point (cannot get curve for those)
+		if (i == 0 || i + 2 >= lines.size())
+			continue;
 
-		for (UINT j = 0; j <= sliceCount; ++j)
+		Vec3f tangent = tangents[i].FastNormalize();
+
+		int maxAxis;
+
+		if (std::abs(tangent.x) > std::abs(tangent.y))
 		{
-			Vertex vertex;
-
-			float c = cosf(j * dTheta);
-			float s = sinf(j * dTheta);
-
-			vertex.Position = XMFLOAT3(dot.x * c, dot.y, dot.z * s);
-
-			vertex.Tex.x = (float)j / sliceCount;
-			vertex.Tex.y = 1.0f - (float)i / stackCount;
-
-			vertex.TangentU = XMFLOAT3(-s, 0.0f, c);
-
-			XMFLOAT3 bitangent(0.0f, -1.0f, 0.0f);
-			XMVECTOR T = XMLoadFloat3(&vertex.TangentU);
-			XMVECTOR B = XMLoadFloat3(&bitangent);
-			XMVECTOR N = XMVector3Normalize(XMVector3Cross(T, B));
-			XMStoreFloat3(&vertex.Normal, N);
-
-			meshData.Vertices.push_back(vertex);
+			if (std::abs(tangent.x) > std::abs(tangent.z))
+			{
+				maxAxis = 0;
+			}
+			else
+			{
+				maxAxis = 2;
+			}
+		}
+		else if (std::abs(tangent.y) > std::abs(tangent.z))
+		{
+			maxAxis = 1;
+		}
+		else
+		{
+			maxAxis = 2;
 		}
 
-		i++;
-	}
+		Vec3f up, forward, right;
 
-	UINT ringVertexCount = sliceCount + 1;
-
-	for (UINT j = 0; j < sliceCount; ++j)
-	{
-		for (UINT k = 0; k < sliceCount; ++k)
+		switch (maxAxis)
 		{
-			meshData.Indices.push_back(j * ringVertexCount + k);
-			meshData.Indices.push_back((j + 1) * ringVertexCount + k);
-			meshData.Indices.push_back((j + 1) * ringVertexCount + k + 1);
+		case 0:
+		case 1:
+			up = tangent;
+			forward = Vec3f(0, 0, 1);
+			right = up.Cross(forward);
+			forward = right.Cross(up);
+			break;
 
-			meshData.Indices.push_back(j * ringVertexCount + k);
-			meshData.Indices.push_back((j + 1) * ringVertexCount + j);
-			meshData.Indices.push_back(j * ringVertexCount + k + 1);
+		case 2:
+			up = tangent;
+			right = Vec3f(0, 0, 1);
+			forward = right.Cross(up);
+			right = up.Cross(forward);
+			break;
+
+		default:
+			break;
+		}
+
+		for (int j = 0; j < subdivision; ++j)
+		{
+			float sNorm = (i * subdivision + j) / float(subdivision * lines.size());
+			//float rad = 0.1f * (1 - sNorm) * radius;
+
+			for (int k = 0; k <= subdivision; ++k)
+			{
+				Vertex vertex;
+
+				//[0 , 1]
+				float t = k / (float)subdivision;
+
+				float theta = t * 2 * XM_PI;
+
+				Vec3f pc(cos(theta) * radius, 0, sin(theta) * radius);
+				float x = pc.x * right.x + pc.y * up.x + pc.z * forward.x;
+				float y = pc.x * right.y + pc.y * up.y + pc.z * forward.y;
+				float z = pc.x * right.z + pc.y * up.z + pc.z * forward.z;
+
+				vertex.Position = XMFLOAT3(lines[i].x + x, lines[i].y + y, lines[i].z + z);
+				auto normal = Vec3f(x, y, z).FastNormalize();
+				vertex.Normal = XMFLOAT3(normal.x, normal.y, normal.z);
+				vertex.TangentU = XMFLOAT3(tangent.x, tangent.y, tangent.z);
+				vertex.Tex = XMFLOAT2(sNorm, t);
+
+				meshData.Vertices.push_back(vertex);
+			}
 		}
 	}
 
-	return offsetData();
+	int nf = 0;
+
+	for (int k = 0; k < lines.size() - 1; ++k)
+	{
+		if (k == 0 || k + 2 >= lines.size())
+			continue;
+
+		for (int j = 0; j < subdivision; ++j)
+		{
+			for (int i = 0; i < subdivision; ++i)
+			{
+				meshData.Indices.push_back(nf);
+				meshData.Indices.push_back(nf + (subdivision + 1));
+				meshData.Indices.push_back(nf + (subdivision + 1) + 1);
+				meshData.Indices.push_back(nf + 1);
+
+				++nf;
+			}
+			nf++;
+		}
+	}
+
+	for (int i = 0; i < subdivision; ++i)
+	{
+		meshData.Indices.push_back(nf);
+		meshData.Indices.push_back((nf + 1) * subdivision * lines.size());
+		meshData.Indices.push_back(nf + 1);
+
+		nf++;
+	}
+
+	//Apply to buffers count
+
+	currentVertexCount = meshData.Vertices.size();
+	currentIndexCount = meshData.Indices.size();
+	m_totalVertexCount += meshData.Vertices.size();
+	m_totalIndexCount += meshData.Indices.size();
+
+	std::vector<Vertex> vertices(currentVertexCount);
+	for (size_t i = 0; i < currentVertexCount; ++i)
+	{
+		XMFLOAT3 position = meshData.Vertices[i].Position;
+		vertices[i].Position = position;
+		vertices[i].Normal = meshData.Vertices[i].Normal;
+		vertices[i].Tex = meshData.Vertices[i].Tex;
+		vertices[i].TangentU = meshData.Vertices[i].TangentU;
+		m_totalVertex.push_back(vertices[i]);
+	}
+
+	std::vector<UINT> indices(currentIndexCount);
+	for (size_t i = 0; i < currentIndexCount; ++i)
+	{
+		indices[i] = meshData.Indices[i];
+		m_totalIndex.push_back(indices[i]);
+	}
+
+	//get the index offset
+	m_lastIndexOffset += m_lastIndexSize;
+	m_lastIndexSize = indices.size();
+
+	//get the vertex offset
+	m_lastVertexOffset += m_lastVertexSize;
+	m_lastVertexSize = vertices.size();
+
+	offset.indexCount = currentIndexCount;
+	offset.indexOffset = m_lastIndexOffset;
+	offset.vertexOffset = m_lastVertexOffset;
+
+	return offset;
 }
 
 bool Model::Initialize(ID3D11Device* device)

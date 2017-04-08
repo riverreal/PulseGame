@@ -51,6 +51,49 @@ namespace Elixir
 			return Vec3f(x + sum.x, y + sum.y, z + sum.z);
 		}
 
+		inline Vec3f operator- (const Vec3f& sum) const
+		{
+			return Vec3f(x - sum.x, y - sum.y, z - sum.z);
+		}
+
+		Vec3f FastNormalize() const
+		{
+			float lengSqr = x * x + y * y + z * z;
+
+			int leng = *(int*)&lengSqr;
+
+			if (leng == 0)
+			{
+				return 0.0f;
+			}
+			else
+			{
+				float xhalf = 0.5f * lengSqr;
+				leng = 0x5f375a86 - (leng >> 1);
+				lengSqr = *(float*)&leng;
+				lengSqr = lengSqr * (1.5f - xhalf * lengSqr * lengSqr);
+			}
+
+
+			Vec3f normalized(x, y, z);
+
+			normalized.x *= lengSqr;
+			normalized.y *= lengSqr;
+			normalized.z *= lengSqr;
+
+			return normalized;
+		}
+
+		Vec3f Cross(Vec3f v) const
+		{
+			Vec3f result;
+			result.x = y * v.z - v.y * z;
+			result.y = v.x * z - x * v.z;
+			result.z = x * v.y - v.x * y;
+
+			return result;
+		}
+
 		F32 x;
 		F32 y;
 		F32 z;

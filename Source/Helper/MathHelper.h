@@ -43,7 +43,6 @@ public:
 	static float GetT(float t, Elixir::Vec3f p0, Elixir::Vec3f p1);
 
 	//Needs a set of points (minimum of 4 points) as parameters.
-	//Returns a smooth curve passing through each point.
-	static std::vector<Elixir::Vec3f> CatmullromSpline(std::vector<Elixir::Vec3f> points, int subdivision);
-
+	//Returns a smooth curve passing through each point. It returns the tangent of it's points if @param tanget is true
+	static std::vector<Elixir::Vec3f> CatmullromSpline(std::vector<Elixir::Vec3f> points, int subdivision, bool tangent);
 };
