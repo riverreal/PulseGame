@@ -352,7 +352,7 @@ offsetData Model::AddTubeFromLineData(std::vector<Elixir::Vec3f> lines, std::vec
 	UINT currentVertexCount;
 	UINT currentIndexCount;
 
-	int subdivision = 10;
+	int subdivision = 10 + radius;
 
 	//loop through the lines
 	for (int i = 0; i < lines.size() - 1; ++i)
@@ -408,45 +408,54 @@ offsetData Model::AddTubeFromLineData(std::vector<Elixir::Vec3f> lines, std::vec
 			break;
 		}
 
+		up = up.FastNormalize();
+		right = right.FastNormalize();
+		forward = forward.FastNormalize();
+
+		float sNorm = (i * subdivision) / float(subdivision * lines.size());
+
+		for (int k = 0; k <= subdivision; ++k)
+		{
+			Vertex vertex;
+
+			//[0 , 1]
+			float t = k / (float)subdivision;
+
+			float theta = t * 2 * XM_PI;
+			
+			Vec3f pc(cos(theta) * radius, 0, sin(theta) * radius);
+			float x = pc.x * right.x + pc.y * up.x + pc.z * forward.x;
+			float y = pc.x * right.y + pc.y * up.y + pc.z * forward.y;
+			float z = pc.x * right.z + pc.y * up.z + pc.z * forward.z;
+
+			vertex.Position = XMFLOAT3(lines[i].x + x, lines[i].y + y, lines[i].z + z);
+			auto normal = Vec3f(x, y, z).FastNormalize();
+			vertex.Normal = XMFLOAT3(normal.x, normal.y, normal.z);
+			vertex.TangentU = XMFLOAT3(tangent.x, tangent.y, tangent.z);
+			vertex.Tex = XMFLOAT2(sNorm, t);
+
+			meshData.Vertices.push_back(vertex);
+		}
+
 		for (int j = 0; j < subdivision; ++j)
 		{
-			float sNorm = (i * subdivision + j) / float(subdivision * lines.size());
-			//float rad = 0.1f * (1 - sNorm) * radius;
-
-			for (int k = 0; k <= subdivision; ++k)
-			{
-				Vertex vertex;
-
-				//[0 , 1]
-				float t = k / (float)subdivision;
-
-				float theta = t * 2 * XM_PI;
-
-				Vec3f pc(cos(theta) * radius, 0, sin(theta) * radius);
-				float x = pc.x * right.x + pc.y * up.x + pc.z * forward.x;
-				float y = pc.x * right.y + pc.y * up.y + pc.z * forward.y;
-				float z = pc.x * right.z + pc.y * up.z + pc.z * forward.z;
-
-				vertex.Position = XMFLOAT3(lines[i].x + x, lines[i].y + y, lines[i].z + z);
-				auto normal = Vec3f(x, y, z).FastNormalize();
-				vertex.Normal = XMFLOAT3(normal.x, normal.y, normal.z);
-				vertex.TangentU = XMFLOAT3(tangent.x, tangent.y, tangent.z);
-				vertex.Tex = XMFLOAT2(sNorm, t);
-
-				meshData.Vertices.push_back(vertex);
-			}
+			
 		}
 	}
 
+	
 	int nf = 0;
 
-	for (int k = 0; k < lines.size() - 1; ++k)
+	UINT ringVertexCount = subdivision;
+
+	for (int i = 0; i < lines.size() - 1; ++i)
 	{
-		if (k == 0 || k + 2 >= lines.size())
-			continue;
+		//if (k == 0 || k + 2 >= lines.size())
+			//continue;
 
 		for (int j = 0; j < subdivision; ++j)
 		{
+			/*
 			for (int i = 0; i < subdivision; ++i)
 			{
 				meshData.Indices.push_back(nf);
@@ -457,9 +466,19 @@ offsetData Model::AddTubeFromLineData(std::vector<Elixir::Vec3f> lines, std::vec
 				++nf;
 			}
 			nf++;
+			*/
+
+			meshData.Indices.push_back(i*ringVertexCount + j);
+			meshData.Indices.push_back((i + 1)*ringVertexCount + j);
+			meshData.Indices.push_back((i + 1)*ringVertexCount + j + 1);
+
+			meshData.Indices.push_back(i*ringVertexCount + j);
+			meshData.Indices.push_back((i + 1)*ringVertexCount + j + 1);
+			meshData.Indices.push_back(i*ringVertexCount + j + 1);
 		}
 	}
 
+	/*
 	for (int i = 0; i < subdivision; ++i)
 	{
 		meshData.Indices.push_back(nf);
@@ -468,7 +487,7 @@ offsetData Model::AddTubeFromLineData(std::vector<Elixir::Vec3f> lines, std::vec
 
 		nf++;
 	}
-
+	*/
 	//Apply to buffers count
 
 	currentVertexCount = meshData.Vertices.size();

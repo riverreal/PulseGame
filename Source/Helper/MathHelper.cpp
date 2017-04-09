@@ -118,6 +118,13 @@ std::vector<Elixir::Vec3f> MathHelper::CatmullromSpline(std::vector<Elixir::Vec3
 			if (!tangent)
 			{
 				C = B1 * ((t2 - t) / (t2 - t1)) + B2 * ((t - t1) / (t2 - t1));
+
+				//skip duplicates
+				if (!smoothCurve.empty() && smoothCurve.back() == C)
+				{
+					continue;
+				}
+
 				smoothCurve.push_back(C);
 
 				continue;
@@ -133,6 +140,13 @@ std::vector<Elixir::Vec3f> MathHelper::CatmullromSpline(std::vector<Elixir::Vec3
 			auto DB2 = (A3 - A2) * (1 / (t3 - t1)) + DA2 * ((t3 - t) / (t3 - t1)) + DA3 * ((t - t1) / (t3 - t1));
 
 			auto DC = (B2 - B1) * (1 / (t2 - t1)) + DB1 * t * ((t2 - t) / (t2 - t1)) + DB2 * t * ((t - t1) / (t2 - t1));
+
+
+			//skip duplicates
+			if (!smoothCurve.empty() && smoothCurve.back() == DC)
+			{
+				continue;
+			}
 
 			smoothCurve.push_back(DC);
 		}

@@ -56,6 +56,11 @@ namespace Elixir
 			return Vec3f(x - sum.x, y - sum.y, z - sum.z);
 		}
 
+		inline bool operator== (const Vec3f& comp) const
+		{
+			return (x == comp.x && y == comp.y && z == comp.z);
+		}
+
 		Vec3f FastNormalize() const
 		{
 			float lengSqr = x * x + y * y + z * z;

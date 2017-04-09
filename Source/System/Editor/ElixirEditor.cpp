@@ -242,7 +242,7 @@ void Elixir::Editor::MainMenuBar()
 						auto tangents = MathHelper::CatmullromSpline(lineVec, 20, true);
 
 						auto obj = m_sceneManager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
-						obj->GetRenderer()->Model = m_sceneManager->GetModel()->AddTubeFromLineData(smoothLine, tangents, 10.0f, smoothLine);
+						obj->GetRenderer()->Model = m_sceneManager->GetModel()->AddTubeFromLineData(smoothLine, tangents, 2.0f, smoothLine);
 						obj->SetName("Tube");
 						m_sceneManager->ResetModel();
 						/*
