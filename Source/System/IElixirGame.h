@@ -6,6 +6,9 @@ namespace Elixir
 {
 	class SceneManager;
 	class Scene;
+	class GameObject;
+	class Vec3f;
+	class Vec4f;
 }
 
 class IElixirGame

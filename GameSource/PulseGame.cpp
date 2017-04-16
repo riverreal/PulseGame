@@ -2,19 +2,6 @@
 #include "../Source/System/GameManager.h"
 #include "../Source/Includes/LESystem.h"
 
-PulseGame::PulseGame()
-{
-}
-
-/*
-void PulseGame::StartScene()
-{
-	m_sceneManager = GameManager::GetInstance().GetSceneManager();
-	m_scene = m_sceneManager->CreateScene("TestScene");
-	m_scene->SetInitFunction([this]() {this->Init(); });
-	m_scene->SetUpdateFunction([this](float dt) {this->Update(dt);});
-}
-*/
 
 void PulseGame::InitTestScene()
 {	
@@ -36,11 +23,32 @@ void PulseGame::InitTestScene()
 
 	ThisScene->GetCamera()->SetPosition(0.0f, 0.0f, -10.0f);
 
-	ElixirLog("TestScene Initialized");
+	m_lineData = LoadLine(Manager->GetFileManager()->LoadFile("Resource/testCurve.pld"));
+
+	auto smoothLine = MathHelper::CatmullromSpline(m_lineData, 20, false);
+	auto tangents = MathHelper::CatmullromSpline(m_lineData, 20, true);
+
+	auto obj = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
+	obj->GetRenderer()->Model = Manager->GetModel()->AddTubeFromLineData(smoothLine, tangents, 0.1f, smoothLine);
+	obj->SetName("Tube");
+
+	m_player.Initialize(Manager, m_lineData);
 }
 
 void PulseGame::UpdateTestScene(float dt)
 {
+	if (GetAsyncKeyState('P') & 0x8000)
+	{
+		m_pause = true;
+	}
+	
+	if (GetAsyncKeyState('U') & 0x8000)
+	{
+		m_pause = false;
+	}
+
+	if(!m_pause)
+		m_player.UpdateShipPos(dt);
 }
 
 void PulseGame::Init()
@@ -50,9 +58,5 @@ void PulseGame::Init()
 
 void PulseGame::Update(float dt)
 {
-	auto cube = ThisScene->GetObjectByName("Cube");
-	if (cube)
-	{
-		cube->GetTransform()->Rotation.y += 10.0f * dt;
-	}
+	UpdateTestScene(dt);
 }

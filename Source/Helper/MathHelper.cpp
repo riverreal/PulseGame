@@ -6,6 +6,13 @@
 const float MathHelper::Pi = 3.1415926535f;
 
 
+float MathHelper::clamp(float x, float min, float max)
+{
+	x = Max(x, min);
+	x = Min(x, max);
+	return x;
+}
+
 float MathHelper::AngleFromXY(float x, float y)
 {
 	float theta = 0.0f;
@@ -65,13 +72,49 @@ XMFLOAT3 MathHelper::Vec3f2XMF3(Elixir::Vec3f vec3)
 	return XMFLOAT3(vec3.x, vec3.y, vec3.z);
 }
 
+Elixir::Vec4f MathHelper::QuaternionAxisAngle(Elixir::Vec3f axis, float radians)
+{
+	F32 s = sinf(radians / 2);
+	Elixir::Vec4f q(0);
+	q.x = axis.x * s;
+	q.y = axis.y * s;
+	q.z = axis.z * s;
+	q.w = cosf(radians / 2);
+
+	return q;
+}
+
+Elixir::Vec3f MathHelper::Quaternion2Euler(Elixir::Vec4f q)
+{
+	Elixir::Vec3f euler;
+
+	F32 ysqr = q.y * q.y;
+
+	//x
+	F32 t0 = 2.0 * (q.w * q.x + q.y * q.z);
+	F32 t1 = 1.0f - 2.0f * (q.x * q.x + ysqr);
+	euler.x = atan2f(t0, t1);
+
+	//y
+	F32 t2 = 2.0 * (q.w * q.y - q.z * q.x);
+	t2 = clamp(t2, -1.0f, 1.0f);
+	euler.y = asinf(t2);
+
+	//z
+	F32 t3 = 2.0f * (q.w * q.z + q.x * q.y);
+	F32 t4 = 1.0f - 2.0f * (ysqr + q.z * q.z);
+	euler.z = atan2(t3, t4);
+
+	return euler;
+}
+
 float MathHelper::GetT(float t, Elixir::Vec3f p0, Elixir::Vec3f p1)
 {
 	//Uniform		alpha = 0
 	//Centripetal	alpha = 0.5
 	//Chordal		alpha = 1
 
-	float alpha = 0.5f;
+	float alpha = 0.0f;
 
 	float a = pow((p1.x - p0.x), 2.0f) + pow((p1.y - p0.y), 2.0f) + pow((p1.z - p0.z), 2.0f);
 	float b = pow(a, 0.5f);
@@ -83,8 +126,6 @@ float MathHelper::GetT(float t, Elixir::Vec3f p0, Elixir::Vec3f p1)
 std::vector<Elixir::Vec3f> MathHelper::CatmullromSpline(std::vector<Elixir::Vec3f> line, int subdivision, bool tangent)
 {
 	std::vector<Elixir::Vec3f> smoothCurve;
-
-	float tStep = 1.0f / (float)subdivision;
 
 	for (int i = 0; i < line.size() - 1; ++i)
 	{
@@ -141,7 +182,6 @@ std::vector<Elixir::Vec3f> MathHelper::CatmullromSpline(std::vector<Elixir::Vec3
 
 			auto DC = (B2 - B1) * (1 / (t2 - t1)) + DB1 * t * ((t2 - t) / (t2 - t1)) + DB2 * t * ((t - t1) / (t2 - t1));
 
-
 			//skip duplicates
 			if (!smoothCurve.empty() && smoothCurve.back() == DC)
 			{
@@ -153,5 +193,43 @@ std::vector<Elixir::Vec3f> MathHelper::CatmullromSpline(std::vector<Elixir::Vec3
 	}
 
 	return smoothCurve;
+}
+
+Elixir::CatmullPoint MathHelper::GetPointInCMSpline(Elixir::Vec3f P0, Elixir::Vec3f P1, Elixir::Vec3f P2, Elixir::Vec3f P3, float t)
+{
+	Elixir::CatmullPoint cmp;
+
+	t = clamp(t, 0.0f, 1.0f);
+
+	float t0 = 0.0f;
+	float t1 = GetT(t0, P0, P1);
+	float t2 = GetT(t1, P1, P2);
+	float t3 = GetT(t2, P2, P3);
+
+	Elixir::Vec3f A1, A2, A3, B1, B2, C;
+
+	//reparametarize t
+	//t = (t2 - t1) * t
+	t *= t2;
+
+	A1 = P0 * ((t1 - t) / (t1 - t0)) + P1 * ((t - t0) / (t1 - t0));
+	A2 = P1 * ((t2 - t) / (t2 - t1)) + P2 * ((t - t1) / (t2 - t1));
+	A3 = P2 * ((t3 - t) / (t3 - t2)) + P3 * ((t - t2) / (t3 - t2));
+
+	B1 = A1 * ((t2 - t) / (t2 - t0)) + A2 * ((t - t0) / (t2 - t0));
+	B2 = A2 * ((t3 - t) / (t3 - t1)) + A3 * ((t - t1) / (t3 - t1));
+
+	cmp.Position = B1 * ((t2 - t) / (t2 - t1)) + B2 * ((t - t1) / (t2 - t1));
+
+	auto DA1 = (P1 - P0) * (1 / (t1 - t0));
+	auto DA2 = (P2 - P1) * (1 / (t2 - t1));
+	auto DA3 = (P3 - P2) * (1 / (t3 - t2));
+
+	auto DB1 = (A2 - A1) * (1 / (t2 - t0)) + DA1 * ((t2 - t) / (t2 - t0)) + DA2 * ((t - t0) / (t2 - t0));
+	auto DB2 = (A3 - A2) * (1 / (t3 - t1)) + DA2 * ((t3 - t) / (t3 - t1)) + DA3 * ((t - t1) / (t3 - t1));
+
+	cmp.Tangent = (B2 - B1) * (1 / (t2 - t1)) + DB1 * t * ((t2 - t) / (t2 - t1)) + DB2 * t * ((t - t1) / (t2 - t1));
+	cmp.Tangent = cmp.Tangent.FastNormalize();
+	return cmp;
 }
 

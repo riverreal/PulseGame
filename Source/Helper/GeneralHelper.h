@@ -10,6 +10,9 @@
 #include <sstream>
 #include <fstream>
 
+#include "../../jsoncpp/json/json.h"
+#include "TypeHelper.h"
+
 //Releases COM Pointers
 template<typename T>
 inline void ReleaseCOM(T& pCOM)
@@ -124,4 +127,33 @@ static void ElixirLog(std::string log)
 static void RadixLog(std::string log)
 {
 	Log(LOG_WARNING) << "OBSOLETE LOG! " << log << "\n";
+}
+
+//@param fileContent must be a valid Json format content
+static std::vector<Elixir::Vec3f> LoadLine(std::string fileContent)
+{
+	Json::Value lineData;
+	Json::Reader reader;
+
+	std::vector<Elixir::Vec3f> lineVec;
+
+	if (reader.parse(fileContent, lineData))
+	{
+		for (auto dot : lineData)
+		{
+			Elixir::Vec3f point;
+
+			point.x = dot.get("x", 0).asFloat();
+			point.y = dot.get("y", 0).asFloat();
+			point.z = dot.get("z", 0).asFloat();
+
+			lineVec.push_back(point);
+		}
+	}
+	else
+	{
+		ElixirLog("Could not Load Line");
+	}
+
+	return lineVec;
 }

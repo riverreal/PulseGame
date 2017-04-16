@@ -500,7 +500,6 @@ void Elixir::Editor::ObjectListWindow()
 			ImGui::EndMenuBar();
 		}
 
-		
 		if (m_objectAddOpen)
 		{
 			ImGui::SetNextWindowPos(ImVec2(52, 52));
@@ -568,7 +567,14 @@ void Elixir::Editor::ObjectListWindow()
 					obj->GetRenderer()->Model = m_sceneManager->GetModel()->AddGeometry(MODEL_TYPE_GEOSPHERE);
 					obj->GetRenderer()->ModelTypePrimitive = true;
 					obj->GetRenderer()->PrimitiveType = MODEL_TYPE_GEOSPHERE;
-					std::string name = "LineDot" + std::to_string(m_lineDots.size());
+					std::string name;
+					if (m_lineDots.size() < 10)
+					{
+						name = "LineDot0";
+					}
+					else
+						name = "LineDot";
+					name += std::to_string(m_lineDots.size());
 					obj->SetName(name);
 					obj->GetTransform()->Scale = Vec3f(0.5f);
 					if(!m_lineDots.empty())

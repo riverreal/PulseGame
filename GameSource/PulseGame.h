@@ -1,21 +1,22 @@
 #pragma once
 
 #include "../Source/System/IElixirGame.h"
+#include <vector>
+#include "PlayerShip.h"
 
 using namespace Elixir;
 
 class PulseGame : public IElixirGame
 {
 public:
-	PulseGame();
-
-	//void StartScene();
-
 	void InitTestScene();
 	void UpdateTestScene(float dt);
 
 	virtual void Init() override;
 	virtual void Update(float dt) override;
 
-
+private:
+	std::vector<Vec3f> m_lineData;
+	PlayerShip m_player;
+	bool m_pause;
 };

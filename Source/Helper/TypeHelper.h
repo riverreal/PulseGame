@@ -10,6 +10,8 @@ typedef int I32;
 //32-bit float
 typedef float F32;
 
+const F32 E_PI = 3.141592741f;
+
 enum BasicModel
 {
 	MODEL_TYPE_CUBE,
@@ -22,6 +24,64 @@ enum BasicModel
 
 namespace Elixir
 {
+	struct Vec3f;
+	struct Vec4f;
+
+	//A Vector storing 4 floats
+	struct Vec4f
+	{
+		Vec4f()
+			:x(0.0f), y(0.0f), z(0.0f), w(0.0f)
+		{};
+
+		Vec4f(F32 x, F32 y, F32 z, F32 w)
+			:x(x), y(y), z(z), w(w)
+		{};
+
+		Vec4f(F32 xyzw)
+			:x(xyzw), y(xyzw), z(xyzw), w(xyzw)
+		{};
+
+		Vec4f FastNormalize() const
+		{
+			float lengSqr = x * x + y * y + z * z + w * w;
+
+			int leng = *(int*)&lengSqr;
+
+			if (leng == 0)
+			{
+				return 0.0f;
+			}
+			else
+			{
+				float xhalf = 0.5f * lengSqr;
+				leng = 0x5f375a86 - (leng >> 1);
+				lengSqr = *(float*)&leng;
+				lengSqr = lengSqr * (1.5f - xhalf * lengSqr * lengSqr);
+			}
+
+
+			Vec4f normalized(x, y, z, w);
+
+			normalized.x *= lengSqr;
+			normalized.y *= lengSqr;
+			normalized.z *= lengSqr;
+			normalized.w *= lengSqr;
+
+			return normalized;
+		}
+
+		static Vec4f Identity()
+		{
+			return Vec4f(0, 0, 0, 1);
+		}
+
+		F32 x;
+		F32 y;
+		F32 z;
+		F32 w;
+	};
+
 	//A Vector storing 3 floats
 	struct Vec3f
 	{
@@ -61,6 +121,11 @@ namespace Elixir
 			return (x == comp.x && y == comp.y && z == comp.z);
 		}
 
+		inline bool operator!= (const Vec3f& comp) const
+		{
+			return !(*this == comp);
+		}
+
 		Vec3f FastNormalize() const
 		{
 			float lengSqr = x * x + y * y + z * z;
@@ -89,7 +154,7 @@ namespace Elixir
 			return normalized;
 		}
 
-		Vec3f Cross(Vec3f v) const
+		Vec3f Cross(const Vec3f& v) const
 		{
 			Vec3f result;
 			result.x = y * v.z - v.y * z;
@@ -99,30 +164,111 @@ namespace Elixir
 			return result;
 		}
 
+		F32 Dot(const Vec3f& d) const
+		{
+			F32 product = 0;
+			product += x*d.x;
+			product += y*d.y;
+			product += z*d.z;
+
+			return product;
+		}
+
+		static Vec3f Zero()
+		{
+			return Vec3f(0, 0, 0);
+		}
+
+		inline bool isZeroLength() const
+		{
+			F32 sqlen = (x * x) + (y * y) + (z * z);
+			return (sqlen < (1e-06 * 1e-06));
+		}
+
+		Vec4f QuaternionLookAt(const Vec3f& dest, const Vec3f& fallbackAxis = Vec3f::Zero()) const
+		{
+			//Taken from Ogre3D (OgreVector3)
+
+			Vec4f q;
+
+			Vec3f v0 = *this;
+			Vec3f v1 = dest;
+
+			v0 = v0.FastNormalize();
+			v1 = v1.FastNormalize();
+
+			F32 d = v0.Dot(v1);
+
+			if (d >= 1.0f)
+			{
+				return Vec4f::Identity();
+			}
+
+			if (d < (1e-6f - 1.0f))
+			{
+				if (fallbackAxis != Vec3f::Zero())
+				{
+					F32 s = sinf(E_PI / 2);
+					Elixir::Vec4f q(0);
+					q.x = fallbackAxis.x * s;
+					q.y = fallbackAxis.y * s;
+					q.z = fallbackAxis.z * s;
+					q.w = cosf(E_PI / 2);
+				}
+				else
+				{
+					Vec3f axis(1.0f, 0.0f, 0.0f);
+					axis = axis.Cross(*this);
+					if (axis.isZeroLength())
+					{
+						axis = Vec3f(0.0f, 1.0f, 0.0f).Cross(*this);
+					}
+
+					axis = axis.FastNormalize();
+
+					F32 s = sinf(E_PI / 2);
+					Elixir::Vec4f q(0);
+					q.x = axis.x * s;
+					q.y = axis.y * s;
+					q.z = axis.z * s;
+					q.w = cosf(E_PI / 2);
+				}
+			}
+			else
+			{
+				F32 s = sqrtf((1 + d) * 2);
+				F32 invs = 1 / s;
+
+				Vec3f c = v0.Cross(v1);
+				q.x = c.x * invs;
+				q.y = c.y * invs;
+				q.z = c.z * invs;
+				q.w = s * 0.5f;
+				q = q.FastNormalize();
+			}
+
+			return q;
+		}
+
 		F32 x;
 		F32 y;
 		F32 z;
 	};
 
-	//A Vector storing 4 floats
-	struct Vec4f
+	struct CatmullPoint
 	{
-		Vec4f()
-			:x(0.0f), y(0.0f), z(0.0f), w(0.0f)
+		CatmullPoint()
+			:Position(0),
+			Tangent(0)
 		{};
 
-		Vec4f(F32 x, F32 y, F32 z, F32 w)
-			:x(x), y(y), z(z), w(w)
-		{};
+		Vec3f Position;
+		Vec3f Tangent;
+	};
 
-		Vec4f(F32 xyzw)
-			:x(xyzw), y(xyzw), z(xyzw), w(xyzw)
-		{};
-
-		F32 x;
-		F32 y;
-		F32 z;
-		F32 w;
+	struct Quaternion
+	{
+		
 	};
 
 	//An element with a string and an ID

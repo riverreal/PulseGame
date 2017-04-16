@@ -9,6 +9,8 @@ using namespace DirectX;
 namespace Elixir
 {
 	struct Vec3f;
+	struct Vec4f;
+	struct CatmullPoint;
 }
 
 class MathHelper
@@ -26,6 +28,8 @@ public:
 		return a > b ? a : b;
 	}
 
+	static float clamp(float x, float min, float max);
+
 	static float AngleFromXY(float x, float y);
 
 	static XMMATRIX WorldToBillboard(const XMMATRIX &source, XMFLOAT3 eyePos);
@@ -40,9 +44,16 @@ public:
 
 	static XMFLOAT3 Vec3f2XMF3(Elixir::Vec3f vec3);
 
+	//Rotation from axis and angle
+	static Elixir::Vec4f QuaternionAxisAngle(Elixir::Vec3f axis, float radians);
+	static Elixir::Vec3f Quaternion2Euler(Elixir::Vec4f quat);
+
 	static float GetT(float t, Elixir::Vec3f p0, Elixir::Vec3f p1);
 
 	//Needs a set of points (minimum of 4 points) as parameters.
 	//Returns a smooth curve passing through each point. It returns the tangent of it's points if @param tanget is true
 	static std::vector<Elixir::Vec3f> CatmullromSpline(std::vector<Elixir::Vec3f> points, int subdivision, bool tangent);
+
+	//Returns a point of a CatmullSpline curve by a t [0, 1]
+	static Elixir::CatmullPoint GetPointInCMSpline(Elixir::Vec3f P0, Elixir::Vec3f P1, Elixir::Vec3f P2, Elixir::Vec3f P3, float t);
 };
