@@ -5,6 +5,7 @@
 
 void PulseGame::InitTestScene()
 {	
+	m_pause = false;
 	ThisScene->SetIrradiance(Manager->GetTextureManager()->AddTexture(L"Resources/Textures/Cubemaps/Irradiance/Irradiance.dds"));
 	ThisScene->SetEnvMap(Manager->GetTextureManager()->AddTexture(L"Resources/Textures/Cubemaps/dayCube.dds"));
 

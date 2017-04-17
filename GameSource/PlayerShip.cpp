@@ -22,6 +22,10 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	
 	m_upVec = Vec3f(1.0f, 0.0f, 0.0f);
 
+	m_dummyBall = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
+	m_dummyBall->GetRenderer()->Model = Manager->GetModel()->AddGeometry(MODEL_TYPE_SPHERE);
+
+
 	m_player = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
 	m_player->GetRenderer()->Model = Manager->GetModel()->AddModelFromFile("Resource/ship.obj");
 	m_player->GetRenderer()->Material.albedo = Manager->GetTextureManager()->AddTexture(L"Resource/blue.jpg");
@@ -67,9 +71,15 @@ void PlayerShip::UpdateShipPos(float dt)
 	m_target = aheadPoint.Position;
 
 	//update player pos
-	m_player->GetTransform()->Position = cmPoint.Position;
+	//m_player->GetTransform()->Position = cmPoint.Position;
+	Vec3f camPos = Manager->GetCurrentScene()->GetCamera()->GetPosition();
+	Vec3f aimDir = (m_dummyBall->GetTransform()->Position - m_player->GetTransform()->Position).FastNormalize();
+	//Log() << aimDir.x << ", " << aimDir.y << ", " << aimDir.z << "\n";
+	auto q = m_player->GetTransform()->Position.QuaternionLookRotation(aimDir, Vec3f(0.0f, 1.0f, 0.0f));
 
-	auto q = m_player->GetTransform()->Position.QuaternionLookAt(Manager->GetCurrentScene()->GetCamera()->GetPosition(), Vec3f(1.0f, 0.0f, 0.0f));
+	//m_dummyBall->GetTransform()->Position = m_target;
 
 	m_player->GetTransform()->Rotation = MathHelper::Quaternion2Euler(q) * (180 / DirectX::XM_PI);
+	//m_player->GetTransform()->Rotation.x = 180;
+	//m_player->GetTransform()->Rotation.z = abs(m_player->GetTransform()->Rotation.z);
 }

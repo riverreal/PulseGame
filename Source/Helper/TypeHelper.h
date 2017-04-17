@@ -42,6 +42,16 @@ namespace Elixir
 			:x(xyzw), y(xyzw), z(xyzw), w(xyzw)
 		{};
 
+		Vec4f operator* (Vec4f q) const
+		{
+			return Vec4f(
+				w * q.w - x * q.x - y * q.y - z * q.z,
+				w * q.x + x * q.w + y * q.z - z * q.y,
+				w * q.y + y * q.w + z * q.x - x * q.z,
+				w * q.z + z * q.w + x * q.y - y * q.x
+				);
+		}
+
 		Vec4f FastNormalize() const
 		{
 			float lengSqr = x * x + y * y + z * z + w * w;
@@ -126,6 +136,11 @@ namespace Elixir
 			return !(*this == comp);
 		}
 
+		inline F32 Length() const
+		{
+			return sqrt(x*x + y*y + z*z);
+		}
+
 		Vec3f FastNormalize() const
 		{
 			float lengSqr = x * x + y * y + z * z;
@@ -185,6 +200,101 @@ namespace Elixir
 			return (sqlen < (1e-06 * 1e-06));
 		}
 
+		static Vec4f QuaternionFromToRotation(const Vec3f& v1, const Vec3f& v2)
+		{
+			Vec4f q;
+			auto a = v1.Cross(v2);
+			q.x = a.x;
+			q.y = a.y;
+			q.z = a.z;
+			q.w = sqrt((v1.Length() * v1.Length()) * (v2.Length() * v2.Length())) + v1.Dot(v2);
+			return q.FastNormalize();
+		}
+
+		Vec4f QuaternionLookRotation(const Vec3f& dir, const Vec3f& up = Vec3f(0.0f, 1.0f, 0.0f))
+		{
+			if (dir == Vec3f::Zero())
+			{
+				return Vec4f::Identity();
+			}
+
+			if (up != dir)
+			{
+				auto cUp = up.FastNormalize();
+				auto v = dir + cUp * -cUp.Dot(dir);
+				v = v.FastNormalize();
+				auto q = Vec3f(0, 0, 1).QuaternionLookAt(v);
+				return v.QuaternionLookAt(dir) * q;
+			}
+			else
+			{
+				return Vec3f(0, 0, 1).QuaternionLookAt(dir);
+			}
+		}
+
+		static Vec4f QLookRotation(Vec3f forward, Vec3f up)
+		{
+			forward = forward.FastNormalize();
+
+			Vec3f vector = forward.FastNormalize();
+			Vec3f vector2 = up.Cross(vector).FastNormalize();
+			Vec3f vector3 = vector.Cross(vector2);
+
+			auto m00 = vector2.x;
+			auto m01 = vector2.y;
+			auto m02 = vector2.z;
+			auto m10 = vector3.x;
+			auto m11 = vector3.y;
+			auto m12 = vector3.z;
+			auto m20 = vector.x;
+			auto m21 = vector.y;
+			auto m22 = vector.z;
+
+			float num8 = (m00 + m11) + m22;
+			Vec4f q;
+
+			if (num8 > 0.0f)
+			{
+				auto num = (float)sqrt(num8 + 1.0f);
+				q.w = num * 0.5f;
+
+				num = 0.5f / num;
+				q.x = (m12 - m21) * num;
+				q.y = (m20 - m02) * num;
+				q.z = (m01 - m10) * num;
+				return q;
+			}
+			if ((m00 >= m11) && (m00 >= m22))
+			{
+				auto num7 = (float)sqrt(((1.0f + m00) - m11) - m22);
+				auto num4 = 0.5f / num7;
+				q.x = 0.5f * num7;
+				q.y = (m01 + m10) * num4;
+				q.z = (m02 + m20) * num4;
+				q.w = (m12 - m21) * num4;
+				return q;
+			}
+			if (m11 > m22)
+			{
+				auto num6 = (float)sqrt(((1.0f + m11) - m00) - m22);
+				auto  num3 = 0.5f / num6;
+				q.x = (m10 + m01) * num3;
+				q.y = 0.5f * num6;
+				q.z = (m21 + m12) * num3;
+				q.w = (m20 - m02) * num3;
+				return q;
+			}
+
+			auto num5 = (float)sqrt(((1.0f + m22) - m00) - m11);
+
+			auto num2 = 0.5f / num5;
+			q.x = (m20 + m02) * num2;
+			q.y = (m21 + m12) * num2;
+			q.z = 0.5f * num5;
+			q.w = (m01 - m10) * num2;
+			return q;
+		}
+
 		Vec4f QuaternionLookAt(const Vec3f& dest, const Vec3f& fallbackAxis = Vec3f::Zero()) const
 		{
 			//Taken from Ogre3D (OgreVector3)
@@ -214,6 +324,7 @@ namespace Elixir
 					q.y = fallbackAxis.y * s;
 					q.z = fallbackAxis.z * s;
 					q.w = cosf(E_PI / 2);
+					//q = q.FastNormalize();
 				}
 				else
 				{
@@ -232,11 +343,12 @@ namespace Elixir
 					q.y = axis.y * s;
 					q.z = axis.z * s;
 					q.w = cosf(E_PI / 2);
+					//q = q.FastNormalize();
 				}
 			}
 			else
 			{
-				F32 s = sqrtf((1 + d) * 2);
+				F32 s = sqrt((1 + d) * 2);
 				F32 invs = 1 / s;
 
 				Vec3f c = v0.Cross(v1);
