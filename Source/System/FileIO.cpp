@@ -446,6 +446,25 @@ std::string Elixir::FileIO::LoadFile(std::string filepath)
 	return content;
 }
 
+std::vector<std::string> Elixir::FileIO::LoadFileLines(std::string filepath)
+{
+	std::vector<std::string> lines;
+	
+	auto fileContent = LoadFile(filepath);
+	std::stringstream ss(fileContent);
+
+	if (fileContent != "")
+	{
+		std::string contentLine;
+		while (std::getline(ss, contentLine, '\n'))
+		{
+			lines.push_back(contentLine);
+		}
+	}
+
+	return lines;
+}
+
 std::string Elixir::FileIO::OpenFile(TCHAR * extension)
 {
 	std::wstring path = OpenFileW(extension);
