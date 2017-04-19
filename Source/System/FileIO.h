@@ -31,7 +31,10 @@ namespace Elixir
 		Vec3f GetXYZFromString(std::string source);
 
 		void SaveFile(std::string filename, std::string content);
+		//Loads a text file and returns all its content
 		std::string LoadFile(std::string filepath);
+		//Loads a text file and returns its content per line
+		std::vector<std::string> LoadFileLines(std::string filepath);
 
 		enum FILE_TYPE
 		{
