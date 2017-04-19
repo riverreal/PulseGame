@@ -4,14 +4,16 @@
 
 using namespace Elixir;
 
-void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line)
+void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line, float radius)
 {
 	Manager = sceneManager;
 	m_currentIndex = 0;
 	m_aheadIndex = 0;
-	m_travelSpeed = 0.4f;
+	m_travelSpeed = 0.3f;
 	m_lineData = line;
 	m_rotationAngle = 0.0f;
+	m_rotationSpeed = 1.3f;
+	m_pathRadius = radius + 2.5f;
 	m_target = Vec3f(0.0f, 10.0f, -10.0f);
 	//ignore first and last dots
 	//m_lineData.erase(m_lineData.begin());
@@ -65,21 +67,106 @@ void PlayerShip::UpdateShipPos(float dt)
 		}
 	}
 
-	auto cmPoint = MathHelper::GetPointInCMSpline(m_lineData[m_currentIndex], m_lineData[m_currentIndex + 1], m_lineData[m_currentIndex + 2], m_lineData[m_currentIndex + 3], m_currentPos);
+	
 	auto aheadPoint = MathHelper::GetPointInCMSpline(m_lineData[m_aheadIndex], m_lineData[m_aheadIndex + 1], m_lineData[m_aheadIndex + 2], m_lineData[m_aheadIndex+ 3], m_aheadPos);
 
 	m_target = aheadPoint.Position;
-
-	//update player pos
-	//m_player->GetTransform()->Position = cmPoint.Position;
-	Vec3f camPos = Manager->GetCurrentScene()->GetCamera()->GetPosition();
-	Vec3f aimDir = (m_dummyBall->GetTransform()->Position - m_player->GetTransform()->Position).FastNormalize();
-	//Log() << aimDir.x << ", " << aimDir.y << ", " << aimDir.z << "\n";
-	auto q = m_player->GetTransform()->Position.QuaternionLookRotation(aimDir, Vec3f(0.0f, 1.0f, 0.0f));
-
+	//Vec3f aimDir = (m_dummyBall->GetTransform()->Position - m_player->GetTransform()->Position).FastNormalize();
+	//auto q = m_player->GetTransform()->Position.QuaternionLookRotation(aimDir, Vec3f(0.0f, 1.0f, 0.0f));
 	//m_dummyBall->GetTransform()->Position = m_target;
 
-	m_player->GetTransform()->Rotation = MathHelper::Quaternion2Euler(q) * (180 / DirectX::XM_PI);
-	//m_player->GetTransform()->Rotation.x = 180;
-	//m_player->GetTransform()->Rotation.z = abs(m_player->GetTransform()->Rotation.z);
+	SetPlayerPos(dt);
+
+	if (GetAsyncKeyState('E') & 0x8000)
+	{
+		m_rotationAngle += 1.3f * dt;
+	}
+
+	if (GetAsyncKeyState('Q') & 0x8000)
+	{
+		m_rotationAngle-= 1.3f * dt;
+	}
+}
+
+void PlayerShip::SetPlayerPos(float dt)
+{
+	auto cmPoint = MathHelper::GetPointInCMSpline(m_lineData[m_currentIndex], m_lineData[m_currentIndex + 1], m_lineData[m_currentIndex + 2], m_lineData[m_currentIndex + 3], m_currentPos);
+
+	static int maxAxis = 0;
+	int cpyMaxAxis = maxAxis;
+	if (std::abs(cmPoint.Tangent.x) > std::abs(cmPoint.Tangent.y))
+	{
+		if (std::abs(cmPoint.Tangent.x) > std::abs(cmPoint.Tangent.z))
+		{
+			maxAxis = 0;
+		}
+		else
+		{
+			maxAxis = 2;
+		}
+	}
+	else if (std::abs(cmPoint.Tangent.y) > std::abs(cmPoint.Tangent.z))
+	{
+		maxAxis = 1;
+	}
+	else
+	{
+		maxAxis = 2;
+	}
+
+	
+	if (cpyMaxAxis != maxAxis)
+	{
+		ElixirLog("Changed maxAxis: " + std::to_string(maxAxis));
+	}
+	
+
+	Vec3f up, forward, right;
+
+	switch (maxAxis)
+	{
+	case 0:
+		up = cmPoint.Tangent;
+		forward = Vec3f(0, 0, 1);
+		right = up.Cross(forward);
+		forward = right.Cross(up);
+		break;
+	case 1:
+		/*
+		up = cmPoint.Tangent;
+		forward = Vec3f(0, 0, 1);
+		right = up.Cross(forward);
+		forward = right.Cross(up);
+		*/
+		up = cmPoint.Tangent;
+		right = Vec3f(0, 0, 1);
+		forward = right.Cross(up);
+		right = up.Cross(forward);
+		break;
+
+	case 2:
+		up = cmPoint.Tangent;
+		right = Vec3f(0, 0, 1);
+		forward = right.Cross(up);
+		right = up.Cross(forward);
+		break;
+
+	default:
+		break;
+	}
+
+	up = up.FastNormalize();
+	right = right.FastNormalize();
+	forward = forward.FastNormalize();
+
+	m_rotationAngle = m_rotationAngle < 0 ? 360 : m_rotationAngle;
+	m_rotationAngle = m_rotationAngle > 360 ? 0 : m_rotationAngle;
+
+	Vec3f pc(cos(m_rotationAngle) * m_pathRadius, 0, sin(m_rotationAngle) * m_pathRadius);
+	Vec3f circlePos;
+	circlePos.x = pc.x * right.x + pc.y * up.x + pc.z * forward.x;
+	circlePos.y = pc.x * right.y + pc.y * up.y + pc.z * forward.y;
+	circlePos.z = pc.x * right.z + pc.y * up.z + pc.z * forward.z;
+
+	m_player->GetTransform()->Position = cmPoint.Position + circlePos;
 }

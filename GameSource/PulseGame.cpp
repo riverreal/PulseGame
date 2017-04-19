@@ -24,16 +24,19 @@ void PulseGame::InitTestScene()
 
 	ThisScene->GetCamera()->SetPosition(0.0f, 0.0f, -10.0f);
 
-	m_lineData = LoadLine(Manager->GetFileManager()->LoadFile("Resource/testCurve.pld"));
+	m_lineData = LoadLine(Manager->GetFileManager()->LoadFile("Resource/course02.pld"));
 
 	auto smoothLine = MathHelper::CatmullromSpline(m_lineData, 20, false);
 	auto tangents = MathHelper::CatmullromSpline(m_lineData, 20, true);
 
 	auto obj = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
-	obj->GetRenderer()->Model = Manager->GetModel()->AddTubeFromLineData(smoothLine, tangents, 0.1f, smoothLine);
+
+	float radius = 1.0f;
+
+	obj->GetRenderer()->Model = Manager->GetModel()->AddTubeFromLineData(smoothLine, tangents, radius, smoothLine);
 	obj->SetName("Tube");
 
-	m_player.Initialize(Manager, m_lineData);
+	m_player.Initialize(Manager, m_lineData, radius);
 }
 
 void PulseGame::UpdateTestScene(float dt)
