@@ -39,7 +39,7 @@ namespace Elixir
 	//const bool RESIZEABLE = false; ------------- Feature Not Added
 	const static float SCREEN_DEPTH = 1000.0f;
 	const static float SCREEN_NEAR = 0.1f;
-	const bool VSYNC_ENABLED = true;
+	const bool VSYNC_ENABLED = false;
 	const bool MSAA_ENABLED = false; //4X MSAA --- for forward rendering
 	const float FPS_CAP = 60.0f; //When Vsync is disabled --- NOT WORKING
 	const bool ENABLE_FPS_CAP = false; //NOT WORKING

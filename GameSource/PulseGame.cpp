@@ -34,6 +34,7 @@ void PulseGame::InitTestScene()
 	obj->SetName("Tube");
 
 	m_player.Initialize(Manager, m_lineData);
+	m_rhythm.Initialize(Manager);
 }
 
 void PulseGame::UpdateTestScene(float dt)
@@ -50,6 +51,7 @@ void PulseGame::UpdateTestScene(float dt)
 
 	if(!m_pause)
 		m_player.UpdateShipPos(dt);
+	m_rhythm.Update(dt);
 }
 
 void PulseGame::Init()

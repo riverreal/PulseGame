@@ -3,6 +3,7 @@
 #include "../Source/System/IElixirGame.h"
 #include <vector>
 #include "PlayerShip.h"
+#include "RhythmManager.h"
 
 using namespace Elixir;
 
@@ -18,5 +19,6 @@ public:
 private:
 	std::vector<Vec3f> m_lineData;
 	PlayerShip m_player;
+	RhythmManager m_rhythm;
 	bool m_pause;
 };
