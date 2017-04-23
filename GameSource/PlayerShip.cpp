@@ -1,6 +1,7 @@
 #include "PlayerShip.h"
 #include "../Source/System/GameManager.h"
 #include "../Source/Includes/LESystem.h"
+#include "../Source/Helper/MathHelper.h"
 
 using namespace Elixir;
 
@@ -94,64 +95,65 @@ void PlayerShip::SetPlayerPos(float dt)
 
 	static int maxAxis = 0;
 	int cpyMaxAxis = maxAxis;
+	int caseNum = 0;
 	if (std::abs(cmPoint.Tangent.x) > std::abs(cmPoint.Tangent.y))
 	{
 		if (std::abs(cmPoint.Tangent.x) > std::abs(cmPoint.Tangent.z))
 		{
 			maxAxis = 0;
+			caseNum = 0;
 		}
 		else
 		{
 			maxAxis = 2;
+			caseNum = 1;
 		}
 	}
 	else if (std::abs(cmPoint.Tangent.y) > std::abs(cmPoint.Tangent.z))
 	{
 		maxAxis = 1;
+		caseNum = 2;
 	}
 	else
 	{
 		maxAxis = 2;
+		caseNum = 3;
 	}
 
-	
+	ElixirLog("CaseNum: " + std::to_string(caseNum));
+
+	/*
 	if (cpyMaxAxis != maxAxis)
 	{
 		ElixirLog("Changed maxAxis: " + std::to_string(maxAxis));
 	}
+	*/
 	
+	m_rotationAngle = m_rotationAngle < 0 ? 6.28319f : m_rotationAngle;
+	m_rotationAngle = m_rotationAngle > 6.28319f ? 0 : m_rotationAngle;
 
 	Vec3f up, forward, right;
-
-	switch (maxAxis)
+	float rotationAngle = 0.0f;
+	switch (caseNum)
 	{
-	case 0:
-		up = cmPoint.Tangent;
-		forward = Vec3f(0, 0, 1);
-		right = up.Cross(forward);
-		forward = right.Cross(up);
-		break;
 	case 1:
 		/*
 		up = cmPoint.Tangent;
-		forward = Vec3f(0, 0, 1);
-		right = up.Cross(forward);
+		right = Vec3f(0, 0, 1);
 		forward = right.Cross(up);
+		right = up.Cross(forward);
+		rotationAngle = m_rotationAngle - XM_PI;
+		break;
 		*/
-		up = cmPoint.Tangent;
-		right = Vec3f(0, 0, 1);
-		forward = right.Cross(up);
-		right = up.Cross(forward);
-		break;
-
+	case 0:
 	case 2:
+	case 3:
+	default:
 		up = cmPoint.Tangent;
 		right = Vec3f(0, 0, 1);
 		forward = right.Cross(up);
 		right = up.Cross(forward);
-		break;
-
-	default:
+		rotationAngle = m_rotationAngle;
 		break;
 	}
 
@@ -159,10 +161,7 @@ void PlayerShip::SetPlayerPos(float dt)
 	right = right.FastNormalize();
 	forward = forward.FastNormalize();
 
-	m_rotationAngle = m_rotationAngle < 0 ? 360 : m_rotationAngle;
-	m_rotationAngle = m_rotationAngle > 360 ? 0 : m_rotationAngle;
-
-	Vec3f pc(cos(m_rotationAngle) * m_pathRadius, 0, sin(m_rotationAngle) * m_pathRadius);
+	Vec3f pc(cos(rotationAngle) * m_pathRadius, 0, sin(rotationAngle) * m_pathRadius);
 	Vec3f circlePos;
 	circlePos.x = pc.x * right.x + pc.y * up.x + pc.z * forward.x;
 	circlePos.y = pc.x * right.y + pc.y * up.y + pc.z * forward.y;

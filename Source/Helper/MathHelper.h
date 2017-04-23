@@ -48,11 +48,12 @@ public:
 	static Elixir::Vec4f QuaternionAxisAngle(Elixir::Vec3f axis, float radians);
 	static Elixir::Vec3f Quaternion2Euler(Elixir::Vec4f quat);
 
-	static float GetT(float t, Elixir::Vec3f p0, Elixir::Vec3f p1);
+	static float GetT(float t, Elixir::Vec3f p0, Elixir::Vec3f p1, float alpha);
 
 	//Needs a set of points (minimum of 4 points) as parameters.
 	//Returns a smooth curve passing through each point. It returns the tangent of it's points if @param tanget is true
 	static std::vector<Elixir::Vec3f> CatmullromSpline(std::vector<Elixir::Vec3f> points, int subdivision, bool tangent);
+	static std::vector<Elixir::Vec3f> cmrSpline(std::vector<Elixir::Vec3f> points, int subdivision, bool tangent);
 
 	//Returns a point of a CatmullSpline curve by a t [0, 1]
 	static Elixir::CatmullPoint GetPointInCMSpline(Elixir::Vec3f P0, Elixir::Vec3f P1, Elixir::Vec3f P2, Elixir::Vec3f P3, float t);
