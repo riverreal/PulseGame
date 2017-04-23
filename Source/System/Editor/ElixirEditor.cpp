@@ -238,13 +238,15 @@ void Elixir::Editor::MainMenuBar()
 							lineVec.push_back(point);	
 						}
 
-						auto smoothLine = MathHelper::CatmullromSpline(lineVec, 20, false);
-						auto tangents = MathHelper::CatmullromSpline(lineVec, 20, true);
+						//auto smoothLine = MathHelper::CatmullromSpline(lineVec, 20, false);
+						//auto tangents = MathHelper::CatmullromSpline(lineVec, 20, true);
 
+						/*
 						auto obj = m_sceneManager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
 						obj->GetRenderer()->Model = m_sceneManager->GetModel()->AddTubeFromLineData(smoothLine, tangents, 2.0f, smoothLine);
 						obj->SetName("Tube");
 						m_sceneManager->ResetModel();
+						*/
 						/*
 						for (auto &dot : smoothLine)
 						{
@@ -253,8 +255,7 @@ void Elixir::Editor::MainMenuBar()
 						}
 						*/
 
-						/*
-						for (auto &dot : smoothLine)
+						for (auto &dot : lineVec)
 						{
 							auto obj = m_sceneManager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
 							obj->GetRenderer()->Model = m_sceneManager->GetModel()->AddGeometry(MODEL_TYPE_GEOSPHERE);
@@ -272,8 +273,6 @@ void Elixir::Editor::MainMenuBar()
 						}
 
 						m_sceneManager->ResetModel();
-
-						*/
 					}
 				}
 			}

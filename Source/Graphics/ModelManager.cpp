@@ -391,10 +391,16 @@ offsetData Model::AddTubeFromLineData(std::vector<Elixir::Vec3f> lines, std::vec
 		{
 		case 0:
 		case 1:
+			/*
 			up = tangent;
 			forward = Vec3f(0, 0, 1);
 			right = up.Cross(forward);
 			forward = right.Cross(up);
+			*/
+			up = tangent;
+			right = Vec3f(0, 0, 1);
+			forward = right.Cross(up);
+			right = up.Cross(forward);
 			break;
 
 		case 2:
