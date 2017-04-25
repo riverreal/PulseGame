@@ -10,7 +10,7 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	Manager = sceneManager;
 	m_currentIndex = 0;
 	m_aheadIndex = 0;
-	m_travelSpeed = 0.3f;
+	m_travelSpeed = 0.1f;
 	m_lineData = line;
 	m_rotationAngle = 0.0f;
 	m_rotationSpeed = 1.3f;
@@ -21,7 +21,7 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	//m_lineData.pop_back();
 
 	m_currentPos = 0.5f;
-	m_aheadPos = 0.6f;
+	m_aheadPos = 0.7f;
 	
 	m_upVec = Vec3f(1.0f, 0.0f, 0.0f);
 
@@ -52,7 +52,7 @@ void PlayerShip::UpdateShipPos(float dt)
 			m_currentIndex = 0;
 			m_aheadIndex = 0;
 			m_currentPos = 0.5f;
-			m_aheadPos = 0.6f;
+			m_aheadPos = 0.7f;
 		}
 	}
 
@@ -74,7 +74,7 @@ void PlayerShip::UpdateShipPos(float dt)
 	m_target = aheadPoint.Position;
 	//Vec3f aimDir = (m_dummyBall->GetTransform()->Position - m_player->GetTransform()->Position).FastNormalize();
 	//auto q = m_player->GetTransform()->Position.QuaternionLookRotation(aimDir, Vec3f(0.0f, 1.0f, 0.0f));
-	//m_dummyBall->GetTransform()->Position = m_target;
+	m_dummyBall->GetTransform()->Position = m_target;
 
 	SetPlayerPos(dt);
 
@@ -94,68 +94,37 @@ void PlayerShip::SetPlayerPos(float dt)
 	auto cmPoint = MathHelper::GetPointInCMSpline(m_lineData[m_currentIndex], m_lineData[m_currentIndex + 1], m_lineData[m_currentIndex + 2], m_lineData[m_currentIndex + 3], m_currentPos);
 
 	static int maxAxis = 0;
-	int cpyMaxAxis = maxAxis;
-	int caseNum = 0;
 	if (std::abs(cmPoint.Tangent.x) > std::abs(cmPoint.Tangent.y))
 	{
 		if (std::abs(cmPoint.Tangent.x) > std::abs(cmPoint.Tangent.z))
 		{
 			maxAxis = 0;
-			caseNum = 0;
 		}
 		else
 		{
 			maxAxis = 2;
-			caseNum = 1;
 		}
 	}
 	else if (std::abs(cmPoint.Tangent.y) > std::abs(cmPoint.Tangent.z))
 	{
 		maxAxis = 1;
-		caseNum = 2;
 	}
 	else
 	{
 		maxAxis = 2;
-		caseNum = 3;
 	}
-
-	ElixirLog("CaseNum: " + std::to_string(caseNum));
-
-	/*
-	if (cpyMaxAxis != maxAxis)
-	{
-		ElixirLog("Changed maxAxis: " + std::to_string(maxAxis));
-	}
-	*/
 	
 	m_rotationAngle = m_rotationAngle < 0 ? 6.28319f : m_rotationAngle;
 	m_rotationAngle = m_rotationAngle > 6.28319f ? 0 : m_rotationAngle;
 
 	Vec3f up, forward, right;
 	float rotationAngle = 0.0f;
-	switch (caseNum)
-	{
-	case 1:
-		/*
-		up = cmPoint.Tangent;
-		right = Vec3f(0, 0, 1);
-		forward = right.Cross(up);
-		right = up.Cross(forward);
-		rotationAngle = m_rotationAngle - XM_PI;
-		break;
-		*/
-	case 0:
-	case 2:
-	case 3:
-	default:
-		up = cmPoint.Tangent;
-		right = Vec3f(0, 0, 1);
-		forward = right.Cross(up);
-		right = up.Cross(forward);
-		rotationAngle = m_rotationAngle;
-		break;
-	}
+
+	up = cmPoint.Tangent;
+	right = Vec3f(0, 0, 1);
+	forward = right.Cross(up);
+	right = up.Cross(forward);
+	rotationAngle = m_rotationAngle;
 
 	up = up.FastNormalize();
 	right = right.FastNormalize();
@@ -168,4 +137,29 @@ void PlayerShip::SetPlayerPos(float dt)
 	circlePos.z = pc.x * right.z + pc.y * up.z + pc.z * forward.z;
 
 	m_player->GetTransform()->Position = cmPoint.Position + circlePos;
+
+	Vec3f aimDir = (m_dummyBall->GetTransform()->Position - m_player->GetTransform()->Position).FastNormalize();
+	auto invAim = ((cmPoint.Position - m_player->GetTransform()->Position) * -1).FastNormalize();
+	invAim.z = 0;
+	//aimDir.z = 0;
+	auto q = m_player->GetTransform()->Position.QLookRotation(aimDir, invAim);
+	auto rot = MathHelper::Quaternion2Euler(q) * (180 / DirectX::XM_PI) + 180;
+	
+	int option = 0;
+
+	if (aimDir.z < 0)
+	{
+		option = 0;
+		rot.y *= -1;
+		rot.z += 180;
+		rot.x = -(360 - rot.x) - 180;
+	}
+	else
+	{
+		option = 1;
+		rot.z += 180;
+		rot.x = -(360 - rot.x) - 180;
+	}
+
+	m_player->GetTransform()->Rotation = rot;
 }

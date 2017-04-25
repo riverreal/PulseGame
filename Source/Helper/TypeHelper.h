@@ -232,6 +232,52 @@ namespace Elixir
 			}
 		}
 
+		static Vec4f QLR(Vec3f forward, Vec3f up)
+		{
+			const Vec3f f = forward.FastNormalize();
+			const Vec3f s = up.Cross(f).FastNormalize();
+			const Vec3f u = f.Cross(s);
+
+			float z = 1 + s.x + u.y + f.z;
+			float fd = 2 * sqrt(z);
+
+			Vec4f q;
+
+			if (z > 0.00001f)
+			{
+				q.w = 0.25f * fd;
+				q.x = (f.y - u.z) / fd;
+				q.y = (s.z / f.x) / fd;
+				q.z = (u.x - s.y) / fd;
+			}
+			else if (s.x > u.y && s.x > f.z)
+			{
+				fd = 2 * sqrt(1 + s.x - u.y - f.z);
+				q.w = (f.y - u.z) / fd;
+				q.x = 0.25f;
+				q.y = (u.x + s.y) / fd;
+				q.z = (s.z + f.x) / fd;
+			}
+			else if (u.y > f.z)
+			{
+				fd = 2 * sqrt(1 + u.y - s.x - f.z);
+				q.w = (s.z - f.x) / fd;
+				q.x = (u.x + s.y) / fd;
+				q.y = 0.25f * fd;
+				q.z = (f.y + u.z) / fd;
+			}
+			else
+			{
+				fd = 2 * sqrt(1 + f.z - s.x - u.y);
+				q.w = (u.x - s.y) / fd;
+				q.x = (s.z + f.x) / fd;
+				q.y = (f.y + u.z) / fd;
+				q.z = 0.25f;
+			}
+
+			return q;
+		}
+
 		static Vec4f QLookRotation(Vec3f forward, Vec3f up)
 		{
 			forward = forward.FastNormalize();

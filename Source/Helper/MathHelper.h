@@ -28,6 +28,8 @@ public:
 		return a > b ? a : b;
 	}
 
+	static float Deg2Rad(float degree);
+
 	static float clamp(float x, float min, float max);
 
 	static float AngleFromXY(float x, float y);

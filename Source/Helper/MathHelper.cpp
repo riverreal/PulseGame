@@ -6,6 +6,11 @@
 const float MathHelper::Pi = 3.1415926535f;
 
 
+float MathHelper::Deg2Rad(float degree)
+{
+	return degree * 0.0174533f;
+}
+
 float MathHelper::clamp(float x, float min, float max)
 {
 	x = Max(x, min);
