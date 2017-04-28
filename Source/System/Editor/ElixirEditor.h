@@ -24,6 +24,9 @@ namespace Elixir
 		void Input();
 
 	private:
+
+		const int LINE_DOT_TAG = 100;
+
 		enum LANGUAGES
 		{
 			ENGLISH,
@@ -172,6 +175,8 @@ namespace Elixir
 
 		void ChangeIMGUIStyle();
 		void SetToolTip(const char* text);
+
+		void ResetLineDotNames();
 
 	private:
 		std::vector<GameObject*> m_lineDots;

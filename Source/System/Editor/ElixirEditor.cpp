@@ -213,10 +213,6 @@ void Elixir::Editor::MainMenuBar()
 				std::wstring filename = L"";
 				TCHAR* extension = L"Pulse Line Data files(*.pld) \0*.pld;\0";
 				filename = m_sceneManager->GetFileManager()->OpenFileW(extension);
-				auto rootPath = m_sceneManager->GetFileManager()->GetExePathW();
-				//erasing full exe path -13 (13 is /bin/Debug/.exe)
-				auto numOfChar = rootPath.length() - 13;
-				filename.erase(0, numOfChar);
 
 				if (filename != L"")
 				{
@@ -254,15 +250,22 @@ void Elixir::Editor::MainMenuBar()
 							Log() << dot.x << ", " << dot.y << ", " << dot.z << "\n";
 						}
 						*/
-
+						m_lineDots.clear();
 						for (auto &dot : lineVec)
 						{
 							auto obj = m_sceneManager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
 							obj->GetRenderer()->Model = m_sceneManager->GetModel()->AddGeometry(MODEL_TYPE_GEOSPHERE);
 							obj->GetRenderer()->ModelTypePrimitive = true;
 							obj->GetRenderer()->PrimitiveType = MODEL_TYPE_GEOSPHERE;
-							std::string name = "LineDot" + std::to_string(m_lineDots.size());
+							std::string name = "";
+							if (m_lineDots.size() < 10)
+								name = "LineDot0";
+							else
+								name = "LineDot";
+
+							name += std::to_string(m_lineDots.size());
 							obj->SetName(name);
+							obj->SetTag(LINE_DOT_TAG);
 							obj->GetTransform()->Scale = Vec3f(0.5f);
 
 							obj->GetTransform()->Position.x = dot.x;
@@ -273,6 +276,11 @@ void Elixir::Editor::MainMenuBar()
 						}
 
 						m_sceneManager->ResetModel();
+						
+					}
+					else
+					{
+						ElixirLog("Unable to parse LineData...");
 					}
 				}
 			}
@@ -488,6 +496,24 @@ void Elixir::Editor::ObjectListWindow()
 			{
 				if (m_selectedObject != nullptr)
 				{
+					if (m_selectedObject->GetTag() == LINE_DOT_TAG)
+					{
+						auto name = m_selectedObject->GetName();
+						std::string dotNumStr;
+						if (name[name.size() - 2] == '0')
+							dotNumStr = name[name.size() - 1];
+						else
+						{
+							dotNumStr = name[name.size() - 2];
+							dotNumStr += name[name.size() - 1];
+						}
+
+						int dotNum = atoi(dotNumStr.c_str());
+
+						Log() << dotNumStr << "\n";
+						m_lineDots.erase(m_lineDots.begin() + dotNum);
+						ResetLineDotNames();
+					}
 					m_sceneManager->GetCurrentScene()->RemoveObject(m_selectedObject);
 					m_objComponentOpen = false;
 					m_selectedObject = nullptr;
@@ -568,14 +594,14 @@ void Elixir::Editor::ObjectListWindow()
 					obj->GetRenderer()->PrimitiveType = MODEL_TYPE_GEOSPHERE;
 					std::string name;
 					if (m_lineDots.size() < 10)
-					{
 						name = "LineDot0";
-					}
 					else
 						name = "LineDot";
+
 					name += std::to_string(m_lineDots.size());
 					obj->SetName(name);
 					obj->GetTransform()->Scale = Vec3f(0.5f);
+					obj->SetTag(LINE_DOT_TAG);
 					if(!m_lineDots.empty())
 						obj->GetTransform()->Position = m_lineDots.back()->GetTransform()->Position;
 					m_lineDots.push_back(obj);
@@ -993,5 +1019,24 @@ void Elixir::Editor::SetToolTip(const char * text)
 		ImGui::TextUnformatted(text);
 		ImGui::PopTextWrapPos();
 		ImGui::EndTooltip();
+	}
+}
+
+void Elixir::Editor::ResetLineDotNames()
+{
+	int index = 0;
+	std::string cmnName;
+	for (auto &dot : m_lineDots)
+	{
+		if (index < 10)
+		{
+			cmnName = "LineDot0";
+		}
+		else
+		{
+			cmnName = "LineDot";
+		}
+		dot->SetName(cmnName + std::to_string(index));
+		index++;
 	}
 }
