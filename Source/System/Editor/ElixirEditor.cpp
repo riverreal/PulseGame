@@ -687,9 +687,15 @@ void Elixir::Editor::ObjectComponentWindow()
 				m_selectedObject->AddComponent<Transform>();
 			}
 
-			if (ImGui::Selectable("Renderer##select"))
+			if (ImGui::Selectable("Renderer3D##select"))
 			{
 				auto comp = m_selectedObject->AddComponent<Renderer3D>();
+				comp->Enabled = false;
+			}
+
+			if (ImGui::Selectable("Renderer2D##select"))
+			{
+				auto comp = m_selectedObject->AddComponent<Renderer2D>();
 				comp->Enabled = false;
 			}
 
@@ -814,11 +820,11 @@ void Elixir::Editor::TransformEditor()
 
 void Elixir::Editor::RenderEditor()
 {
-	if (m_selectedObject->GetComponent<Renderer3D>() != nullptr)
+	if (m_selectedObject->GetRenderer() != nullptr)
 	{
 		ImGui::Separator();
 
-		if (ImGui::CollapsingHeader("Renderer", ImGuiTreeNodeFlags_DefaultOpen))
+		if (ImGui::CollapsingHeader("Renderer3D", ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			if (m_selectedObject->GetRenderer()->Model.vertexOffset != 0)
 			{
@@ -925,6 +931,54 @@ void Elixir::Editor::RenderEditor()
 			if (ImGui::Button(name.c_str()))
 			{
 				m_selectedObject->RemoveComponent<Renderer3D>();
+			}
+		}
+	}
+	else if (m_selectedObject->Get2DRenderer() != nullptr)
+	{
+		ImGui::Separator();
+
+		if (ImGui::CollapsingHeader("Renderer2D", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			ImGui::Checkbox("Enabled", &m_selectedObject->Get2DRenderer()->Enabled);
+
+			if (ImGui::TreeNode("Texture"))
+			{
+				std::wstring filename = L"";
+				TCHAR* extension = L"Image Files(*.jpg, *.png, *.dds, *.bmp) \0*.jpg;*.png;*.dds;*.bmp\0";
+				if (ImGui::Button("Add Albedo"))
+				{
+					filename = L"";
+
+					filename = m_sceneManager->GetFileManager()->OpenFileW(extension);
+					auto rootPath = m_sceneManager->GetFileManager()->GetExePathW();
+					//erasing full exe path -13 (13 is /bin/Debug/.exe)
+					auto numOfChar = rootPath.length() - 13;
+					filename.erase(0, numOfChar);
+
+					if (filename != L"")
+					{
+						m_selectedObject->Get2DRenderer()->Texture = m_sceneManager->GetTextureManager()->AddTexture(filename);
+					}
+				}
+
+				ImGui::TreePop();
+			}
+
+			if (ImGui::TreeNode("Color"))
+			{
+				ImGui::Text("   R      G      B      A");
+				float color[4] = { m_selectedObject->Get2DRenderer()->Color.r, m_selectedObject->Get2DRenderer()->Color.g, m_selectedObject->Get2DRenderer()->Color.b, m_selectedObject->Get2DRenderer()->Color.a };
+				ImGui::DragFloat4("Color", color, 0.01f);
+				m_selectedObject->Get2DRenderer()->Color = Color(color[0], color[1], color[2], color[3]);
+
+				ImGui::TreePop();
+			}
+
+			auto name = m_langTerm[REMOVE_COMPONENT].GetTerm(m_language) + "##Render2D";
+			if (ImGui::Button(name.c_str()))
+			{
+				m_selectedObject->RemoveComponent<Renderer2D>();
 			}
 		}
 	}

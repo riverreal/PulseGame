@@ -189,6 +189,12 @@
     <ClCompile Include="..\GameSource\PlayerShip.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\System\Components\Render2DComponent.cpp">
+      <Filter>Source Files\System\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Graphics\Texture2DShader.cpp">
+      <Filter>Source Files\Graphics\D3D\Shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\System\BaseApp.h">
@@ -371,6 +377,12 @@
     <ClInclude Include="..\GameSource\PlayerShip.h">
       <Filter>Source Files\Game</Filter>
     </ClInclude>
+    <ClInclude Include="..\Source\System\Components\Render2DComponent.h">
+      <Filter>Source Files\System\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Graphics\Texture2DShader.h">
+      <Filter>Source Files\Graphics\D3D\Shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Source\Graphics\Shaders\LightPixelShader.hlsl">
@@ -416,6 +428,12 @@
       <Filter>Source Files\Graphics\D3D\Shaders\HLSL</Filter>
     </FxCompile>
     <FxCompile Include="..\Source\Graphics\Shaders\ShadowMapShader.hlsl">
+      <Filter>Source Files\Graphics\D3D\Shaders\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Source\Graphics\Shaders\Texture2DVS.hlsl">
+      <Filter>Source Files\Graphics\D3D\Shaders\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Source\Graphics\Shaders\Texture2DPS.hlsl">
       <Filter>Source Files\Graphics\D3D\Shaders\HLSL</Filter>
     </FxCompile>
   </ItemGroup>

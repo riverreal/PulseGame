@@ -179,12 +179,14 @@
     <ClCompile Include="..\Source\Graphics\ShadowMapShader.cpp" />
     <ClCompile Include="..\Source\Graphics\SkyDome.cpp" />
     <ClCompile Include="..\Source\Graphics\Terrain.cpp" />
+    <ClCompile Include="..\Source\Graphics\Texture2DShader.cpp" />
     <ClCompile Include="..\Source\Graphics\TextureLoader.cpp" />
     <ClCompile Include="..\Source\Graphics\TextureManager.cpp" />
     <ClCompile Include="..\Source\Helper\MathHelper.cpp" />
     <ClCompile Include="..\Source\main.cpp" />
     <ClCompile Include="..\Source\System\Audio\AudioManager.cpp" />
     <ClCompile Include="..\Source\System\BaseApp.cpp" />
+    <ClCompile Include="..\Source\System\Components\Render2DComponent.cpp" />
     <ClCompile Include="..\Source\System\Components\Render3DComponent.cpp" />
     <ClCompile Include="..\Source\System\Components\TransformComponent.cpp" />
     <ClCompile Include="..\Source\System\Editor\ElixirEditor.cpp" />
@@ -227,6 +229,7 @@
     <ClInclude Include="..\Source\Graphics\ShadowMapShader.h" />
     <ClInclude Include="..\Source\Graphics\SkyDome.h" />
     <ClInclude Include="..\Source\Graphics\Terrain.h" />
+    <ClInclude Include="..\Source\Graphics\Texture2DShader.h" />
     <ClInclude Include="..\Source\Graphics\TextureLoader.h" />
     <ClInclude Include="..\Source\Graphics\TextureManager.h" />
     <ClInclude Include="..\Source\Helper\GeneralHelper.h" />
@@ -242,6 +245,7 @@
     <ClInclude Include="..\Source\System\Audio\AudioManager.h" />
     <ClInclude Include="..\Source\System\BaseApp.h" />
     <ClInclude Include="..\Source\System\Components\ComponentIncludes.h" />
+    <ClInclude Include="..\Source\System\Components\Render2DComponent.h" />
     <ClInclude Include="..\Source\System\Components\Render3DComponent.h" />
     <ClInclude Include="..\Source\System\Components\TransformComponent.h" />
     <ClInclude Include="..\Source\System\Editor\ElixirEditor.h" />
@@ -343,7 +347,7 @@
       <VariableName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">DPS</VariableName>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../Source/Graphics/Shaders/Compiled/DeferredPixelShader.h</HeaderFileOutput>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="..\Source\Graphics\Shaders\DeferredVertexShader.hlsl">
@@ -463,6 +467,26 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\Source\Graphics\Shaders\Texture2DPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Texture2DPS</EntryPointName>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">T2DPS</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../Source/Graphics/Shaders/Compiled/Texture2DPS.h</HeaderFileOutput>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\Source\Graphics\Shaders\Texture2DVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Texture2DVS</EntryPointName>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">T2DVS</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../Source/Graphics/Shaders/Compiled/Texture2DVS.h</HeaderFileOutput>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="..\Source\Graphics\Shaders\TwoPassBlur.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>

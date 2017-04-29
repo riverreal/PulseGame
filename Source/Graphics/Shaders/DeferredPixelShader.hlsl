@@ -27,7 +27,7 @@ struct PixelOutputType
 PixelOutputType DeferredPixelShader(PixelInputType input) : SV_TARGET
 {
 	PixelOutputType output;
-
+	
 	float4 albedoValues = gAlbedo.Sample(samAnisotropic, input.tex);
 	if (albedoValues.a < 0.15f)
 	{

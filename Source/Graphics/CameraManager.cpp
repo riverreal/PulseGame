@@ -13,6 +13,9 @@ Camera::Camera()
 	//Initialize default screen aspect
 	m_screenAspect = (float)Elixir::GameManager::GetInstance().GetScreenWidth() / (float)Elixir::GameManager::GetInstance().GetScreenHeight();
 	BuildProjection();
+	//XMStoreFloat4x4(&m_orthoMatrix, XMMatrixOrthographicLH((float)Elixir::GameManager::GetInstance().GetScreenWidth(), (float)Elixir::GameManager::GetInstance().GetScreenHeight(), 0.1f, 1000.0f));
+	auto orthoMatrix = XMMatrixOrthographicLH(1600, 900, 0.1f, 1000.0f);
+	XMStoreFloat4x4(&m_orthoMatrix, orthoMatrix);
 }
 
 Camera::~Camera()
@@ -126,6 +129,11 @@ XMMATRIX Camera::GetViewMatrix() const
 DirectX::XMMATRIX Camera::GetProjectionMatrix() const
 {
 	return XMLoadFloat4x4(&m_projectionMatrix);
+}
+
+DirectX::XMMATRIX Camera::GetOrthoMatrix() const
+{
+	return XMLoadFloat4x4(&m_orthoMatrix);
 }
 
 void Camera::Strafe(float distance)

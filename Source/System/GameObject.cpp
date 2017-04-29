@@ -6,6 +6,7 @@ using namespace Elixir;
 GameObject::GameObject()
 	:m_renderer(nullptr),
 	m_transform(nullptr),
+	m_2dRenderer(nullptr),
 	m_children(0),
 	m_name("NewGameObject")
 {
@@ -39,6 +40,17 @@ void GameObject::AddComponent(IComponent* component)
 		if (rend != nullptr)
 		{
 			m_renderer = rend;
+			registered = true;
+		}
+	}
+
+	if (m_2dRenderer == nullptr && !registered)
+	{
+		auto rend = GetComponent<Renderer2D>();
+		if (rend != nullptr)
+		{
+			m_2dRenderer = rend;
+			registered = true;
 		}
 	}
 }
@@ -71,6 +83,11 @@ Transform* GameObject::GetTransform()
 Renderer3D* GameObject::GetRenderer()
 {
 	return m_renderer;
+}
+
+Renderer2D * Elixir::GameObject::Get2DRenderer()
+{
+	return m_2dRenderer;
 }
 
 std::vector<GameObject*> GameObject::GetChildren()

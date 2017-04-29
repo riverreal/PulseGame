@@ -23,6 +23,8 @@
 #include "../Graphics/ShadowMap.h"
 #include "../Graphics/ShadowMapShader.h"
 #include "../System/SceneManager.h"
+#include "../Graphics/Texture2DShader.h"
+#include "../Graphics/BlendState.h"
 
 #if ELIXIR_EDITOR == true
 #include "../System/Editor/ElixirEditor.h"
@@ -145,6 +147,7 @@ namespace Elixir
 		SkyDome* m_skyShader;
 		ShadowMap* m_shadowMap;
 		ShadowMapShader* m_shadowMapShader;
+		Texture2DShader* m_tex2DShader;
 
 #if ELIXIR_EDITOR == true
 		Editor* m_elixirEditor;

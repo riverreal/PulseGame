@@ -45,12 +45,21 @@ namespace Elixir
 
 #if ELIXIR_EDITOR == true
 		m_elixirEditor->Shutdown();
-		SafeRelease(m_elixirEditor);
+		//SafeRelease(m_elixirEditor);
+		if (m_elixirEditor)
+		{
+			delete m_elixirEditor;
+		}
+		
 #endif
 
 		SafeRelease(m_sceneManager);
 
+		BlendState::Shutdown();
+
 		//Draw related shutdown
+		m_tex2DShader->Shutdown();
+
 		m_shadowMapShader->Shutdown();
 		m_shadowMap->Shutdown();
 
@@ -63,6 +72,8 @@ namespace Elixir
 		m_deferredShader->Shutdown();
 
 		m_textureManager->Shutdown();
+
+		SafeRelease(m_tex2DShader);
 
 		SafeRelease(m_shadowMapShader);
 		SafeRelease(m_shadowMap);
@@ -200,13 +211,14 @@ namespace Elixir
 			if (currentScene->GetRenderMode() == RENDER_MODE::DEFERRED_RENDERING)
 			{
 				currentScene->GetModel()->Render(m_d3dDeviceContext);
+				//Change render target
 				m_shadowMap->Render(m_d3dDeviceContext);
 
 				m_d3dDeviceContext->RSSetState(m_solidRS);
 
 				for (auto &object : currentScene->GetChildren())
 				{
-					if (object->GetComponent<Renderer3D>() != nullptr)
+					if (object->GetRenderer() != nullptr)
 					{
 						//render if not disabled
 						if (object->GetRenderer()->Enabled)
@@ -226,10 +238,14 @@ namespace Elixir
 
 				bool backCulling = true;
 				m_d3dDeviceContext->RSSetState(m_solidRS);
+
+				//Store temporary 2d objects to render after
+				std::vector<GameObject*> Object2d;
+
 				//iterate through every object to render it
 				for (auto &object : currentScene->GetChildren())
 				{
-					if (object->GetComponent<Renderer3D>() != nullptr)
+					if (object->GetRenderer() != nullptr)
 					{
 						//render if not disabled
 						if (object->GetRenderer()->Enabled)
@@ -255,7 +271,10 @@ namespace Elixir
 							m_deferredShader->Render(m_d3dDeviceContext, object, currentScene->GetCamera(), m_textureManager);
 						}
 					}
-					
+					else if (object->Get2DRenderer() != nullptr)
+					{
+						Object2d.push_back(object);
+					}
 				}
 
 				//To render inner sphere
@@ -295,6 +314,24 @@ namespace Elixir
 
 				//pass dt for some time-based transition effects
 				m_postProcessingShader->Render(m_d3dDeviceContext, offsetData(m_ortho.GetIndexCount(), 0, 0), dt);
+
+				//SetDefaultRenderTargetOn();
+
+				//render 2d objects at last
+				//currentScene->GetModel()->Render(m_d3dDeviceContext); //expensive!!! (changes Input Assambler stage again)
+
+				SetZBufferOff();
+				float blendFact[] = {0.0f, 0.0f, 0.0f, 0.0f};
+				m_d3dDeviceContext->OMSetBlendState(BlendState::BSTransparent, blendFact, 0xffffffff);
+				for (auto &object : Object2d)
+				{
+					if (object->Get2DRenderer()->Enabled)
+					{
+						m_tex2DShader->Render(m_d3dDeviceContext, object, currentScene->GetCamera(), m_textureManager);
+					}
+				}
+				m_d3dDeviceContext->OMSetBlendState(NULL, blendFact, 0xffffffff);
+				SetZBufferOn();
 			}
 		}
 
@@ -362,7 +399,7 @@ namespace Elixir
 		if (FULL_SCREEN)
 		{
 		
-			memset(&dmScreenSettings, 0, sizeof(dmScreenSettings));
+			std::memset(&dmScreenSettings, 0, sizeof(dmScreenSettings));
 			dmScreenSettings.dmSize = sizeof(dmScreenSettings);
 			dmScreenSettings.dmPelsWidth = (unsigned long)m_width;
 			dmScreenSettings.dmPelsHeight = (unsigned long)m_height;
@@ -557,7 +594,7 @@ namespace Elixir
 		//convert to megabytes
 		m_gpuMemory = (int)(adapterDesc.DedicatedVideoMemory / 1024 / 1024);
 		//get GPU name
-		wcstombs(m_gpuDesc, adapterDesc.Description, 128);
+		std::wcstombs(m_gpuDesc, adapterDesc.Description, 128);
 	
 		//Releasing
 		//*********
@@ -1052,6 +1089,15 @@ namespace Elixir
 			MessageBox(0, L"Can't initialize ShadowMapShader", L"Error", MB_OK);
 			return false;
 		}
+
+		m_tex2DShader = new Texture2DShader();
+		if (!m_tex2DShader->Initialize(m_d3dDevice, m_hWnd))
+		{
+			MessageBox(0, L"Can't initialize Texture2DShader", L"Error", MB_OK);
+			return false;
+		}
+
+		BlendState::Init(m_d3dDevice);
 
 		return true;
 	}

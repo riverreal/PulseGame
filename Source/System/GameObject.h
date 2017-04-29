@@ -33,8 +33,10 @@ namespace Elixir
 
 		//Return the Transform Component
 		Transform* GetTransform();
-		//Return the Renderer Component
+		//Return the 3D Renderer Component
 		Renderer3D* GetRenderer();
+		//Return the 2D Renderer Component
+		Renderer2D* Get2DRenderer();
 
 		//Returns the vector storing all children
 		std::vector<GameObject*> GetChildren();
@@ -50,8 +52,10 @@ namespace Elixir
 
 		//Transform Component
 		Transform* m_transform;
-		//Renderer Component
+		//3D Renderer Component
 		Renderer3D* m_renderer;
+		//2D Renderer Component;
+		Renderer2D* m_2dRenderer;
 
 		//Stores all of the components the GameObject has.
 		//Each component type is unique.
@@ -102,6 +106,10 @@ namespace Elixir
 			else if (typeid(T) == typeid(Renderer3D))
 			{
 				m_renderer = nullptr;
+			}
+			else if (typeid(T) == typeid(Renderer2D))
+			{
+				m_2dRenderer = nullptr;
 			}
 
 			SafeRelease(comp);

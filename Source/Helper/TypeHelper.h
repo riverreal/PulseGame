@@ -27,6 +27,56 @@ namespace Elixir
 	struct Vec3f;
 	struct Vec4f;
 
+	//A simple Color struct
+	struct Color
+	{
+		Color()
+			:r(0.0f), g(0.0f), b(0.0f), a(1.0f)
+		{};
+
+		Color(F32 r, F32 g, F32 b, F32 a)
+			:r(r), g(g), b(b), a(a)
+		{};
+
+		Color(F32 rgb)
+			:r(rgb), g(rgb), b(rgb), a(1.0f)
+		{};
+
+		Color(F32 rgb, F32 a)
+			:r(rgb), g(rgb), b(rgb), a(a)
+		{};
+
+		static Color Black()
+		{
+			return Color();
+		}
+
+		static Color Green()
+		{
+			return Color(0.0f, 1.0f, 0.0f, 1.0f);
+		}
+
+		static Color Red()
+		{
+			return Color(1.0f, 0.0f, 0.0f, 1.0f);
+		}
+
+		static Color Blue()
+		{
+			return Color(0.0f, 0.0f, 1.0f, 1.0f);
+		}
+
+		static Color White()
+		{
+			return Color(1.0f);
+		}
+
+		F32 r;
+		F32 g;
+		F32 b;
+		F32 a;
+	};
+
 	//A Vector storing 4 floats
 	struct Vec4f
 	{
@@ -510,7 +560,9 @@ namespace Elixir
 		//Object with Transform component added.
 		OBJECT_TRANSFORM,
 		//Object with Transform/Renderer3D components added.
-		OBJECT_RENDER
+		OBJECT_RENDER,
+		//Object with Transform/Renderer2D components added.
+		OBJECT_2D
 	};
 	
 

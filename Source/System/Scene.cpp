@@ -382,6 +382,11 @@ GameObject* Scene::CreateObject(OBJECT_PRESET objPreset)
 		object->AddComponent<Renderer3D>();
 		break;
 
+	case OBJECT_2D:
+		object->AddComponent<Transform>();
+		object->AddComponent<Renderer2D>();
+		break;
+	
 	case OBJECT_EMPTY:
 	default:
 		break;

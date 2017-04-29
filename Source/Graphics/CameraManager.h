@@ -36,6 +36,7 @@ public:
 	
 	DirectX::XMMATRIX GetViewMatrix() const;
 	DirectX::XMMATRIX GetProjectionMatrix() const;
+	DirectX::XMMATRIX GetOrthoMatrix() const;
 
 	//Camera Movement
 	void Walk(float distance);
@@ -63,6 +64,7 @@ private:
 
 	DirectX::XMFLOAT4X4 m_viewMatrix;
 	DirectX::XMFLOAT4X4 m_projectionMatrix;
+	DirectX::XMFLOAT4X4 m_orthoMatrix;
 
 	//field of view
 	float m_FoV;
