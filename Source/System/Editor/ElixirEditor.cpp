@@ -91,7 +91,7 @@ void Elixir::Editor::UpdateIMGUI()
 	ObjectComponentWindow();
 	FPSOverlay();
 	ResourceWindow();
-	m_elixirLogger.Draw("Log", &m_logOpen, 60);
+	m_elixirLogger.Draw("Log", &m_logOpen, 1);
 
 	ImGui::Render();
 }
