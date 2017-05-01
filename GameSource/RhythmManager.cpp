@@ -16,7 +16,6 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager)
 	//BGMファイル設定
 	AudioManager::GetInstance().AddControlledMusic("Resource/rhythmFolder/Dash.mp3");
 	AudioManager::GetInstance().GetControlledMusic()->setIsPaused(true);
-	AudioManager::GetInstance().GetControlledMusic()->getPlayPosition();
 
 	//PNFファイルゲット
 	auto FileContents = Manager->GetFileManager()->LoadFileLines("Resource/rhythmFolder/Pnf_Folder/"+ FILE_NAME +".pnf");
@@ -52,6 +51,20 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager)
 
 void RhythmManager::Update(float dt)
 {
+	auto lastNote = MinStatus(0);
+	if (lastNote != nullptr)
+	{
+		if (lastNote->obj != nullptr && lastNote->active && lastNote->obj->GetRenderer()->Enabled)
+		{
+			if (m_NotesTiming[lastNote->num] + BAD_TIME*0.5f + 20 < (int)AudioManager::GetInstance().GetControlledMusic()->getPlayPosition())
+			{
+				lastNote->active = false;
+				lastNote->obj->GetRenderer()->Enabled = false;
+				ElixirLog("MISS");
+			}
+		}
+	}
+
 	//Status _minStatus = MinStatus(0);
 	//ElixirLog(std::to_string((int)AudioManager::GetInstance().GetControlledMusic()->getPlayPosition()));
 	for (auto& _status : m_NotesStatus)
@@ -61,26 +74,44 @@ void RhythmManager::Update(float dt)
 			//最終スケール + ((タイミング - 現在の再生時間) * 初期スケール) / 1000
 			auto _scale = 0.9f + ((m_NotesTiming[_status.num] - (int)AudioManager::GetInstance().GetControlledMusic()->getPlayPosition()) * m_DefaultScale ) /1000;
 			_status.obj->GetTransform()->Scale = Vec3f(_scale, 1, _scale);
-			
-			if (m_NotesTiming[_status.num] + 150 < (int)AudioManager::GetInstance().GetControlledMusic()->getPlayPosition())
-			{
-				_status.obj->GetRenderer()->Enabled = false;
-				_status.active = false;
-				//ElixirLog("MISS");
-			}
 		}		
 	}
-	
+
+	static bool isF5Pressed = false;
+	if (GetAsyncKeyState(VK_F5) & 0x8000)
+	{
+		if (!isF5Pressed)
+		{
+			isF5Pressed = true;
+			for (auto status : m_NotesStatus)
+			{
+				status.active = false;
+				status.obj->GetRenderer()->Enabled = false;
+				status.num = 1000;
+			}
+			m_TimingCount = 0;
+			AudioManager::GetInstance().GetControlledMusic()->setPlayPosition(0);
+			AudioManager::GetInstance().GetControlledMusic()->setIsPaused(false);
+			
+		}
+	}
+	else
+	{
+		isF5Pressed = false;
+	}
+
 	//キー入力判定
-	if (GetAsyncKeyState(VK_UP)&0x8000 )
+	if (GetAsyncKeyState(VK_UP)&0x8000)
 	{
 		if (!m_Press)
 		{
 			AudioManager::GetInstance().GetControlledMusic()->setIsPaused(false);
 
 			m_Press = true;
-			Status _minStatusNum = MinStatus(0);
-			HitTimingCheck(_minStatusNum);
+			
+
+
+			HitTimingCheck(MinStatus(0));
 
 			//ElixirLog("Press");
 		}
@@ -106,50 +137,74 @@ void RhythmManager::Update(float dt)
 		}
 		m_TimingCount++;
 	}
+
+	//Make it replayable
+	//static bool reloadedSong = false;
+	if (AudioManager::GetInstance().GetControlledMusic()->isFinished())
+	{
+		AudioManager::GetInstance().AddControlledMusic("Resource/rhythmFolder/Dash.mp3");
+		AudioManager::GetInstance().GetControlledMusic()->setIsPaused(true);
+		AudioManager::GetInstance().GetControlledMusic()->setPlayPosition(0);
+
+		ElixirLog("Ended!");
+	}
 }
 
-void RhythmManager::HitTimingCheck(Status _status)
+void RhythmManager::HitTimingCheck(Status* _status)
 {
-	int timing = abs(m_NotesTiming[_status.num] - (int)AudioManager::GetInstance().GetControlledMusic()->getPlayPosition());
+	if (_status == nullptr)
+		return;
+
+	if (_status->obj == nullptr)
+		return;
+
+	int timing = abs(m_NotesTiming[_status->num] - (int)AudioManager::GetInstance().GetControlledMusic()->getPlayPosition());
+
 	//ズレ、offset　検証。
 	if (timing <= GREAT_TIME / 2)
 	{
-		_status.active = false;
-		_status.obj->GetRenderer()->Enabled = false;
+		_status->active = false;
+		_status->obj->GetRenderer()->Enabled = false;
 		ElixirLog("GREAT");
 
 	}
 	else if (timing <= GOOD_TIME / 2)
 	{
-		_status.active = false;
-		_status.obj->GetRenderer()->Enabled = false;
+		_status->active = false;
+		_status->obj->GetRenderer()->Enabled = false;
 		ElixirLog("GOOD");
 	}
 	else if (timing <= BAD_TIME / 2)
 	{
-		_status.active = false;
-		_status.obj->GetRenderer()->Enabled = false;
+		_status->active = false;
+		_status->obj->GetRenderer()->Enabled = false;
 		ElixirLog("BAD");
+	}
+	else
+	{
+		_status->active = false;
+		_status->obj->GetRenderer()->Enabled = false;
+		ElixirLog("MISS");
 	}
 }
 //各レーンの最小値を持つ構造体取得関数
-RhythmManager::Status RhythmManager::MinStatus(int n)
+RhythmManager::Status* RhythmManager::MinStatus(int n)
 {
-	Status val;
-	for (auto status : m_NotesStatus)
+	Status* val = nullptr;
+	for (auto &status : m_NotesStatus)
 	{
 
 		if (status.active)
 		{
 			//if (m_NotesLaneNumber[status.num] == n)
 			{
-				if (val.obj == nullptr)
+				if (val == nullptr)
 				{
-					val = status;
+					val = &status;
 					continue;
 				}
-				if (status.num <= val.num)
-					val = status;
+				if (status.num <= val->num)
+					val = &status;
 			}
 		}
 	}

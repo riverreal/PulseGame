@@ -54,13 +54,13 @@ private:
 	//ファイルネーム
 	const std::string FILE_NAME = "Dash";
 	//判定時間
-	const int GREAT_TIME = 150;
-	const int GOOD_TIME = 350;
-	const int BAD_TIME = 783;
+	const int GREAT_TIME = 60;
+	const int GOOD_TIME = 150;
+	const int BAD_TIME = 300;
 	//判定
-	void HitTimingCheck(Status);
+	void HitTimingCheck(Status* _status);
 
-	Status MinStatus(int n);
+	Status* MinStatus(int n);
 	
 	bool m_Press = false;
 

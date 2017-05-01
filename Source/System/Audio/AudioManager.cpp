@@ -73,7 +73,8 @@ void Elixir::AudioManager::Init()
 {
 	if (!m_sEngine)
 	{
-		m_sEngine = createIrrKlangDevice();
+		E_SOUND_OUTPUT_DRIVER driver = ESOD_WIN_MM;
+		m_sEngine = createIrrKlangDevice(driver);
 		if (!m_sEngine)
 		{
 			m_initFailed = true;
