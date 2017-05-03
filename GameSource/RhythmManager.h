@@ -39,20 +39,26 @@ private:
 	//初期ポジション(レーン)
 	Elixir::Vec3f m_LanePos[3]
 	{
-		Elixir::Vec3f( 0,0,0 ),
-		Elixir::Vec3f( 0,0,0 ),
-		Elixir::Vec3f( 0,0,0 )
+		Elixir::Vec3f( 2,0,10 ),
+		Elixir::Vec3f( 0,2,10 ),
+		Elixir::Vec3f( -2,0,10 )
 	};
 	
 
 	//初期スケール
-	const float m_DefaultScale = 5.0f;
+	const float m_DefaultScale = 3.0f;
 	//タイミングカウント
 	int m_TimingCount = 0;
 	//コンボ
 	int m_Combo = 0;
 	//ファイルネーム
-	const std::string FILE_NAME = "Dash";
+	const std::string FILE_NAME = "LarsM-Lovers";
+	const std::wstring IMAGE_NAME[3]
+	{
+		L"Red",
+		L"Bule",
+		L"Yellow"
+	};
 	//判定時間
 	const int GREAT_TIME = 60;
 	const int GOOD_TIME = 150;

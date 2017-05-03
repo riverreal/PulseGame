@@ -9,12 +9,14 @@ using namespace Elixir;
 	素材のせいかわからないけどタイミングが分かりづらい？
 	任意のタイミングで再生したい
 	comboUIなどほしい。
+	判定厳し杉問題
+	音ゲーが難しすぎる。規則性があれば良ゲーに？
 */
 void RhythmManager::Initialize(Elixir::SceneManager * sceneManager)
 {
 	Manager = sceneManager;
 	//BGMファイル設定
-	AudioManager::GetInstance().AddControlledMusic("Resource/rhythmFolder/Dash.mp3");
+	AudioManager::GetInstance().AddControlledMusic("Resource/rhythmFolder/LarsM-Lovers.mp3");
 	AudioManager::GetInstance().GetControlledMusic()->setIsPaused(true);
 
 	//PNFファイルゲット
@@ -27,18 +29,19 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager)
 		m_NotesTiming.push_back(std::stold(val[1]));
 	}
 	
-	//画像を取得してワールドへ表示
-	
-	auto Screen2d = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
-	Screen2d->GetRenderer()->Material.albedo = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Bule_Box.png");
-	Screen2d->GetRenderer()->Model = Manager->GetModel()->AddGeometry(MODEL_TYPE_PLAIN);
-	Screen2d->GetTransform()->Rotation.x = -90;
-	Screen2d->GetTransform()->Position.z += 5;
-
+	for (int i = 0; i < 3; i++)
+	{
+		//画像を取得してワールドへ表示
+		auto Screen2d = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
+		Screen2d->GetRenderer()->Material.albedo = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/" + IMAGE_NAME[i] + L"_Box.png");
+		Screen2d->GetRenderer()->Model = Manager->GetModel()->AddGeometry(MODEL_TYPE_PLAIN);
+		Screen2d->GetTransform()->Rotation.x = -90;
+		Screen2d->GetTransform()->Position = m_LanePos[i];
+	}
 	for (int i = 0; i < 10; i++)
 	{
 		auto hit2d = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
-		hit2d->GetRenderer()->Material.albedo = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Red_Hit.png");
+		hit2d->GetRenderer()->Material.albedo = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/" + IMAGE_NAME[0]+L"_Hit.png");
 		hit2d->GetRenderer()->Model = Manager->GetModel()->AddGeometry(MODEL_TYPE_PLAIN);
 		hit2d->GetTransform()->Rotation.x = -90;
 		hit2d->GetTransform()->Position.z += 5;
@@ -51,22 +54,23 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager)
 
 void RhythmManager::Update(float dt)
 {
-	auto lastNote = MinStatus(0);
-	if (lastNote != nullptr)
+	for (int i = 0; i < 3; i++)
 	{
-		if (lastNote->obj != nullptr && lastNote->active && lastNote->obj->GetRenderer()->Enabled)
+		auto lastNote = MinStatus(i);
+		if (lastNote != nullptr)
 		{
-			if (m_NotesTiming[lastNote->num] + BAD_TIME*0.5f + 20 < (int)AudioManager::GetInstance().GetControlledMusic()->getPlayPosition())
+			if (lastNote->obj != nullptr && lastNote->active && lastNote->obj->GetRenderer()->Enabled)
 			{
-				lastNote->active = false;
-				lastNote->obj->GetRenderer()->Enabled = false;
-				ElixirLog("MISS");
+				if (m_NotesTiming[lastNote->num] + BAD_TIME*0.5f + 20 < (int)AudioManager::GetInstance().GetControlledMusic()->getPlayPosition())
+				{
+					lastNote->active = false;
+					lastNote->obj->GetRenderer()->Enabled = false;
+					ElixirLog("MISS");
+				}
 			}
 		}
 	}
 
-	//Status _minStatus = MinStatus(0);
-	//ElixirLog(std::to_string((int)AudioManager::GetInstance().GetControlledMusic()->getPlayPosition()));
 	for (auto& _status : m_NotesStatus)
 	{
 		if (_status.active)
@@ -99,25 +103,42 @@ void RhythmManager::Update(float dt)
 	{
 		isF5Pressed = false;
 	}
-
+	#pragma region キー入力
 	//キー入力判定
-	if (GetAsyncKeyState(VK_UP)&0x8000)
+	
+	if (GetAsyncKeyState(VK_UP) & 0x8000)
 	{
 		if (!m_Press)
 		{
 			AudioManager::GetInstance().GetControlledMusic()->setIsPaused(false);
-
 			m_Press = true;
-			
-
-
-			HitTimingCheck(MinStatus(0));
-
-			//ElixirLog("Press");
+			HitTimingCheck(MinStatus(1));
 		}
 	}
-	else 
+	else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+	{
+		if (!m_Press)
+		{
+			AudioManager::GetInstance().GetControlledMusic()->setIsPaused(false);
+			m_Press = true;
+			HitTimingCheck(MinStatus(0));
+		}
+	}
+	else if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+	{
+		if (!m_Press)
+		{
+			AudioManager::GetInstance().GetControlledMusic()->setIsPaused(false);
+			m_Press = true;
+			HitTimingCheck(MinStatus(2));
+		}
+	}
+
+	else
 		m_Press = false;
+	
+
+#pragma endregion
 
 	if (m_TimingCount >= m_NotesTiming.size())return;
 	
@@ -127,11 +148,12 @@ void RhythmManager::Update(float dt)
 		{
 			if (!_status.active)
 			{
-				//if (m_NotesLaneNumber[m_TimingCount] != 0)break;
 				_status.active = true;
 				_status.num = m_TimingCount;
 				_status.obj->GetRenderer()->Enabled = true;
 				_status.obj->GetTransform()->Scale = Vec3f(m_DefaultScale + 1, 1, m_DefaultScale + 1);
+				_status.obj->GetTransform()->Position = m_LanePos[m_NotesLaneNumber[_status.num]];
+				_status.obj->GetRenderer()->Material.albedo = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/" + IMAGE_NAME[m_NotesLaneNumber[_status.num]] + L"_Hit.png");
 				break;
 			}
 		}
@@ -142,7 +164,7 @@ void RhythmManager::Update(float dt)
 	//static bool reloadedSong = false;
 	if (AudioManager::GetInstance().GetControlledMusic()->isFinished())
 	{
-		AudioManager::GetInstance().AddControlledMusic("Resource/rhythmFolder/Dash.mp3");
+		AudioManager::GetInstance().AddControlledMusic("Resource/rhythmFolder/LarsM-Lovers.mp3");
 		AudioManager::GetInstance().GetControlledMusic()->setIsPaused(true);
 		AudioManager::GetInstance().GetControlledMusic()->setPlayPosition(0);
 
@@ -160,7 +182,6 @@ void RhythmManager::HitTimingCheck(Status* _status)
 
 	int timing = abs(m_NotesTiming[_status->num] - (int)AudioManager::GetInstance().GetControlledMusic()->getPlayPosition());
 
-	//ズレ、offset　検証。
 	if (timing <= GREAT_TIME / 2)
 	{
 		_status->active = false;
@@ -193,10 +214,9 @@ RhythmManager::Status* RhythmManager::MinStatus(int n)
 	Status* val = nullptr;
 	for (auto &status : m_NotesStatus)
 	{
-
 		if (status.active)
 		{
-			//if (m_NotesLaneNumber[status.num] == n)
+			if (m_NotesLaneNumber[status.num] == n)
 			{
 				if (val == nullptr)
 				{
