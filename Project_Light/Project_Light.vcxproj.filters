@@ -383,6 +383,9 @@
     <ClInclude Include="..\Source\Graphics\Texture2DShader.h">
       <Filter>Source Files\Graphics\D3D\Shaders</Filter>
     </ClInclude>
+    <ClInclude Include="..\Source\Helper\ETween.h">
+      <Filter>Source Files\Helper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Source\Graphics\Shaders\LightPixelShader.hlsl">

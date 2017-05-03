@@ -3,6 +3,7 @@
 #include "../Source/System/IElixirGame.h"
 #include <vector>
 #include "PlayerShip.h"
+#include "../Source/Helper/ETween.h"
 
 using namespace Elixir;
 
@@ -17,6 +18,8 @@ public:
 
 private:
 	std::vector<Vec3f> m_lineData;
+	GameObject* m_title;
+	ETween<F32> m_tween;
 	PlayerShip m_player;
 	bool m_pause;
 };
