@@ -54,6 +54,7 @@ void PulseGame::InitTestScene()
 	m_tween = m_tween.OnFinishChain(&afterScale);
 
 	m_player.Initialize(Manager, m_lineData, radius);
+	m_rhythm.Initialize(Manager);
 }
 
 void PulseGame::UpdateTestScene(float dt)
@@ -72,6 +73,7 @@ void PulseGame::UpdateTestScene(float dt)
 	{
 		m_player.UpdateShipPos(dt);
 		m_tween.Update(dt);
+		m_rhythm.Update(dt);
 	}
 }
 

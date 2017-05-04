@@ -10,7 +10,7 @@
 #include <sstream>
 #include <fstream>
 
-#include "../../jsoncpp/json/json.h"
+#include "../../External Soruce/jsoncpp/json/json.h"
 #include "TypeHelper.h"
 
 //Releases COM Pointers
@@ -156,4 +156,17 @@ static std::vector<Elixir::Vec3f> LoadLine(std::string fileContent)
 	}
 
 	return lineVec;
+}
+
+//•¶Žš•ªŠ„
+static std::vector<std::string> split(const std::string& input, char delimiter)
+{
+	std::istringstream stream(input);
+
+	std::string field;
+	std::vector<std::string> result;
+	while (std::getline(stream, field, delimiter)) {
+		result.push_back(field);
+	}
+	return result;
 }

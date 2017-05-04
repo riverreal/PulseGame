@@ -4,6 +4,7 @@
 #include <vector>
 #include "PlayerShip.h"
 #include "../Source/Helper/ETween.h"
+#include "RhythmManager.h"
 
 using namespace Elixir;
 
@@ -21,5 +22,6 @@ private:
 	GameObject* m_title;
 	ETween<F32> m_tween;
 	PlayerShip m_player;
+	RhythmManager m_rhythm;
 	bool m_pause;
 };
