@@ -10,6 +10,8 @@ public:
 
 	void Update(float dt);
 
+	int GetCombo();
+
 private:
 	//ノーツステータス
 	struct Status {

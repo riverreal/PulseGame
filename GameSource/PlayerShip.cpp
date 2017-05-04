@@ -2,6 +2,7 @@
 #include "../Source/System/GameManager.h"
 #include "../Source/Includes/LESystem.h"
 #include "../Source/Helper/MathHelper.h"
+#include "../Source/Helper/ENote.h"
 
 using namespace Elixir;
 
@@ -16,6 +17,7 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	m_rotationSpeed = 1.3f;
 	m_pathRadius = radius + 2.5f;
 	m_target = Vec3f(0.0f, 10.0f, -10.0f);
+	m_currentCombo = 0;
 	//ignore first and last dots
 	//m_lineData.erase(m_lineData.begin());
 	//m_lineData.pop_back();
@@ -68,6 +70,7 @@ void PlayerShip::UpdateShipPos(float dt)
 		}
 	}
 
+	m_currentCombo = ENote::GetInstance().Notify<int>("GetCombo");
 	
 	auto aheadPoint = MathHelper::GetPointInCMSpline(m_lineData[m_aheadIndex], m_lineData[m_aheadIndex + 1], m_lineData[m_aheadIndex + 2], m_lineData[m_aheadIndex+ 3], m_aheadPos);
 

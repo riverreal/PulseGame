@@ -183,6 +183,7 @@
     <ClCompile Include="..\Source\Graphics\Texture2DShader.cpp" />
     <ClCompile Include="..\Source\Graphics\TextureLoader.cpp" />
     <ClCompile Include="..\Source\Graphics\TextureManager.cpp" />
+    <ClCompile Include="..\Source\Helper\ENote.cpp" />
     <ClCompile Include="..\Source\Helper\MathHelper.cpp" />
     <ClCompile Include="..\Source\main.cpp" />
     <ClCompile Include="..\Source\System\Audio\AudioManager.cpp" />
@@ -234,6 +235,7 @@
     <ClInclude Include="..\Source\Graphics\Texture2DShader.h" />
     <ClInclude Include="..\Source\Graphics\TextureLoader.h" />
     <ClInclude Include="..\Source\Graphics\TextureManager.h" />
+    <ClInclude Include="..\Source\Helper\ENote.h" />
     <ClInclude Include="..\Source\Helper\ETween.h" />
     <ClInclude Include="..\Source\Helper\GeneralHelper.h" />
     <ClInclude Include="..\Source\Helper\LightHelper.h" />

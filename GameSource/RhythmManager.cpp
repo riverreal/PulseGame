@@ -1,6 +1,7 @@
 #include "RhythmManager.h"
 #include "../Source/System/GameManager.h"
 #include "../Source/Includes/LESystem.h"
+#include "../Source/Helper/ENote.h"
 
 using namespace Elixir;
 
@@ -15,9 +16,12 @@ using namespace Elixir;
 void RhythmManager::Initialize(Elixir::SceneManager * sceneManager)
 {
 	Manager = sceneManager;
+	m_Combo = 0;
 	//BGMファイル設定
 	AudioManager::GetInstance().AddControlledMusic("Resource/rhythmFolder/LarsM-Lovers.mp3");
 	AudioManager::GetInstance().GetControlledMusic()->setIsPaused(true);
+
+	ENote::GetInstance().AddNote<int>("GetCombo", [this]() ->int {return this->GetCombo(); });
 
 	//PNFファイルゲット
 	auto FileContents = Manager->GetFileManager()->LoadFileLines("Resource/rhythmFolder/Pnf_Folder/"+ FILE_NAME +".pnf");
@@ -65,7 +69,8 @@ void RhythmManager::Update(float dt)
 				{
 					lastNote->active = false;
 					lastNote->obj->GetRenderer()->Enabled = false;
-					ElixirLog("MISS");
+					//ElixirLog("MISS");
+					m_Combo = 0;
 				}
 			}
 		}
@@ -87,7 +92,7 @@ void RhythmManager::Update(float dt)
 		if (!isF5Pressed)
 		{
 			isF5Pressed = true;
-			for (auto status : m_NotesStatus)
+			for (auto &status : m_NotesStatus)
 			{
 				status.active = false;
 				status.obj->GetRenderer()->Enabled = false;
@@ -96,14 +101,13 @@ void RhythmManager::Update(float dt)
 			m_TimingCount = 0;
 			AudioManager::GetInstance().GetControlledMusic()->setPlayPosition(0);
 			AudioManager::GetInstance().GetControlledMusic()->setIsPaused(false);
-			
 		}
 	}
 	else
 	{
 		isF5Pressed = false;
 	}
-	#pragma region キー入力
+	#pragma region
 	//キー入力判定
 	
 	if (GetAsyncKeyState(VK_UP) & 0x8000)
@@ -168,8 +172,13 @@ void RhythmManager::Update(float dt)
 		AudioManager::GetInstance().GetControlledMusic()->setIsPaused(true);
 		AudioManager::GetInstance().GetControlledMusic()->setPlayPosition(0);
 
-		ElixirLog("Ended!");
+		//ElixirLog("Ended!");
 	}
+}
+
+int RhythmManager::GetCombo()
+{
+	return m_Combo;
 }
 
 void RhythmManager::HitTimingCheck(Status* _status)
@@ -186,26 +195,29 @@ void RhythmManager::HitTimingCheck(Status* _status)
 	{
 		_status->active = false;
 		_status->obj->GetRenderer()->Enabled = false;
-		ElixirLog("GREAT");
-
+		//ElixirLog("GREAT");
+		m_Combo++;
 	}
 	else if (timing <= GOOD_TIME / 2)
 	{
 		_status->active = false;
 		_status->obj->GetRenderer()->Enabled = false;
-		ElixirLog("GOOD");
+		//ElixirLog("GOOD");
+		m_Combo++;
 	}
 	else if (timing <= BAD_TIME / 2)
 	{
 		_status->active = false;
 		_status->obj->GetRenderer()->Enabled = false;
-		ElixirLog("BAD");
+		//ElixirLog("BAD");
+		m_Combo++;
 	}
 	else
 	{
 		_status->active = false;
 		_status->obj->GetRenderer()->Enabled = false;
-		ElixirLog("MISS");
+		//ElixirLog("MISS");
+		m_Combo = 0;
 	}
 }
 //各レーンの最小値を持つ構造体取得関数

@@ -32,6 +32,8 @@ private:
 	float m_rotationSpeed;
 	float m_pathRadius;
 
+	int m_currentCombo;
+
 	Elixir::Vec3f m_upVec;
 
 	//For convinience
