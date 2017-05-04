@@ -60,8 +60,8 @@ private:
 		L"Yellow"
 	};
 	//”»’èŽžŠÔ
-	const int GREAT_TIME = 60;
-	const int GOOD_TIME = 150;
+	const int GREAT_TIME = 100;
+	const int GOOD_TIME = 190;
 	const int BAD_TIME = 300;
 	//”»’è
 	void HitTimingCheck(Status* _status);
