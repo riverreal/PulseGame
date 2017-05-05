@@ -18,11 +18,9 @@ private:
 	float m_currentPos;
 	float m_aheadPos;
 	int m_aheadIndex;
-	
 
 	int m_currentIndex;
 	Elixir::GameObject* m_player;
-	Elixir::GameObject* m_dummyBall;
 
 	//The target to look at
 	Elixir::Vec3f m_target;

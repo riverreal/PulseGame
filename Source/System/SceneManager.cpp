@@ -96,6 +96,9 @@ void Elixir::SceneManager::AddProjectTextures()
 
 			for (auto &texData : project.TextureData)
 			{
+				//texData.name
+
+				std::replace(texData.name.begin(), texData.name.end(), '\\', '/');
 				//assign in correct ID
 				m_textureManager->AddAllocatedTexture(s2ws(texData.name), texData.ID);
 			}
@@ -125,6 +128,7 @@ void Elixir::SceneManager::AddNewTextures()
 		//check file extension // if file type is image, add to manager
 		if (extension == "jpg" || extension == "png" || extension == "dds" || extension == "bmp" || extension == "jpeg")
 		{
+			std::replace(filename.begin(), filename.end(), '\\', '/');
 			m_textureManager->AddTexture(s2ws(filename));
 			changed = true;
 		}

@@ -18,17 +18,9 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	m_pathRadius = radius + 2.5f;
 	m_target = Vec3f(0.0f, 10.0f, -10.0f);
 	m_currentCombo = 0;
-	//ignore first and last dots
-	//m_lineData.erase(m_lineData.begin());
-	//m_lineData.pop_back();
-
 	m_currentPos = 0.5f;
 	m_aheadPos = 0.7f;
-	
 	m_upVec = Vec3f(1.0f, 0.0f, 0.0f);
-
-	m_dummyBall = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
-	m_dummyBall->GetRenderer()->Model = Manager->GetModel()->AddGeometry(MODEL_TYPE_SPHERE);
 
 
 	m_player = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
@@ -75,10 +67,6 @@ void PlayerShip::UpdateShipPos(float dt)
 	auto aheadPoint = MathHelper::GetPointInCMSpline(m_lineData[m_aheadIndex], m_lineData[m_aheadIndex + 1], m_lineData[m_aheadIndex + 2], m_lineData[m_aheadIndex+ 3], m_aheadPos);
 
 	m_target = aheadPoint.Position;
-	//Vec3f aimDir = (m_dummyBall->GetTransform()->Position - m_player->GetTransform()->Position).FastNormalize();
-	//auto q = m_player->GetTransform()->Position.QuaternionLookRotation(aimDir, Vec3f(0.0f, 1.0f, 0.0f));
-	m_dummyBall->GetTransform()->Position = m_target;
-
 	SetPlayerPos(dt);
 
 	if (GetAsyncKeyState('E') & 0x8000)
@@ -141,7 +129,7 @@ void PlayerShip::SetPlayerPos(float dt)
 
 	m_player->GetTransform()->Position = cmPoint.Position + circlePos;
 
-	Vec3f aimDir = (m_dummyBall->GetTransform()->Position - m_player->GetTransform()->Position).FastNormalize();
+	Vec3f aimDir = (m_target - m_player->GetTransform()->Position).FastNormalize();
 	auto invAim = ((cmPoint.Position - m_player->GetTransform()->Position) * -1).FastNormalize();
 	invAim.z = 0;
 	//aimDir.z = 0;
