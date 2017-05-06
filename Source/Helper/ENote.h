@@ -3,7 +3,6 @@
 #include <string>
 #include <functional>
 #include <unordered_map>
-#include <type_traits>
 
 namespace Elixir
 {
