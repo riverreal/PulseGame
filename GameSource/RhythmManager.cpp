@@ -6,11 +6,6 @@
 using namespace Elixir;
 
 /*
-	タイミング時にhitboxに何かエフェクトがほしい？
-	素材のせいかわからないけどタイミングが分かりづらい？
-	任意のタイミングで再生したい
-	comboUIなどほしい。
-	判定厳し杉問題
 	音ゲーが難しすぎる。規則性があれば良ゲーに？
 */
 void RhythmManager::Initialize(Elixir::SceneManager * sceneManager)
@@ -32,28 +27,55 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager)
 		m_NotesLaneNumber.push_back(std::stoi(val[0]));
 		m_NotesTiming.push_back(std::stold(val[1]));
 	}
-	
-	for (int i = 0; i < 3; i++)
-	{
-		//画像を取得してワールドへ表示
-		auto Screen2d = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
-		Screen2d->GetRenderer()->Material.albedo = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/" + IMAGE_NAME[i] + L"_Box.png");
-		Screen2d->GetRenderer()->Model = Manager->GetModel()->AddGeometry(MODEL_TYPE_PLAIN);
-		Screen2d->GetTransform()->Rotation.x = -90;
-		Screen2d->GetTransform()->Position = m_LanePos[i];
-	}
 	for (int i = 0; i < 10; i++)
 	{
-		auto hit2d = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
-		hit2d->GetRenderer()->Material.albedo = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/" + IMAGE_NAME[0]+L"_Hit.png");
-		hit2d->GetRenderer()->Model = Manager->GetModel()->AddGeometry(MODEL_TYPE_PLAIN);
+		//Notes
+		auto hit2d = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_2D);
+		hit2d->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/" + COLOR_PATH[0]+L"_Hit.png");
 		hit2d->GetTransform()->Rotation.x = -90;
 		hit2d->GetTransform()->Position.z += 5;
-		hit2d->GetRenderer()->Enabled = false;
-		
+		hit2d->Get2DRenderer()->Enabled = false;
 		auto _status = Status(hit2d, 1000, false);
-		m_NotesStatus.push_back(_status);
+		m_NotesStatus.push_back(_status);		
 	}
+
+	for (int i = 0; i < 3; i++)
+	{
+		
+		//wave
+		auto effectWave2d = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_2D);
+		effectWave2d->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Effect/" + WAVE_EFFECT_PATH[1] + L".png");
+		effectWave2d->GetTransform()->Position = m_LanePos[i];
+		effectWave2d->Get2DRenderer()->Color.a = 0.7f;
+
+		//waveEffect
+		m_waveAnim[i] = m_waveAnim[i].From(&effectWave2d->GetTransform()->Scale.x).To(2.5f).Time(0.3f)
+			.From(&effectWave2d->Get2DRenderer()->Color.a).To(0).Time(0.3f)
+			.From(&effectWave2d->GetTransform()->Scale.y).To(2.5f).Time(0.3f);
+
+		effectWave2d->Get2DRenderer()->Color.a = 0.0f;
+
+		//hitBox
+		auto Screen2d = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_2D);
+		Screen2d->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/" + COLOR_PATH[i] + L"_Box.png");
+		Screen2d->GetTransform()->Position = m_LanePos[i];
+		
+		//inputAnimation
+		ETween<F32> endAnim;
+		endAnim = endAnim.From(&Screen2d->GetTransform()->Scale.x).To(1.0f).Time(0.1f)
+			.From(&Screen2d->GetTransform()->Scale.y).To(1.0f).Time(0.1f);
+		
+		m_inputAnim = m_inputAnim.From(&Screen2d->GetTransform()->Scale.x).To(0.9f).Time(0.1f)
+			.From(&Screen2d->GetTransform()->Scale.y).To(0.9f).Time(0.1f)
+			.OnFinishChain(&endAnim);
+	}
+
+	m_TextEffect = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_2D);
+	m_TextEffect->Get2DRenderer()->Enabled = false;
+	m_TextEffect->GetTransform()->Position = Vec3f(0, -30, 0);
+	
+	m_textAnim = m_textAnim.From(&m_TextEffect->Get2DRenderer()->Color.a).To(0.0f).Time(1.0f)
+		.From(&m_TextEffect->GetTransform()->Position.y).To(m_TextEffect->GetTransform()->Position.y + 30.0f).Time(1.0f);
 }
 
 void RhythmManager::Update(float dt)
@@ -63,14 +85,17 @@ void RhythmManager::Update(float dt)
 		auto lastNote = MinStatus(i);
 		if (lastNote != nullptr)
 		{
-			if (lastNote->obj != nullptr && lastNote->active && lastNote->obj->GetRenderer()->Enabled)
+			if (lastNote->obj != nullptr && lastNote->active && lastNote->obj->Get2DRenderer()->Enabled)
 			{
 				if (m_NotesTiming[lastNote->num] + BAD_TIME*0.5f + 20 < (int)AudioManager::GetInstance().GetControlledMusic()->getPlayPosition())
 				{
 					lastNote->active = false;
-					lastNote->obj->GetRenderer()->Enabled = false;
-					//ElixirLog("MISS");
 					m_Combo = 0;
+
+					lastNote->obj->Get2DRenderer()->Enabled = false;
+					m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[3] + L".png");
+					m_TextEffect->Get2DRenderer()->Enabled = true;
+					m_tween.AddTweens(m_textAnim.GetTweens());
 				}
 			}
 		}
@@ -81,8 +106,9 @@ void RhythmManager::Update(float dt)
 		if (_status.active)
 		{
 			//最終スケール + ((タイミング - 現在の再生時間) * 初期スケール) / 1000
-			auto _scale = 0.9f + ((m_NotesTiming[_status.num] - (int)AudioManager::GetInstance().GetControlledMusic()->getPlayPosition()) * m_DefaultScale ) /1000;
-			_status.obj->GetTransform()->Scale = Vec3f(_scale, 1, _scale);
+			auto _scale = 0.85f + ((m_NotesTiming[_status.num] - (int)AudioManager::GetInstance().GetControlledMusic()->getPlayPosition()) * m_DefaultScale ) /1000;
+			_status.obj->GetTransform()->Scale = Vec3f(_scale, _scale, 1);
+			_status.obj->Get2DRenderer()->Color.a = (-_scale + 1) / 3 + 1;
 		}		
 	}
 
@@ -92,10 +118,11 @@ void RhythmManager::Update(float dt)
 		if (!isF5Pressed)
 		{
 			isF5Pressed = true;
+
 			for (auto &status : m_NotesStatus)
 			{
 				status.active = false;
-				status.obj->GetRenderer()->Enabled = false;
+				status.obj->Get2DRenderer()->Enabled = false;
 				status.num = 1000;
 			}
 			m_TimingCount = 0;
@@ -107,16 +134,18 @@ void RhythmManager::Update(float dt)
 	{
 		isF5Pressed = false;
 	}
-	#pragma region
-	//キー入力判定
-	
-	if (GetAsyncKeyState(VK_UP) & 0x8000)
+
+	#pragma region input key 
+
+	if (GetAsyncKeyState(VK_DOWN) & 0x8000)
 	{
 		if (!m_Press)
 		{
 			AudioManager::GetInstance().GetControlledMusic()->setIsPaused(false);
 			m_Press = true;
 			HitTimingCheck(MinStatus(1));
+			m_tween.AddTween(m_inputAnim.GetTweens()[2]);
+			m_tween.AddTween(m_inputAnim.GetTweens()[3]);
 		}
 	}
 	else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
@@ -126,6 +155,8 @@ void RhythmManager::Update(float dt)
 			AudioManager::GetInstance().GetControlledMusic()->setIsPaused(false);
 			m_Press = true;
 			HitTimingCheck(MinStatus(0));
+			m_tween.AddTween(m_inputAnim.GetTweens()[0]);
+			m_tween.AddTween(m_inputAnim.GetTweens()[1]);
 		}
 	}
 	else if (GetAsyncKeyState(VK_LEFT) & 0x8000)
@@ -135,6 +166,8 @@ void RhythmManager::Update(float dt)
 			AudioManager::GetInstance().GetControlledMusic()->setIsPaused(false);
 			m_Press = true;
 			HitTimingCheck(MinStatus(2));
+			m_tween.AddTween(m_inputAnim.GetTweens()[4]);
+			m_tween.AddTween(m_inputAnim.GetTweens()[5]);
 		}
 	}
 
@@ -154,10 +187,11 @@ void RhythmManager::Update(float dt)
 			{
 				_status.active = true;
 				_status.num = m_TimingCount;
-				_status.obj->GetRenderer()->Enabled = true;
-				_status.obj->GetTransform()->Scale = Vec3f(m_DefaultScale + 1, 1, m_DefaultScale + 1);
+				_status.obj->Get2DRenderer()->Enabled = true;
+				_status.obj->GetTransform()->Scale = Vec3f(m_DefaultScale + 1, m_DefaultScale + 1, 1);
 				_status.obj->GetTransform()->Position = m_LanePos[m_NotesLaneNumber[_status.num]];
-				_status.obj->GetRenderer()->Material.albedo = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/" + IMAGE_NAME[m_NotesLaneNumber[_status.num]] + L"_Hit.png");
+				_status.obj->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/" + COLOR_PATH[m_NotesLaneNumber[_status.num]] + L"_Hit.png");
+				_status.obj->Get2DRenderer()->Color.a = 0;
 				break;
 			}
 		}
@@ -174,6 +208,7 @@ void RhythmManager::Update(float dt)
 
 		//ElixirLog("Ended!");
 	}
+	m_tween.Update(dt);
 }
 
 int RhythmManager::GetCombo()
@@ -190,34 +225,54 @@ void RhythmManager::HitTimingCheck(Status* _status)
 		return;
 
 	int timing = abs(m_NotesTiming[_status->num] - (int)AudioManager::GetInstance().GetControlledMusic()->getPlayPosition());
+	bool missFlag = false;
 
 	if (timing <= GREAT_TIME / 2)
 	{
 		_status->active = false;
-		_status->obj->GetRenderer()->Enabled = false;
-		//ElixirLog("GREAT");
 		m_Combo++;
+
+		_status->obj->Get2DRenderer()->Enabled = false;
+		m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[0] + L".png");
+		m_TextEffect->Get2DRenderer()->Enabled = true;
+		m_tween.AddTweens(m_textAnim.GetTweens());
+
 	}
 	else if (timing <= GOOD_TIME / 2)
 	{
 		_status->active = false;
-		_status->obj->GetRenderer()->Enabled = false;
-		//ElixirLog("GOOD");
 		m_Combo++;
+
+		_status->obj->Get2DRenderer()->Enabled = false;
+		m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[1] + L".png");
+		m_TextEffect->Get2DRenderer()->Enabled = true;
+		m_tween.AddTweens(m_textAnim.GetTweens());
 	}
 	else if (timing <= BAD_TIME / 2)
 	{
 		_status->active = false;
-		_status->obj->GetRenderer()->Enabled = false;
-		//ElixirLog("BAD");
 		m_Combo++;
+
+		_status->obj->Get2DRenderer()->Enabled = false;
+		m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[2] + L".png");
+		m_TextEffect->Get2DRenderer()->Enabled = true;
+		m_tween.AddTweens(m_textAnim.GetTweens());
 	}
 	else
 	{
 		_status->active = false;
-		_status->obj->GetRenderer()->Enabled = false;
-		//ElixirLog("MISS");
 		m_Combo = 0;
+
+		_status->obj->Get2DRenderer()->Enabled = false;
+		m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[3] + L".png");
+		m_TextEffect->Get2DRenderer()->Enabled = true;
+		m_tween.AddTweens(m_textAnim.GetTweens());
+		missFlag = true;
+	}
+
+	if (!missFlag)
+	{
+		m_tween.AddTweens(m_waveAnim[m_NotesLaneNumber[_status->num]].GetTweens());
 	}
 }
 //各レーンの最小値を持つ構造体取得関数

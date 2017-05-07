@@ -2,6 +2,7 @@
 #include "../Source/System/IElixirGame.h"
 #include <vector>
 #include "../Source/Helper/TypeHelper.h"
+#include "../Source/Helper/ETween.h"
 
 class RhythmManager
 {
@@ -37,41 +38,63 @@ private:
 	std::vector<double>m_NotesTiming;
 	//ノーツステータスリスト
 	std::vector<Status>m_NotesStatus;
-	
 	//初期ポジション(レーン)
 	Elixir::Vec3f m_LanePos[3]
 	{
-		Elixir::Vec3f( 2,0,10 ),
-		Elixir::Vec3f( 0,2,10 ),
-		Elixir::Vec3f( -2,0,10 )
+		Elixir::Vec3f( 300,-300,0 ),
+		Elixir::Vec3f( 0,-330,0 ),
+		Elixir::Vec3f( -300,-300,0 )
 	};
-	
 
 	//初期スケール
 	const float m_DefaultScale = 3.0f;
-	//タイミングカウント
-	int m_TimingCount = 0;
-	//コンボ
-	int m_Combo = 0;
 	//ファイルネーム
 	const std::string FILE_NAME = "LarsM-Lovers";
-	const std::wstring IMAGE_NAME[3]
+	//画像名
+	const std::wstring COLOR_PATH[3]
 	{
 		L"Red",
 		L"Bule",
 		L"Yellow"
 	};
+	const std::wstring TEXT_EFFECT_PATH[4]
+	{
+		L"Great",
+		L"Good",
+		L"Bad",
+		L"Miss"
+	};
+	const std::wstring WAVE_EFFECT_PATH[2]
+	{
+		L"innerRingEffect",
+		L"ringEffect"
+	};
+
 	//判定時間
 	const int GREAT_TIME = 100;
-	const int GOOD_TIME = 190;
-	const int BAD_TIME = 300;
-	//判定
-	void HitTimingCheck(Status* _status);
-
-	Status* MinStatus(int n);
+	const int GOOD_TIME = 230;
+	const int BAD_TIME = 340;
+	
+	//タイミングカウント
+	int m_TimingCount = 0;
+	//コンボ
+	int m_Combo = 0;
 	
 	bool m_Press = false;
 
+	//文字エフェクト
+	Elixir::GameObject *m_TextEffect;
+	
+	Status* MinStatus(int n);
+	//判定
+	void HitTimingCheck(Status* _status);
+
+	//animation
+	Elixir::ETween<F32> m_tween;
+	Elixir::ETween<F32> m_textAnim;
+	Elixir::ETween<F32> m_inputAnim;
+	Elixir::ETween<F32> m_waveAnim[3];
+	
 	//For convinience
 	Elixir::SceneManager* Manager;
 };

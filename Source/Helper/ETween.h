@@ -14,8 +14,9 @@ namespace Elixir
 		{}
 
 		inline bool operator==(const tweenData& td2)
-		{
-			return this->tweenID == td2.tweenID;
+		{	
+			return this->tweenID == td2.tweenID && this->initialValue == td2.initialValue && this->finalValue == td2.finalValue
+				&& this->timeCounter == td2.timeCounter;
 		}
 
 		int tweenID;
@@ -48,8 +49,9 @@ namespace Elixir
 		void AddTweens(std::vector<tweenData<T>> tweens);
 
 		void Update(float dt);
-	private:
 		void AddTween(tweenData<T> tween);
+	private:
+		
 
 	private:
 		int m_lastTweenIndex;
@@ -116,7 +118,6 @@ namespace Elixir
 
 				if (tween.timeCounter >= tween.duration)
 				{
-					*tween.initialValue = tween.finalValue;
 					tween.fromReady = false;
 					if (tween.callback)
 					{
@@ -129,6 +130,8 @@ namespace Elixir
 					}
 
 					tweensToDelete.push_back(tween);
+
+					*tween.initialValue = tween.finalValue;
 				}
 
 				tween.timeCounter += dt;
@@ -142,6 +145,7 @@ namespace Elixir
 			if (position != m_tweenVec.end())
 			{
 				m_tweenVec.erase(position);
+				m_lastTweenIndex--;
 			}
 		}
 
@@ -176,7 +180,10 @@ namespace Elixir
 
 	template<class T>void ETween<T>::AddTween(tweenData<T> tween)
 	{
+	
+		tween.tweenID = m_lastTweenIndex;
 		m_tweenVec.push_back(tween);
+		m_lastTweenIndex++;
 	}
 
 	template<class T>void ETween<T>::AddTweens(std::vector<tweenData<T>> tweens)
