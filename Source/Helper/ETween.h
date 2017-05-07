@@ -15,7 +15,10 @@ namespace Elixir
 
 		inline bool operator==(const tweenData& td2)
 		{
-			return this->tweenID == td2.tweenID;
+			
+			return this->tweenID == td2.tweenID && this->initialValue == td2.initialValue && this->finalValue == td2.finalValue
+				&& this->timeCounter == td2.timeCounter;
+
 		}
 
 		int tweenID;

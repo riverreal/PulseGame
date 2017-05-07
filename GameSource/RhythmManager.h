@@ -39,9 +39,9 @@ private:
 	//初期ポジション(レーン)
 	Elixir::Vec3f m_LanePos[3]
 	{
-		Elixir::Vec3f( 200,-100,0 ),
-		Elixir::Vec3f( 0,100,0 ),
-		Elixir::Vec3f( -200,-100,0 )
+		Elixir::Vec3f( 300,-300,0 ),
+		Elixir::Vec3f( 0,-330,0 ),
+		Elixir::Vec3f( -300,-300,0 )
 	};
 
 	//初期スケール

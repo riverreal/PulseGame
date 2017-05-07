@@ -45,11 +45,9 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager)
 		effectWave2d->Get2DRenderer()->Color.a = 0.7f;
 
 		//waveEffect
-		m_waveAnim[i] = m_waveAnim[i].From(&effectWave2d->GetTransform()->Scale.x).To(2.5f).Time(1.0f)
-			.From(&effectWave2d->Get2DRenderer()->Color.a).To(0).Time(1.0f)
-			.From(&effectWave2d->GetTransform()->Scale.y).To(2.5f).Time(1.0f)
-			.OnFinish([effectWave2d]() {effectWave2d->Get2DRenderer()->Color.a = 0.0f;});
-
+		m_waveAnim[i] = m_waveAnim[i].From(&effectWave2d->GetTransform()->Scale.x).To(2.5f).Time(0.3f)
+			.From(&effectWave2d->Get2DRenderer()->Color.a).To(0).Time(0.3f)
+			.From(&effectWave2d->GetTransform()->Scale.y).To(2.5f).Time(0.3f);
 
 		effectWave2d->Get2DRenderer()->Color.a = 0.0f;
 
@@ -70,16 +68,10 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager)
 
 	m_TextEffect = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_2D);
 	m_TextEffect->Get2DRenderer()->Enabled = false;
-	m_TextEffect->GetTransform()->Position = Vec3f(0, 0, 0);
+	m_TextEffect->GetTransform()->Position = Vec3f(0, -30, 0);
 	
-	//Great
-	m_textAnim = m_textAnim.From(&m_TextEffect->Get2DRenderer()->Color.a).To(0.0f).Time(1.0f);
-	//Good
-	m_textAnim = m_textAnim.From(&m_TextEffect->Get2DRenderer()->Color.a).To(0.0f).Time(1.0f);
-	//Bad
-	m_textAnim = m_textAnim.From(&m_TextEffect->Get2DRenderer()->Color.a).To(0.0f).Time(1.0f);
-	//Miss
-	m_textAnim = m_textAnim.From(&m_TextEffect->Get2DRenderer()->Color.a).To(0.0f).Time(1.0f);
+	m_textAnim = m_textAnim.From(&m_TextEffect->Get2DRenderer()->Color.a).To(0.0f).Time(1.0f)
+		.From(&m_TextEffect->GetTransform()->Position.y).To(m_TextEffect->GetTransform()->Position.y + 30.0f).Time(1.0f);
 }
 
 void RhythmManager::Update(float dt)
@@ -97,7 +89,7 @@ void RhythmManager::Update(float dt)
 					lastNote->obj->Get2DRenderer()->Enabled = false;
 					m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[3] + L".png");
 					m_TextEffect->Get2DRenderer()->Enabled = true;
-					m_tween.AddTween(m_textAnim.GetTweens()[3]);
+					m_tween.AddTweens(m_textAnim.GetTweens());
 				}
 			}
 		}
@@ -137,7 +129,7 @@ void RhythmManager::Update(float dt)
 	}
 	#pragma region input key 
 	
-	if (GetAsyncKeyState(VK_UP) & 0x8000)
+	if (GetAsyncKeyState(VK_DOWN) & 0x8000)
 	{
 		if (!m_Press)
 		{
@@ -168,7 +160,6 @@ void RhythmManager::Update(float dt)
 			HitTimingCheck(MinStatus(2));
 			m_tween.AddTween(m_inputAnim.GetTweens()[4]);
 			m_tween.AddTween(m_inputAnim.GetTweens()[5]);
-
 		}
 	}
 
@@ -229,7 +220,7 @@ void RhythmManager::HitTimingCheck(Status* _status)
 		_status->obj->Get2DRenderer()->Enabled = false;
 		m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[0] + L".png");
 		m_TextEffect->Get2DRenderer()->Enabled = true;
-		m_tween.AddTween(m_textAnim.GetTweens()[0]);
+		m_tween.AddTweens(m_textAnim.GetTweens());
 	}
 	else if (timing <= GOOD_TIME / 2)
 	{
@@ -237,7 +228,7 @@ void RhythmManager::HitTimingCheck(Status* _status)
 		_status->obj->Get2DRenderer()->Enabled = false;
 		m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[1] + L".png");
 		m_TextEffect->Get2DRenderer()->Enabled = true;
-		m_tween.AddTween(m_textAnim.GetTweens()[1]);
+		m_tween.AddTweens(m_textAnim.GetTweens());
 	}
 	else if (timing <= BAD_TIME / 2)
 	{
@@ -245,7 +236,7 @@ void RhythmManager::HitTimingCheck(Status* _status)
 		_status->obj->Get2DRenderer()->Enabled = false;
 		m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[2] + L".png");
 		m_TextEffect->Get2DRenderer()->Enabled = true;
-		m_tween.AddTween(m_textAnim.GetTweens()[2]);
+		m_tween.AddTweens(m_textAnim.GetTweens());
 	}
 	else
 	{
@@ -253,7 +244,7 @@ void RhythmManager::HitTimingCheck(Status* _status)
 		_status->obj->Get2DRenderer()->Enabled = false;
 		m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[3] + L".png");
 		m_TextEffect->Get2DRenderer()->Enabled = true;
-		m_tween.AddTween(m_textAnim.GetTweens()[3]);
+		m_tween.AddTweens(m_textAnim.GetTweens());
 		missFlag = true;
 	}
 
