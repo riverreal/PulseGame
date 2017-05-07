@@ -3,6 +3,7 @@
 #include "../Source/System/IElixirGame.h"
 #include <vector>
 #include "../Source/Helper/TypeHelper.h"
+#include "../Source/Graphics/CameraManager.h"
 
 class PlayerShip
 {
@@ -21,7 +22,7 @@ private:
 
 	int m_currentIndex;
 	Elixir::GameObject* m_player;
-
+	Camera* m_camera;
 	//The target to look at
 	Elixir::Vec3f m_target;
 
@@ -29,6 +30,9 @@ private:
 	float m_travelSpeed;
 	float m_rotationSpeed;
 	float m_pathRadius;
+
+	float m_cameraRadius;
+	float m_cameraZDistance;
 
 	int m_currentCombo;
 

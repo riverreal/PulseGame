@@ -201,6 +201,9 @@
     <ClCompile Include="..\Source\Helper\ENote.cpp">
       <Filter>Source Files\Helper</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\System\InputManager.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\System\BaseApp.h">
@@ -397,6 +400,9 @@
     </ClInclude>
     <ClInclude Include="..\Source\Helper\ENote.h">
       <Filter>Source Files\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\System\InputManager.h">
+      <Filter>Source Files\System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -169,6 +169,24 @@ void Camera::RotateY(float angle)
 	XMStoreFloat3(&m_look, XMVector3TransformNormal(XMLoadFloat3(&m_look), R));
 }
 
+void Camera::RotateX(float angle)
+{
+	XMMATRIX R = XMMatrixRotationX(angle);
+
+	XMStoreFloat3(&m_right, XMVector3TransformNormal(XMLoadFloat3(&m_right), R));
+	XMStoreFloat3(&m_up, XMVector3TransformNormal(XMLoadFloat3(&m_up), R));
+	XMStoreFloat3(&m_look, XMVector3TransformNormal(XMLoadFloat3(&m_look), R));
+}
+
+void Camera::RotateZ(float angle)
+{
+	XMMATRIX R = XMMatrixRotationZ(angle);
+
+	XMStoreFloat3(&m_right, XMVector3TransformNormal(XMLoadFloat3(&m_right), R));
+	XMStoreFloat3(&m_up, XMVector3TransformNormal(XMLoadFloat3(&m_up), R));
+	XMStoreFloat3(&m_look, XMVector3TransformNormal(XMLoadFloat3(&m_look), R));
+}
+
 void Camera::Update()
 {
 	XMVECTOR R = XMLoadFloat3(&m_right);

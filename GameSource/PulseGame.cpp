@@ -7,15 +7,15 @@ void PulseGame::InitTestScene()
 {	
 	m_pause = true;
 	ThisScene->SetIrradiance(Manager->GetTextureManager()->AddTexture(L"Resources/Textures/Cubemaps/Irradiance/Irradiance.dds"));
-	ThisScene->SetEnvMap(Manager->GetTextureManager()->AddTexture(L"Resources/Textures/Cubemaps/dayCube.dds"));
+	ThisScene->SetEnvMap(Manager->GetTextureManager()->AddTexture(L"Resources/Textures/Cubemaps/earth_moon_skybox.dds"));
 
 	auto dirL = ThisScene->GetLight()->GetModDirectionalLight();
 
 	dirL->LightColor[0] = 1.0f;
-	dirL->LightColor[1] = 0.76f;
-	dirL->LightColor[2] = 0.21f;
+	dirL->LightColor[1] = 1.0f;
+	dirL->LightColor[2] = 1.0f;
 
-	dirL->LightIntensity[0] = 3.2f;
+	dirL->LightIntensity[0] = 1.0f;
 	dirL->LightIntensity[1] = 0.1f;
 
 	dirL->Direction[0] = 0.1f;
@@ -35,7 +35,7 @@ void PulseGame::InitTestScene()
 
 	obj->GetRenderer()->Model = Manager->GetModel()->AddTubeFromLineData(smoothLine, tangents, radius, smoothLine);
 	obj->SetName("Tube");
-
+	obj->GetTransform()->TextureScale = Vec3f(40.0f, 3.0f, 1.0f);
 	auto titleVer = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
 	titleVer->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/title/verticalTitle.png");
 	titleVer->Get2DRenderer()->Color.a = 0.0f;
@@ -46,11 +46,10 @@ void PulseGame::InitTestScene()
 	titleHor->GetTransform()->Scale.y = 0.0f;
 	m_title = titleHor;
 
-	m_tween = m_tween.From(&titleHor->Get2DRenderer()->Color.a).To(1.0f).Time(2.0f);
-	m_tween = m_tween.From(&titleHor->GetTransform()->Scale.y).To(1.0f).Time(2.0f);
-	m_tween = m_tween.OnFinish([]() {ElixirLog("Scale Ended!"); });
+	m_tween = m_tween.From(&titleHor->Get2DRenderer()->Color.a).To(0.0f).Time(2.0f);
+	m_tween = m_tween.From(&titleHor->GetTransform()->Scale.y).To(0.0f).Time(2.0f);
 	ETween<F32> afterScale;
-	afterScale = afterScale.From(&titleVer->Get2DRenderer()->Color.a).To(1.0f).Time(2.0f);
+	afterScale = afterScale.From(&titleVer->Get2DRenderer()->Color.a).To(0.0f).Time(2.0f);
 	m_tween = m_tween.OnFinishChain(&afterScale);
 
 	m_player.Initialize(Manager, m_lineData, radius);
