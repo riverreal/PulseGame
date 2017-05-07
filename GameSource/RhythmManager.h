@@ -91,7 +91,7 @@ private:
 	Elixir::ETween<F32> m_tween;
 	Elixir::ETween<F32> m_textAnim;
 	Elixir::ETween<F32> m_inputAnim;
-	Elixir::ETween<F32> m_waveAnim;
+	Elixir::ETween<F32> m_waveAnim[3];
 	
 	//For convinience
 	Elixir::SceneManager* Manager;

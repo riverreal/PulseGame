@@ -41,24 +41,17 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager)
 		//wave
 		auto effectWave2d = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_2D);
 		effectWave2d->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Effect/" + WAVE_EFFECT_PATH[1] + L".png");
-		effectWave2d->Get2DRenderer()->Enabled = false;
 		effectWave2d->GetTransform()->Position = m_LanePos[i];
-		//waveEffect
-		ETween<F32> afterAnim;
-		afterAnim = afterAnim.From(&effectWave2d->GetTransform()->Scale.x).To(2.5f).Time(0.3f)
-			.From(&effectWave2d->GetTransform()->Scale.y).To(2.5f).Time(0.3f)
-			.From(&effectWave2d->Get2DRenderer()->Color.a).To(0).Time(0.4f)
-			.OnFinish([effectWave2d]() {
-			effectWave2d->Get2DRenderer()->Enabled = false;
-			effectWave2d->GetTransform()->Scale = Vec3f(1, 1, 1);
-			effectWave2d->Get2DRenderer()->Color.a = 0.7f;
-		});
+		effectWave2d->Get2DRenderer()->Color.a = 0.7f;
 
-		m_waveAnim = m_waveAnim.From(&effectWave2d->GetTransform()->Scale.x).To(1.0f).Time(0.0f)
-			.OnFinish([effectWave2d]() {
-				effectWave2d->Get2DRenderer()->Enabled = true;
-			})
-			.OnFinishChain(&afterAnim);
+		//waveEffect
+		m_waveAnim[i] = m_waveAnim[i].From(&effectWave2d->GetTransform()->Scale.x).To(2.5f).Time(1.0f)
+			.From(&effectWave2d->Get2DRenderer()->Color.a).To(0).Time(1.0f)
+			.From(&effectWave2d->GetTransform()->Scale.y).To(2.5f).Time(1.0f)
+			.OnFinish([effectWave2d]() {effectWave2d->Get2DRenderer()->Color.a = 0.0f;});
+
+
+		effectWave2d->Get2DRenderer()->Color.a = 0.0f;
 
 		//hitBox
 		auto Screen2d = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_2D);
@@ -266,7 +259,7 @@ void RhythmManager::HitTimingCheck(Status* _status)
 
 	if (!missFlag)
 	{
-		m_tween.AddTween(m_waveAnim.GetTweens()[m_NotesLaneNumber[_status->num]]);
+		m_tween.AddTweens(m_waveAnim[m_NotesLaneNumber[_status->num]].GetTweens());
 	}
 }
 //各レーンの最小値を持つ構造体取得関数
