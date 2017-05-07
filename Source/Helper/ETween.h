@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <algorithm>
 
 namespace Elixir
 {
@@ -8,6 +9,16 @@ namespace Elixir
 	struct tweenData
 	{
 	public:
+		tweenData(int tID)
+			:tweenID(tID)
+		{}
+
+		inline bool operator==(const tweenData& td2)
+		{
+			return this->tweenID == td2.tweenID;
+		}
+
+		int tweenID;
 		bool fromReady;
 		bool byReference;
 		T* initialValue;
@@ -23,8 +34,6 @@ namespace Elixir
 	class ETween
 	{
 	public:
-		
-
 		ETween();
 		~ETween();
 
@@ -36,9 +45,12 @@ namespace Elixir
 
 		std::vector<tweenData<T>> GetTweens();
 
+		void AddTweens(std::vector<tweenData<T>> tweens);
+
 		void Update(float dt);
-	private:
 		void AddTween(tweenData<T> tween);
+	private:
+		
 
 	private:
 		int m_lastTweenIndex;
@@ -54,7 +66,7 @@ namespace Elixir
 
 	template<class T>ETween<T> ETween<T>::From(T* initVal)
 	{
-		tweenData<T> tween;
+		tweenData<T> tween(m_lastTweenIndex);
 
 		tween.fromReady = true;
 		tween.byReference = true;
@@ -94,6 +106,7 @@ namespace Elixir
 	template<class T> void ETween<T>::Update(float dt)
 	{
 		std::vector<tweenData<T>> tweensToAdd;
+		std::vector<tweenData<T>> tweensToDelete;
 
 		for (auto &tween : m_tweenVec)
 		{
@@ -115,9 +128,22 @@ namespace Elixir
 					{
 						tweensToAdd.push_back(callbackTw);
 					}
+
+					tweensToDelete.push_back(tween);
 				}
 
 				tween.timeCounter += dt;
+			}
+		}
+
+		for (tweenData<T> &oldTween : tweensToDelete)
+		{
+			//m_tweenVec.erase(std::remove(m_tweenVec.begin(), m_tweenVec.end(), oldTween), m_tweenVec.end());
+			std::vector<tweenData<T>>::iterator position = std::find(m_tweenVec.begin(), m_tweenVec.end(), oldTween);
+			if (position != m_tweenVec.end())
+			{
+				m_tweenVec.erase(position);
+				m_lastTweenIndex--;
 			}
 		}
 
@@ -152,6 +178,17 @@ namespace Elixir
 
 	template<class T>void ETween<T>::AddTween(tweenData<T> tween)
 	{
+	
+		tween.tweenID = m_lastTweenIndex;
 		m_tweenVec.push_back(tween);
+		m_lastTweenIndex++;
+	}
+
+	template<class T>void ETween<T>::AddTweens(std::vector<tweenData<T>> tweens)
+	{
+		for (auto &tween : tweens)
+		{
+			AddTween(tween);
+		}
 	}
 }
