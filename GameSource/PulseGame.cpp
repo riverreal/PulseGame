@@ -35,7 +35,7 @@ void PulseGame::InitTestScene()
 
 	obj->GetRenderer()->Model = Manager->GetModel()->AddTubeFromLineData(smoothLine, tangents, radius, smoothLine);
 	obj->SetName("Tube");
-
+	obj->GetTransform()->TextureScale = Vec3f(40.0f, 3.0f, 1.0f);
 	auto titleVer = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
 	titleVer->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/title/verticalTitle.png");
 	titleVer->Get2DRenderer()->Color.a = 0.0f;
