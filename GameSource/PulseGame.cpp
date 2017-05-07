@@ -34,23 +34,10 @@ void PulseGame::InitTestScene()
 	float radius = 1.0f;
 
 	obj->GetRenderer()->Model = Manager->GetModel()->AddTubeFromLineData(smoothLine, tangents, radius, smoothLine);
+	obj->GetRenderer()->Material.roughness = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/75.png");
+	obj->GetRenderer()->Material.metallic = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/25.png");
 	obj->SetName("Tube");
 	obj->GetTransform()->TextureScale = Vec3f(40.0f, 3.0f, 1.0f);
-	auto titleVer = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
-	titleVer->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/title/verticalTitle.png");
-	titleVer->Get2DRenderer()->Color.a = 0.0f;
-
-	auto titleHor = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
-	titleHor->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/title/horizontalTitle.png");
-	titleHor->Get2DRenderer()->Color.a = 0.0f;
-	titleHor->GetTransform()->Scale.y = 0.0f;
-	m_title = titleHor;
-
-	m_tween = m_tween.From(&titleHor->Get2DRenderer()->Color.a).To(0.0f).Time(2.0f);
-	m_tween = m_tween.From(&titleHor->GetTransform()->Scale.y).To(0.0f).Time(2.0f);
-	ETween<F32> afterScale;
-	afterScale = afterScale.From(&titleVer->Get2DRenderer()->Color.a).To(0.0f).Time(2.0f);
-	m_tween = m_tween.OnFinishChain(&afterScale);
 
 	m_player.Initialize(Manager, m_lineData, radius);
 	m_rhythm.Initialize(Manager);
@@ -71,7 +58,6 @@ void PulseGame::UpdateTestScene(float dt)
 	if (!m_pause)
 	{
 		m_player.UpdateShipPos(dt);
-		m_tween.Update(dt);
 		m_rhythm.Update(dt);
 	}
 }

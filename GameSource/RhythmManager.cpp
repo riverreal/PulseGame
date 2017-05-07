@@ -72,7 +72,7 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager)
 
 	m_TextEffect = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_2D);
 	m_TextEffect->Get2DRenderer()->Enabled = false;
-	m_TextEffect->GetTransform()->Position = Vec3f(0, -30, 0);
+	m_TextEffect->GetTransform()->Position = Vec3f(0, -150, 0);
 	
 	m_textAnim = m_textAnim.From(&m_TextEffect->Get2DRenderer()->Color.a).To(0.0f).Time(1.0f)
 		.From(&m_TextEffect->GetTransform()->Position.y).To(m_TextEffect->GetTransform()->Position.y + 30.0f).Time(1.0f);

@@ -97,3 +97,6 @@ bin/Debug/Intermediate/jsoncpp.obj
 bin/Debug/Intermediate/main.obj
 bin/Debug/Intermediate/Render2DComponent.obj
 bin/Debug/Intermediate/Texture2DShader.obj
+bin/Debug/Intermediate/ENote.obj
+bin/Debug/Intermediate/InputManager.obj
+bin/Debug/Intermediate/RhythmManager.obj

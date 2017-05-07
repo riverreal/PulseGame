@@ -19,8 +19,6 @@ public:
 
 private:
 	std::vector<Vec3f> m_lineData;
-	GameObject* m_title;
-	ETween<F32> m_tween;
 	PlayerShip m_player;
 	RhythmManager m_rhythm;
 	bool m_pause;
