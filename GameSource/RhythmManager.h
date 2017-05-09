@@ -12,7 +12,7 @@ public:
 	void Update(float dt);
 
 	int GetCombo();
-
+	int GetTimingBonus();
 private:
 	//ノーツステータス
 	struct Status {
@@ -79,7 +79,7 @@ private:
 	int m_TimingCount = 0;
 	//コンボ
 	int m_Combo = 0;
-	
+	int m_timingBonus;
 	bool m_Press = false;
 
 	//文字エフェクト

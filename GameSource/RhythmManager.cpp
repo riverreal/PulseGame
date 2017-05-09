@@ -12,11 +12,13 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager)
 {
 	Manager = sceneManager;
 	m_Combo = 0;
+	m_timingBonus = 0;
 	//BGMファイル設定
 	AudioManager::GetInstance().AddControlledMusic("Resource/rhythmFolder/LarsM-Lovers.mp3");
 	AudioManager::GetInstance().GetControlledMusic()->setIsPaused(true);
 
 	ENote::GetInstance().AddNote<int>("GetCombo", [this]() ->int {return this->GetCombo(); });
+	ENote::GetInstance().AddNote<int>("GetTimingBonus", [this]() ->int {return this->GetTimingBonus(); });
 
 	//PNFファイルゲット
 	auto FileContents = Manager->GetFileManager()->LoadFileLines("Resource/rhythmFolder/Pnf_Folder/"+ FILE_NAME +".pnf");
@@ -91,7 +93,7 @@ void RhythmManager::Update(float dt)
 				{
 					lastNote->active = false;
 					m_Combo = 0;
-
+					m_timingBonus = 0;
 					lastNote->obj->Get2DRenderer()->Enabled = false;
 					m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[3] + L".png");
 					m_TextEffect->Get2DRenderer()->Enabled = true;
@@ -216,6 +218,11 @@ int RhythmManager::GetCombo()
 	return m_Combo;
 }
 
+int RhythmManager::GetTimingBonus()
+{
+	return m_timingBonus;
+}
+
 void RhythmManager::HitTimingCheck(Status* _status)
 {
 	if (_status == nullptr)
@@ -231,7 +238,7 @@ void RhythmManager::HitTimingCheck(Status* _status)
 	{
 		_status->active = false;
 		m_Combo++;
-
+		m_timingBonus += 2;
 		_status->obj->Get2DRenderer()->Enabled = false;
 		m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[0] + L".png");
 		m_TextEffect->Get2DRenderer()->Enabled = true;
@@ -242,7 +249,7 @@ void RhythmManager::HitTimingCheck(Status* _status)
 	{
 		_status->active = false;
 		m_Combo++;
-
+		m_timingBonus++;
 		_status->obj->Get2DRenderer()->Enabled = false;
 		m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[1] + L".png");
 		m_TextEffect->Get2DRenderer()->Enabled = true;
@@ -252,7 +259,7 @@ void RhythmManager::HitTimingCheck(Status* _status)
 	{
 		_status->active = false;
 		m_Combo++;
-
+		
 		_status->obj->Get2DRenderer()->Enabled = false;
 		m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[2] + L".png");
 		m_TextEffect->Get2DRenderer()->Enabled = true;
@@ -262,7 +269,7 @@ void RhythmManager::HitTimingCheck(Status* _status)
 	{
 		_status->active = false;
 		m_Combo = 0;
-
+		m_timingBonus = 0;
 		_status->obj->Get2DRenderer()->Enabled = false;
 		m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[3] + L".png");
 		m_TextEffect->Get2DRenderer()->Enabled = true;

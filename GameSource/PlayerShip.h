@@ -35,7 +35,7 @@ private:
 	float m_cameraZDistance;
 
 	int m_currentCombo;
-
+	int m_timingBouns;
 	Elixir::Vec3f m_upVec;
 
 	//For convinience
