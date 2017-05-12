@@ -46,6 +46,7 @@ namespace Elixir
 
 		std::vector<Scene*> m_scenes;
 		std::string m_currentSceneName;
+		std::string m_sceneInQueue;
 
 		Model* m_model;
 		TextureManager* m_textureManager;

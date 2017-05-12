@@ -4,6 +4,7 @@
 
 Elixir::SceneManager::SceneManager(TextureManager* tManager)
 	:m_currentSceneName(""),
+	m_sceneInQueue(""),
 	m_sceneChanged(true)
 {
 	m_fileManager = new FileIO();
@@ -65,8 +66,12 @@ void Elixir::SceneManager::ChangeScene(std::string name)
 {
 	auto scene = GetScene(name);
 
-	if(scene != nullptr)
-		m_currentSceneName = scene->GetName();
+	if (scene != nullptr)
+	{
+		m_sceneInQueue = scene->GetName();
+		m_sceneChanged = true;
+	}
+		
 }
 
 Elixir::Scene* Elixir::SceneManager::GetCurrentScene()
@@ -311,6 +316,11 @@ void Elixir::SceneManager::UpdateCurrentScene(float dt)
 	//first init if scene was changed 1 frame before
 	if (m_sceneChanged)
 	{
+		if(m_sceneInQueue != "")
+		{
+			m_currentSceneName = m_sceneInQueue;
+		}
+		
 		GetCurrentScene()->Init();
 
 		if (!m_model->Initialize(m_textureManager->GetDevice()))

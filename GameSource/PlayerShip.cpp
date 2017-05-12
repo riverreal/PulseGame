@@ -22,6 +22,7 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	m_currentCombo = 0;
 	m_currentPos = 0.5f;
 	m_aheadPos = 0.7f;
+	m_timingBouns = 0;
 	m_upVec = Vec3f(1.0f, 0.0f, 0.0f);
 
 	m_camera = Manager->GetCurrentScene()->GetCamera();
@@ -39,8 +40,9 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 
 void PlayerShip::UpdateShipPos(float dt)
 {
-	m_currentPos += m_travelSpeed * dt;
-	m_aheadPos += m_travelSpeed * dt;
+	auto speed = m_travelSpeed * dt +(m_currentCombo + m_timingBouns)* dt *0.001f;
+	m_currentPos+= speed;
+	m_aheadPos += speed;
 
 	if (m_currentPos >= 1.0f)
 	{
@@ -69,6 +71,8 @@ void PlayerShip::UpdateShipPos(float dt)
 	}
 
 	m_currentCombo = ENote::GetInstance().Notify<int>("GetCombo");
+	m_timingBouns = ENote::GetInstance().Notify<int>("GetTimingBonus");
+
 
 	auto aheadPoint = MathHelper::GetPointInCMSpline(m_lineData[m_aheadIndex], m_lineData[m_aheadIndex + 1], m_lineData[m_aheadIndex + 2], m_lineData[m_aheadIndex+ 3], m_aheadPos);
 
