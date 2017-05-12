@@ -4,15 +4,21 @@
 #include "../Source/Helper/TypeHelper.h"
 #include "../Source/Helper/ETween.h"
 
+enum Difficulty
+{
+	Easy = 1,
+	Normal = 2,
+	Hard = 3
+};
+
 class RhythmManager
 {
 public:
-	void Initialize(Elixir::SceneManager* sceneManager);
+	void Initialize(Elixir::SceneManager* sceneManager , Difficulty dif);
 
 	void Update(float dt);
 
 	int GetCombo();
-
 private:
 	//ノーツステータス
 	struct Status {
@@ -41,9 +47,9 @@ private:
 	//初期ポジション(レーン)
 	Elixir::Vec3f m_LanePos[3]
 	{
-		Elixir::Vec3f( 300,-300,0 ),
-		Elixir::Vec3f( 0,-330,0 ),
-		Elixir::Vec3f( -300,-300,0 )
+		Elixir::Vec3f( 200,-150,0 ),
+		Elixir::Vec3f( 0,-180,0 ),
+		Elixir::Vec3f( -200,-150,0 )
 	};
 
 	//初期スケール
@@ -81,6 +87,9 @@ private:
 	int m_Combo = 0;
 	
 	bool m_Press = false;
+	
+	bool m_modeEasy = false;
+	bool m_modeNormal = false;
 
 	//文字エフェクト
 	Elixir::GameObject *m_TextEffect;
@@ -94,6 +103,8 @@ private:
 	Elixir::ETween<F32> m_textAnim;
 	Elixir::ETween<F32> m_inputAnim;
 	Elixir::ETween<F32> m_waveAnim[3];
+
+
 	
 	//For convinience
 	Elixir::SceneManager* Manager;

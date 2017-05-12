@@ -404,6 +404,9 @@
     <ClInclude Include="..\Source\System\InputManager.h">
       <Filter>Source Files\System</Filter>
     </ClInclude>
+    <ClInclude Include="..\GameSource\CourseSelect.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Source\Graphics\Shaders\LightPixelShader.hlsl">

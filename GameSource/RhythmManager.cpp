@@ -5,15 +5,13 @@
 
 using namespace Elixir;
 
-/*
-	音ゲーが難しすぎる。規則性があれば良ゲーに？
-*/
-void RhythmManager::Initialize(Elixir::SceneManager * sceneManager)
+void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , Difficulty dif)
 {
 	Manager = sceneManager;
 	m_Combo = 0;
+	int NumofLane = (int)dif;
 	//BGMファイル設定
-	AudioManager::GetInstance().AddControlledMusic("Resource/rhythmFolder/LarsM-Lovers.mp3");
+	AudioManager::GetInstance().AddControlledMusic("Resource/rhythmFolder/"+ FILE_NAME +".mp3");
 	AudioManager::GetInstance().GetControlledMusic()->setIsPaused(true);
 
 	ENote::GetInstance().AddNote<int>("GetCombo", [this]() ->int {return this->GetCombo(); });
@@ -27,6 +25,27 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager)
 		m_NotesLaneNumber.push_back(std::stoi(val[0]));
 		m_NotesTiming.push_back(std::stold(val[1]));
 	}
+	//LaneofNum
+	if (NumofLane != 3)
+	{	
+		for (auto &LaneNum : m_NotesLaneNumber)
+		{
+			if (NumofLane == 2)
+			{
+				if (LaneNum == 2)
+				{
+					LaneNum = rand() % 2;
+
+				}
+				m_modeNormal = true;
+			}
+			else if (NumofLane == 1)
+			{
+				LaneNum = 0;
+				m_modeEasy = true;
+			}
+		}
+	}
 	for (int i = 0; i < 10; i++)
 	{
 		//Notes
@@ -39,16 +58,15 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager)
 		m_NotesStatus.push_back(_status);		
 	}
 
-	for (int i = 0; i < 3; i++)
-	{
-		
-		//wave
+	for (int i = 0; i < NumofLane; i++)
+	{	
+		//waveEfect
 		auto effectWave2d = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_2D);
 		effectWave2d->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Effect/" + WAVE_EFFECT_PATH[1] + L".png");
 		effectWave2d->GetTransform()->Position = m_LanePos[i];
 		effectWave2d->Get2DRenderer()->Color.a = 0.7f;
 
-		//waveEffect
+		//waveEffectAnim
 		m_waveAnim[i] = m_waveAnim[i].From(&effectWave2d->GetTransform()->Scale.x).To(2.5f).Time(0.3f)
 			.From(&effectWave2d->Get2DRenderer()->Color.a).To(0).Time(0.3f)
 			.From(&effectWave2d->GetTransform()->Scale.y).To(2.5f).Time(0.3f);
@@ -72,7 +90,7 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager)
 
 	m_TextEffect = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_2D);
 	m_TextEffect->Get2DRenderer()->Enabled = false;
-	m_TextEffect->GetTransform()->Position = Vec3f(0, -150, 0);
+	m_TextEffect->GetTransform()->Position = Vec3f(0, -75, 0);
 	
 	m_textAnim = m_textAnim.From(&m_TextEffect->Get2DRenderer()->Color.a).To(0.0f).Time(1.0f)
 		.From(&m_TextEffect->GetTransform()->Position.y).To(m_TextEffect->GetTransform()->Position.y + 30.0f).Time(1.0f);
@@ -137,7 +155,7 @@ void RhythmManager::Update(float dt)
 
 	#pragma region input key 
 
-	if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+	if (GetAsyncKeyState(VK_DOWN) & 0x8000 && !m_modeEasy )
 	{
 		if (!m_Press)
 		{
@@ -148,7 +166,7 @@ void RhythmManager::Update(float dt)
 			m_tween.AddTween(m_inputAnim.GetTweens()[3]);
 		}
 	}
-	else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+	else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 )
 	{
 		if (!m_Press)
 		{
@@ -159,7 +177,7 @@ void RhythmManager::Update(float dt)
 			m_tween.AddTween(m_inputAnim.GetTweens()[1]);
 		}
 	}
-	else if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+	else if (GetAsyncKeyState(VK_LEFT) & 0x8000 && !m_modeEasy && !m_modeNormal)
 	{
 		if (!m_Press)
 		{

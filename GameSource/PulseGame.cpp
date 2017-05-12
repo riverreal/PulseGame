@@ -40,7 +40,7 @@ void PulseGame::InitTestScene()
 	obj->GetTransform()->TextureScale = Vec3f(40.0f, 3.0f, 1.0f);
 
 	m_player.Initialize(Manager, m_lineData, radius);
-	m_rhythm.Initialize(Manager);
+	m_rhythm.Initialize(Manager,Hard);
 }
 
 void PulseGame::UpdateTestScene(float dt)

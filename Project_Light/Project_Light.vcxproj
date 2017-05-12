@@ -216,6 +216,7 @@
     <ClInclude Include="..\External Soruce\jsoncpp\json\json-forwards.h" />
     <ClInclude Include="..\External Soruce\jsoncpp\json\json.h" />
     <ClInclude Include="..\External Soruce\WICTextureLoader\WICTextureLoader.h" />
+    <ClInclude Include="..\GameSource\CourseSelect.h" />
     <ClInclude Include="..\GameSource\PlayerShip.h" />
     <ClInclude Include="..\GameSource\PulseGame.h" />
     <ClInclude Include="..\GameSource\RhythmManager.h" />
