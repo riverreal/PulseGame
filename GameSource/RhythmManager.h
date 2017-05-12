@@ -3,6 +3,8 @@
 #include <vector>
 #include "../Source/Helper/TypeHelper.h"
 #include "../Source/Helper/ETween.h"
+#include "CourseSelect.h"
+
 
 enum Difficulty
 {
@@ -56,8 +58,7 @@ private:
 
 	//初期スケール
 	const float m_DefaultScale = 3.0f;
-	//ファイルネーム
-	const std::string FILE_NAME = "LarsM-Lovers";
+	
 	//画像名
 	const std::wstring COLOR_PATH[3]
 	{

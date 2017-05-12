@@ -24,7 +24,7 @@ void PulseGame::InitTestScene()
 
 	ThisScene->GetCamera()->SetPosition(0.0f, 0.0f, -10.0f);
 
-	m_lineData = LoadLine(Manager->GetFileManager()->LoadFile("Resource/course03.pld"));
+	m_lineData = LoadLine(Manager->GetFileManager()->LoadFile(CourseDataArray[CourseID::course03].path));
 
 	auto smoothLine = MathHelper::CatmullromSpline(m_lineData, 20, false);
 	auto tangents = MathHelper::CatmullromSpline(m_lineData, 20, true);
