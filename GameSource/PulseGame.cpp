@@ -2,7 +2,6 @@
 #include "../Source/System/GameManager.h"
 #include "../Source/Includes/LESystem.h"
 
-
 void PulseGame::InitTestScene()
 {	
 	m_pause = true;
@@ -24,7 +23,7 @@ void PulseGame::InitTestScene()
 
 	ThisScene->GetCamera()->SetPosition(0.0f, 0.0f, -10.0f);
 
-	m_lineData = LoadLine(Manager->GetFileManager()->LoadFile(CourseDataArray[CourseID::course03].path));
+	m_lineData = LoadLine(Manager->GetFileManager()->LoadFile(CourseDataArray[CourseID::hitorigoto].path));
 
 	auto smoothLine = MathHelper::CatmullromSpline(m_lineData, 20, false);
 	auto tangents = MathHelper::CatmullromSpline(m_lineData, 20, true);
@@ -40,7 +39,8 @@ void PulseGame::InitTestScene()
 	obj->GetTransform()->TextureScale = Vec3f(40.0f, 3.0f, 1.0f);
 
 	m_player.Initialize(Manager, m_lineData, radius);
-	m_rhythm.Initialize(Manager,DIFF::HARD);
+
+	m_rhythm.Initialize(Manager, DIFF::HARD);
 }
 
 void PulseGame::UpdateTestScene(float dt)

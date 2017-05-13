@@ -4,6 +4,7 @@ namespace
 	{
 		course03,
 		test8,
+		hitorigoto
 	};
 	struct CourseData
 	{
@@ -16,9 +17,10 @@ namespace
 		{};
 	};
 
-	CourseData CourseDataArray[2] =
+	CourseData CourseDataArray[3] =
 	{
 		CourseData("Resource/course03.pld","LarsM-Lovers","course03"),
-		CourseData("Resource/test8.pld","Dash","test8")
+		CourseData("Resource/test8.pld","Dash","test8"),
+		CourseData("Resource/test8.pld","hitorigoto","Hitori Planet")
 	};
 }
