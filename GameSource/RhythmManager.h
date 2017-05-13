@@ -6,17 +6,17 @@
 #include "CourseSelect.h"
 
 
-enum Difficulty
+enum DIFF
 {
-	Easy = 1,
-	Normal = 2,
-	Hard = 3
+	EASY = 1,
+	NORMAL = 2,
+	HARD = 3
 };
 
 class RhythmManager
 {
 public:
-	void Initialize(Elixir::SceneManager* sceneManager , Difficulty dif);
+	void Initialize(Elixir::SceneManager* sceneManager , DIFF dif);
 
 	void Update(float dt);
 

@@ -6,7 +6,7 @@
 
 using namespace Elixir;
 
-void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , Difficulty dif)
+void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif)
 {
 	Manager = sceneManager;
 	m_Combo = 0;
@@ -14,14 +14,14 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , Difficulty 
 
 	m_timingBonus = 0;
 	//BGMファイル設定
-	AudioManager::GetInstance().AddControlledMusic("Resource/rhythmFolder/" + CourseDataArray[CourseID::course03].music +".mp3");
+	AudioManager::GetInstance().AddControlledMusic("Resource/rhythmFolder/" + CourseDataArray[CourseID::hitorigoto].music +".mp3");
 	AudioManager::GetInstance().GetControlledMusic()->setIsPaused(true);
 
 	ENote::GetInstance().AddNote<int>("GetCombo", [this]() ->int {return this->GetCombo(); });
 	ENote::GetInstance().AddNote<int>("GetTimingBonus", [this]() ->int {return this->GetTimingBonus(); });
 
 	//PNFファイルゲット
-	auto FileContents = Manager->GetFileManager()->LoadFileLines("Resource/rhythmFolder/Pnf_Folder/" + CourseDataArray[CourseID::course03].music + ".pnf");
+	auto FileContents = Manager->GetFileManager()->LoadFileLines("Resource/rhythmFolder/Pnf_Folder/" + CourseDataArray[CourseID::hitorigoto].music + ".pnf");
 	//lineを,で分割して代入
 	for (auto & line : FileContents)
 	{
@@ -224,7 +224,7 @@ void RhythmManager::Update(float dt)
 	//static bool reloadedSong = false;
 	if (AudioManager::GetInstance().GetControlledMusic()->isFinished())
 	{
-		AudioManager::GetInstance().AddControlledMusic("Resource/rhythmFolder/LarsM-Lovers.mp3");
+		AudioManager::GetInstance().AddControlledMusic("Resource/rhythmFolder/" + CourseDataArray[CourseID::hitorigoto].music + ".mp3");
 		AudioManager::GetInstance().GetControlledMusic()->setIsPaused(true);
 		AudioManager::GetInstance().GetControlledMusic()->setPlayPosition(0);
 
