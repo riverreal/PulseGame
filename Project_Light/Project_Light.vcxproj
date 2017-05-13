@@ -168,6 +168,7 @@
     <ClCompile Include="..\GameSource\PlayerShip.cpp" />
     <ClCompile Include="..\GameSource\PulseGame.cpp" />
     <ClCompile Include="..\GameSource\RhythmManager.cpp" />
+    <ClCompile Include="..\GameSource\SongSelect.cpp" />
     <ClCompile Include="..\GameSource\TitleScene.cpp" />
     <ClCompile Include="..\Source\Graphics\BasicShapes.cpp" />
     <ClCompile Include="..\Source\Graphics\BlendState.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="..\GameSource\PlayerShip.h" />
     <ClInclude Include="..\GameSource\PulseGame.h" />
     <ClInclude Include="..\GameSource\RhythmManager.h" />
+    <ClInclude Include="..\GameSource\SongSelect.h" />
     <ClInclude Include="..\GameSource\TitleScene.h" />
     <ClInclude Include="..\Source\Graphics\BasicShapes.h" />
     <ClInclude Include="..\Source\Graphics\BlendState.h" />

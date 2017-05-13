@@ -213,6 +213,9 @@
     <ClCompile Include="..\GameSource\CourseSelect.cpp">
       <Filter>Source Files\Game\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="..\GameSource\SongSelect.cpp">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\System\BaseApp.h">
@@ -420,6 +423,9 @@
       <Filter>Source Files\Game\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="..\GameSource\CourseSelect.h">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameSource\SongSelect.h">
       <Filter>Source Files\Game\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
