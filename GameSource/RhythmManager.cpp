@@ -6,7 +6,7 @@
 
 using namespace Elixir;
 
-void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , Difficulty dif)
+void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif)
 {
 	Manager = sceneManager;
 	m_Combo = 0;
@@ -32,20 +32,22 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , Difficulty 
 	//LaneofNum
 	if (NumofLane != 3)
 	{	
-		for (auto &LaneNum : m_NotesLaneNumber)
+		for (int i = 0; i < m_NotesLaneNumber.size(); i++)
 		{
 			if (NumofLane == 2)
 			{
-				if (LaneNum == 2)
+				if (m_NotesLaneNumber[i] == 2)
 				{
-					LaneNum = rand() % 2;
-
+					if (i != 0)
+						m_NotesLaneNumber[i] = m_NotesLaneNumber[i - 1];
+					else
+						m_NotesLaneNumber[i] = rand() % 2;
 				}
 				m_modeNormal = true;
 			}
 			else if (NumofLane == 1)
 			{
-				LaneNum = 0;
+				m_NotesLaneNumber[i] = 0;
 				m_modeEasy = true;
 			}
 		}
@@ -128,7 +130,7 @@ void RhythmManager::Update(float dt)
 		if (_status.active)
 		{
 			//最終スケール + ((タイミング - 現在の再生時間) * 初期スケール) / 1000
-			auto _scale = 0.85f + ((m_NotesTiming[_status.num] - (int)AudioManager::GetInstance().GetControlledMusic()->getPlayPosition()) * m_DefaultScale ) /1000;
+			auto _scale = 0.9f + ((m_NotesTiming[_status.num] - (int)AudioManager::GetInstance().GetControlledMusic()->getPlayPosition()) * m_DefaultScale ) /1000;
 			_status.obj->GetTransform()->Scale = Vec3f(_scale, _scale, 1);
 			_status.obj->Get2DRenderer()->Color.a = (-_scale + 1) / 3 + 1;
 		}		
