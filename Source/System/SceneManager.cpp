@@ -233,7 +233,7 @@ void Elixir::SceneManager::LoadScene(std::string filename)
 	auto sData = m_fileManager->ReadSceneFile(filename);
 	
 	auto currentScene = GetCurrentScene();
-	currentScene->RemoveAllObjects();
+	//currentScene->RemoveAllObjects();
 
 	for (auto obj : sData.GameObjects)
 	{
