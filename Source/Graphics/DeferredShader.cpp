@@ -46,12 +46,12 @@ bool DeferredShader::Render(ID3D11DeviceContext * deviceContext, GameObject* obj
 	auto normal = texManager->GetTexture(object->GetRenderer()->Material.normal);
 	auto roughness = texManager->GetTexture(object->GetRenderer()->Material.roughness);
 	auto metallic = texManager->GetTexture(object->GetRenderer()->Material.metallic);
-
+	auto emissive = texManager->GetTexture(object->GetRenderer()->Material.emissive);
 	auto transMatrix = XMLoadFloat4x4(&object->GetTransform()->TextureTransform4x4);
 	auto worldMatrix = XMLoadFloat4x4(&object->GetTransform()->World4x4);
 
 	result = SetShaderParameters(deviceContext, transMatrix, worldMatrix, 
-		camera->GetViewMatrix(), camera->GetProjectionMatrix(), albedo, roughness, metallic, normal);
+		camera->GetViewMatrix(), camera->GetProjectionMatrix(), albedo, roughness, metallic, normal, emissive);
 
 	if (!result)
 	{
@@ -155,7 +155,7 @@ void DeferredShader::ShutdownShader()
 	ReleaseCOM(m_vertexShader);
 }
 
-bool DeferredShader::SetShaderParameters(ID3D11DeviceContext * deviceContext, DirectX::XMMATRIX& texTransf, XMMATRIX & world, XMMATRIX & view, XMMATRIX & projection, ID3D11ShaderResourceView * albedoTexture, ID3D11ShaderResourceView * roughnessTexture, ID3D11ShaderResourceView * metallicTexture, ID3D11ShaderResourceView* normalTexture)
+bool DeferredShader::SetShaderParameters(ID3D11DeviceContext * deviceContext, DirectX::XMMATRIX& texTransf, XMMATRIX & world, XMMATRIX & view, XMMATRIX & projection, ID3D11ShaderResourceView * albedoTexture, ID3D11ShaderResourceView * roughnessTexture, ID3D11ShaderResourceView * metallicTexture, ID3D11ShaderResourceView* normalTexture, ID3D11ShaderResourceView* emissiveTexture)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -192,6 +192,7 @@ bool DeferredShader::SetShaderParameters(ID3D11DeviceContext * deviceContext, Di
 	deviceContext->PSSetShaderResources(1, 1, &roughnessTexture);
 	deviceContext->PSSetShaderResources(2, 1, &metallicTexture);
 	deviceContext->PSSetShaderResources(3, 1, &normalTexture);
+	deviceContext->PSSetShaderResources(4, 1, &emissiveTexture);
 
 	return true;
 }

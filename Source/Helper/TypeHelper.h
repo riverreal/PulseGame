@@ -569,17 +569,17 @@ namespace Elixir
 	struct Material
 	{
 		Material()
-			:albedo(1), normal(2), roughness(3), metallic(4), name("NewMaterial")
+			:albedo(1), normal(2), roughness(3), metallic(4), emissive(4), name("NewMaterial")
 		{};
 
 		//Set material
-		Material(U32 alb, U32 norm, U32 rough, U32 metal)
-			:albedo(alb), normal(norm), roughness(rough), metallic(metal), name("NewMaterial")
+		Material(U32 alb, U32 norm, U32 rough, U32 metal, U32 emis)
+			:albedo(alb), normal(norm), roughness(rough), metallic(metal), emissive(emis), name("NewMaterial")
 		{};
 
 		//Copy material
 		Material(const Material &cpy)
-			:albedo(cpy.albedo), normal(cpy.normal), roughness(cpy.roughness), metallic(cpy.metallic), name(cpy.name)
+			:albedo(cpy.albedo), normal(cpy.normal), roughness(cpy.roughness), metallic(cpy.metallic), emissive(cpy.emissive), name(cpy.name)
 		{};
 
 		// 0 means unset
@@ -587,6 +587,7 @@ namespace Elixir
 		U32 normal;
 		U32 roughness;
 		U32 metallic;
+		U32 emissive;
 
 		U32 materialID;
 

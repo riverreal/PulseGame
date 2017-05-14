@@ -924,6 +924,21 @@ void Elixir::Editor::RenderEditor()
 					}
 				}
 
+				if (ImGui::Button("Add Emissive"))
+				{
+					filename = L"";
+					filename = m_sceneManager->GetFileManager()->OpenFileW(extension);
+					auto rootPath = m_sceneManager->GetFileManager()->GetExePathW();
+					//erasing full exe path -13 (13 is /bin/Debug/.exe)
+					auto numOfChar = rootPath.length() - 13;
+					filename.erase(0, numOfChar);
+
+					if (filename != L"")
+					{
+						m_selectedObject->GetRenderer()->Material.emissive = m_sceneManager->GetTextureManager()->AddTexture(filename);
+					}
+				}
+
 				ImGui::TreePop();
 			}
 

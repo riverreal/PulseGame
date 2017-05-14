@@ -4,6 +4,7 @@ Texture2D gAlbedo : register(t0);
 Texture2D gRoughness : register(t1);
 Texture2D gMetallic : register(t2);
 Texture2D gNormalMap : register(t3);
+Texture2D gEmissive : register(t4);
 
 SamplerState samAnisotropic : register(s0);
 
@@ -37,8 +38,10 @@ PixelOutputType DeferredPixelShader(PixelInputType input) : SV_TARGET
 	{
 		float4 roughnessValues = gRoughness.Sample(samAnisotropic, input.tex);
 		float4 metallicValues = gMetallic.Sample(samAnisotropic, input.tex);
+		float4 emissiveValues = gEmissive.Sample(samAnisotropic, input.tex);
 
 		output.albedo = float4(albedoValues.rgb, 1.0f);
+		output.albedo.a = emissiveValues.r;
 		float depth = input.position.z / input.position.w;
 
 		//calculate normal

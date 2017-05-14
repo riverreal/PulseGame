@@ -26,7 +26,7 @@ namespace Elixir
 		void ShutdownShader();
 
 		bool SetShaderParameters(ID3D11DeviceContext* deviceContext, DirectX::XMMATRIX& texTrans, DirectX::XMMATRIX& world,
-			DirectX::XMMATRIX& view, DirectX::XMMATRIX& projection, ID3D11ShaderResourceView* albedoSRV, ID3D11ShaderResourceView* roughnessSRV, ID3D11ShaderResourceView* metallicSRV, ID3D11ShaderResourceView* normalSRV);
+			DirectX::XMMATRIX& view, DirectX::XMMATRIX& projection, ID3D11ShaderResourceView* albedoSRV, ID3D11ShaderResourceView* roughnessSRV, ID3D11ShaderResourceView* metallicSRV, ID3D11ShaderResourceView* normalSRV, ID3D11ShaderResourceView* emissiveSRV);
 		void RenderShader(ID3D11DeviceContext* deviceContext, offsetData offset);
 
 		struct MatrixBufferType

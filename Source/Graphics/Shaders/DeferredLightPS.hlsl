@@ -68,6 +68,7 @@ float4 DeferredLightPS(PixelInputType input) : SV_TARGET
 	float4 normalTexR;
 	float3 normal;
 	float4 material;
+	float emissive;
 	float4 position;
 	float2 texTrans;
 	float depth;
@@ -76,18 +77,17 @@ float4 DeferredLightPS(PixelInputType input) : SV_TARGET
 	material = materialTexture.Sample(SampleTypePoint, input.tex);
 	position = positionTexture.Sample(SampleTypePoint, input.tex);
 	normal = normalTexR.rgb;
-	
+	emissive = albedo.a;
 	depth = material.b;
 
-	if (depth < 0.001f)
+	if (depth < 0.0001f)
 	{
 		outputColor = albedo;
 		return outputColor;
-	}
+	}	
 
 	//Gamma correction
 	albedo.rgb = pow(albedo.rgb, 2.2f);
-
 	//world space normal
 	normal = 2.0f * normal - 1.0f;
 	normal = clamp(normal, -1.0f, 1.0f);
@@ -259,5 +259,7 @@ float4 DeferredLightPS(PixelInputType input) : SV_TARGET
 		outputColor = lerp(outputColor, gFog.FogColor, fogLerp);
 	}
 	
-	return outputColor;//float4(normal, 1.0f);
+	outputColor.rgb += albedo.rgb * (emissive * 10.0f);
+
+	return outputColor;
 }
