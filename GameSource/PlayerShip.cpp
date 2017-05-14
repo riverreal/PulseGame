@@ -29,11 +29,13 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	m_camera->SetPosition(0.0f, 0.0f, 10.0f);
 	
 	m_player = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
-	m_player->GetRenderer()->Model = Manager->GetModel()->AddModelFromFile("Resource/ship.obj");
-	m_player->GetRenderer()->Material.albedo = Manager->GetTextureManager()->AddTexture(L"Resource/blue.jpg");
-	m_player->GetRenderer()->Material.metallic = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/150.png");
+	m_player->GetRenderer()->Model = Manager->GetModel()->AddModelFromFile("Resource/ships/shipImp.obj");
+	m_player->GetRenderer()->Material.albedo = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipAlbedoEm.png");
+	m_player->GetRenderer()->Material.metallic = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipMetallic.png");
+	m_player->GetRenderer()->Material.normal = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipNormal.png");
+	m_player->GetRenderer()->Material.emissive = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipEmissive.png");
 	m_player->GetRenderer()->Material.roughness = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/75.png");
-	m_player->GetTransform()->Scale = Vec3f(0.3f);
+	m_player->GetTransform()->Scale = Vec3f(0.1f);
 	m_player->GetTransform()->Position = MathHelper::GetPointInCMSpline(m_lineData[0], m_lineData[1], m_lineData[2], m_lineData[3], m_currentPos).Position;
 	m_target = MathHelper::GetPointInCMSpline(m_lineData[0], m_lineData[1], m_lineData[2], m_lineData[3], m_aheadPos).Position;
 }
