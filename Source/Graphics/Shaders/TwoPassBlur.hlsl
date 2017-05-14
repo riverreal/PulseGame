@@ -16,7 +16,7 @@ cbuffer passProperties
 	float passNumber;
 	float gWidth;
 	float gHeight;
-	float pad;
+	float radius;
 };
 
 struct VertexOut
@@ -49,11 +49,9 @@ float4 TwoPassBlur(VertexOut input) : SV_TARGET
 	float3 output = gImg.Sample(samplerLinear, input.tex).rgb;
 	
 	float2 coord;
-	float radius = 6.0f;
 
 	if (passNumber < 1.0f)
-	{
-		
+	{	
 		//Horizontal Blur
 
 		if (radius >= 1.0f)
@@ -133,5 +131,9 @@ float4 TwoPassBlur(VertexOut input) : SV_TARGET
 		*/
 	}
 
-	return float4(output, 1.0f);
+	float4 result = float4(output, 1.0f);;
+	if (radius > 20.0f)
+		result.a = 0.1f;
+
+	return result;
 }

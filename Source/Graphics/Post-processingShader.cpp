@@ -5,6 +5,7 @@
 #include "Shaders/Compiled/AdaptedLum.h"
 #include "Shaders/Compiled/BrightPassFilter.h"
 #include "Shaders/Compiled/TwoPassBlur.h"
+#include "Shaders/Compiled/AnaLensFlareBrightPass.h"
 #include <string>
 
 PostProcessShader::PostProcessShader()
@@ -12,6 +13,7 @@ PostProcessShader::PostProcessShader()
 	m_pixelShader(0),
 	m_adaptLumShader(0),
 	m_brightPassShader(0),
+	m_anaLFBrightPassShader(0),
 	m_blurShader(0),
 	m_layout(0),
 	m_samplerState(0),
@@ -143,6 +145,13 @@ bool PostProcessShader::InitializeShader(ID3D11Device * device, HWND hWnd)
 	}
 
 	result = device->CreatePixelShader(BPF_PS, sizeof(BPF_PS), NULL, &m_brightPassShader);
+	if (FAILED(result))
+	{
+		RadixLog("Could not create Bright Pass Shader");
+		return false;
+	}
+
+	result = device->CreatePixelShader(ALF_BP, sizeof(ALF_BP), NULL, &m_anaLFBrightPassShader);
 	if (FAILED(result))
 	{
 		RadixLog("Could not create Bright Pass Shader");
@@ -458,6 +467,7 @@ void PostProcessShader::ShutdownShader()
 	ReleaseCOM(m_samplerState);
 	ReleaseCOM(m_layout);
 	ReleaseCOM(m_blurShader);
+	ReleaseCOM(m_anaLFBrightPassShader);
 	ReleaseCOM(m_brightPassShader);
 	ReleaseCOM(m_adaptLumShader);
 	ReleaseCOM(m_pixelShader);
@@ -503,7 +513,8 @@ bool PostProcessShader::SetShaderParameters(ID3D11DeviceContext * deviceContext,
 
 	deviceContext->PSSetShaderResources(0, 1, &unProcessedImage);
 	deviceContext->PSSetShaderResources(1, 1, &m_oldAdaptedIllumSRV[m_oldSRVSwap]);
-	deviceContext->PSSetShaderResources(2, 1, &m_auxSRV[3]);
+	deviceContext->PSSetShaderResources(2, 1, &m_auxSRV[4]);
+	deviceContext->PSSetShaderResources(3, 1, &m_auxSRV[5]);
 
 	result = deviceContext->Map(m_postPParamBufer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result))
@@ -561,7 +572,7 @@ bool PostProcessShader::SetAdaptedShaderParam(ID3D11DeviceContext * deviceContex
 	return true;
 }
 
-bool PostProcessShader::SetBlurShaderParam(ID3D11DeviceContext * deviceContext, ID3D11ShaderResourceView * imgToBlur, float textureWidth, float textureHeight, bool vertical)
+bool PostProcessShader::SetBlurShaderParam(ID3D11DeviceContext * deviceContext, ID3D11ShaderResourceView * imgToBlur, float textureWidth, float textureHeight, bool vertical, float radius)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -580,8 +591,9 @@ bool PostProcessShader::SetBlurShaderParam(ID3D11DeviceContext * deviceContext, 
 	dataPtr1->passNumber = (float)vertical;
 	dataPtr1->width = textureWidth;
 	dataPtr1->height = textureHeight;
+	dataPtr1->radius = radius;
 
-	memcpy(mappedResource.pData, dataPtr1, sizeof(AdaptedBuffer));
+	memcpy(mappedResource.pData, dataPtr1, sizeof(blurBuffer));
 
 	deviceContext->Unmap(m_blurBuffer, 0);
 
@@ -723,29 +735,75 @@ void PostProcessShader::RenderBloom(ID3D11DeviceContext * deviceContext)
 	deviceContext->PSSetSamplers(0, 1, &m_samplerStateNoWrap);
 	deviceContext->Draw(3, 0);
 
-	//Horizontal blur
+	//#1 blur does a small radius blur -> stores in aux3
+	//#2 blur does a wider radius blur -> stores in aux4
+
+	//Horizontal blur #1
 	deviceContext->OMSetRenderTargets(1, &m_auxRTV[2], NULL);
-
-	bool vertical = false;
-	SetBlurShaderParam(deviceContext, m_auxSRV[1], m_viewport.Width, m_viewport.Height, vertical);
+	bool isVertical = false;
+	SetBlurShaderParam(deviceContext, m_auxSRV[1], m_viewport.Width, m_viewport.Height, isVertical, 4.0f);
 	deviceContext->IASetInputLayout(NULL);
 	deviceContext->VSSetShader(m_vertexShader, nullptr, 0);
 	deviceContext->PSSetShader(m_blurShader, nullptr, 0);
 	deviceContext->PSSetSamplers(0, 1, &m_samplerStateNoWrap);
 	deviceContext->Draw(3, 0);
 
-	//Vertical blur
+	//Vertical blur #1
 	deviceContext->OMSetRenderTargets(1, &m_auxRTV[3], NULL);
-
-	vertical = true;
-	SetBlurShaderParam(deviceContext, m_auxSRV[2], m_viewport.Width, m_viewport.Height, vertical);
+	isVertical = true;
+	SetBlurShaderParam(deviceContext, m_auxSRV[2], m_viewport.Width, m_viewport.Height, isVertical, 4.0f);
 	deviceContext->IASetInputLayout(NULL);
 	deviceContext->VSSetShader(m_vertexShader, nullptr, 0);
 	deviceContext->PSSetShader(m_blurShader, nullptr, 0);
 	deviceContext->PSSetSamplers(0, 1, &m_samplerStateNoWrap);
 	deviceContext->Draw(3, 0);
 
-	//Final bloom image is stored in aux3
+	//Horizontal blur #2
+	deviceContext->OMSetRenderTargets(1, &m_auxRTV[2], NULL);
+	isVertical = false;
+	SetBlurShaderParam(deviceContext, m_auxSRV[3], m_viewport.Width, m_viewport.Height, isVertical, 8.0f);
+	deviceContext->IASetInputLayout(NULL);
+	deviceContext->VSSetShader(m_vertexShader, nullptr, 0);
+	deviceContext->PSSetShader(m_blurShader, nullptr, 0);
+	deviceContext->PSSetSamplers(0, 1, &m_samplerStateNoWrap);
+	deviceContext->Draw(3, 0);
+
+	//Vertical blur #2
+	deviceContext->OMSetRenderTargets(1, &m_auxRTV[4], NULL);
+	isVertical = true;
+	SetBlurShaderParam(deviceContext, m_auxSRV[2], m_viewport.Width, m_viewport.Height, isVertical, 8.0f);
+	deviceContext->IASetInputLayout(NULL);
+	deviceContext->VSSetShader(m_vertexShader, nullptr, 0);
+	deviceContext->PSSetShader(m_blurShader, nullptr, 0);
+	deviceContext->PSSetSamplers(0, 1, &m_samplerStateNoWrap);
+	deviceContext->Draw(3, 0);
+
+	//Final bloom image is stored in aux4
+
+	//Anamorphic Lens Flare----------------------------------------------
+
+	//Down sample and anamorphic lens flare brigth pass filter
+	deviceContext->OMSetRenderTargets(1, &m_auxRTV[1], NULL);
+	deviceContext->PSSetShaderResources(0, 1, &m_auxSRV[0]);
+	deviceContext->PSSetShaderResources(1, 1, &m_avrgIllumSRV);
+
+	deviceContext->IASetInputLayout(NULL);
+	deviceContext->VSSetShader(m_vertexShader, nullptr, 0);
+	deviceContext->PSSetShader(m_anaLFBrightPassShader, nullptr, 0);
+	deviceContext->PSSetSamplers(0, 1, &m_samplerStateNoWrap);
+	deviceContext->Draw(3, 0);
+
+	deviceContext->OMSetRenderTargets(1, &m_auxRTV[5], NULL);
+	deviceContext->RSSetViewports(1, &m_viewport);
+	isVertical = false;
+	SetBlurShaderParam(deviceContext, m_auxSRV[1], m_viewport.Width, m_viewport.Height, isVertical, 200.0f);
+	deviceContext->IASetInputLayout(NULL);
+	deviceContext->VSSetShader(m_vertexShader, nullptr, 0);
+	deviceContext->PSSetShader(m_blurShader, nullptr, 0);
+	deviceContext->PSSetSamplers(0, 1, &m_samplerStateNoWrap);
+	deviceContext->Draw(3, 0);
+
+	//Final lens flare image is stored in aux5
 }
 
 int PostProcessShader::GetNearestPow2(int resolution)

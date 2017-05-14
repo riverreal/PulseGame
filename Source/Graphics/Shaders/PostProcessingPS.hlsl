@@ -3,6 +3,7 @@
 Texture2D gImg : register(t0);
 Texture2D gAdaptedLum : register(t1);
 Texture2D gBloom : register(t2);
+Texture2D gAnaLensFlare : register(t3);
 
 SamplerState samplerLinear;
 //true = 1
@@ -11,6 +12,7 @@ SamplerState samplerLinear;
 #define EYE_ADAPTATION 1
 #define FXAA 1
 #define HDR_BLOOM 1
+#define ANAMORPHIC_LENS_FLARE 1
 
 cbuffer PostProcessParam : register(b0)
 {
@@ -53,6 +55,11 @@ PixelOut PostProcessingPS(VertexOut input) : SV_TARGET
 #if HDR_BLOOM
 		output.color += float4(gBloom.Sample(samplerLinear, input.tex).rgb, 1.0f);
 #endif //HDR_BLOOM
+
+#if ANAMORPHIC_LENS_FLARE
+		output.color += float4(gAnaLensFlare.Sample(samplerLinear, input.tex).rgb, 1.0f);
+#endif //ANAMORPHIC_LENS_FLARE
+
 		float exposure = 0.5f;
 #if EYE_ADAPTATION
 		float4 adaptedLum = gAdaptedLum.Sample(samplerLinear, input.tex);

@@ -29,7 +29,7 @@ private:
 
 	bool SetAdaptedShaderParam(ID3D11DeviceContext* deviceContext, float dt, U32 firstPass, ID3D11ShaderResourceView* source = 0);
 
-	bool SetBlurShaderParam(ID3D11DeviceContext* deviceContext, ID3D11ShaderResourceView* imgToBlur, float textureWidth, float textureHeight, bool vertical);
+	bool SetBlurShaderParam(ID3D11DeviceContext* deviceContext, ID3D11ShaderResourceView* imgToBlur, float textureWidth, float textureHeight, bool vertical, float radius);
 	//Render to the back buffer
 	void RenderShader(ID3D11DeviceContext* deviceContext, offsetData offset);
 
@@ -71,16 +71,16 @@ private:
 		float passNumber;
 		float width;
 		float height;
-		float pad;
+		float radius;
 	};
 
 	bool m_firstFrame;
 	bool m_oldSRVSwap;
 
 	//Auxiliar buffers for post processing needed for some effects like bloom
-	ID3D11Texture2D* m_auxBuffers[4];
-	ID3D11RenderTargetView* m_auxRTV[4];
-	ID3D11ShaderResourceView* m_auxSRV[4];
+	ID3D11Texture2D* m_auxBuffers[6];
+	ID3D11RenderTargetView* m_auxRTV[6];
+	ID3D11ShaderResourceView* m_auxSRV[6];
 
 	std::vector<ID3D11Texture2D*> m_avrgIllumBuffers;
 	std::vector<ID3D11RenderTargetView*> m_avrgIllumRTV;
@@ -108,6 +108,7 @@ private:
 	//pixel shader that renders adapted luminance
 	ID3D11PixelShader* m_adaptLumShader;
 	ID3D11PixelShader* m_brightPassShader;
+	ID3D11PixelShader* m_anaLFBrightPassShader;
 	ID3D11PixelShader* m_blurShader;
 	ID3D11InputLayout* m_layout;
 	ID3D11SamplerState* m_samplerState;
