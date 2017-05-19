@@ -34,7 +34,7 @@ public:
 private:
 	Camera m_smoothCamera;
 
-	title pulseGame;
+	TitleSecne pulseGame;
 
 	float m_speedMult;
 
@@ -119,7 +119,7 @@ bool SimpleApp::Init()
 	//Early initialization of singleton
 	AudioManager::GetInstance();
 
-	pulseGame.StartScene("title");
+	pulseGame.StartScene("TitleScene");
 
 	return true;
 }

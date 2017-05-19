@@ -18,7 +18,7 @@ void SongSelect::Update(float dt)
 
 }
 
-void songselect::SetImage()
+void SongSelect::SetImage()
 {
 	//画像表示　位置、サイズ
 	auto title = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
