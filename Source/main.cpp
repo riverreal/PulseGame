@@ -2,7 +2,7 @@
 #include "Includes/LEGraphics.h"
 #include <stdlib.h>
 #include <time.h>
-#include "../GameSource/PulseGame.h"
+#include "../GameSource/TitleScene.h"
 
 //16:9 resolutions
 //480p - WVGA (854 x 480)
@@ -12,8 +12,8 @@
 
 namespace Elixir
 {
-	const static int SCREEN_WIDTH = 1600;
-	const static int SCRENN_HEIGHT = 900;
+	const static int SCREEN_WIDTH = 1280;
+	const static int SCRENN_HEIGHT = 720;
 };
 
 using namespace Elixir;
@@ -34,7 +34,7 @@ public:
 private:
 	Camera m_smoothCamera;
 
-	PulseGame pulseGame;
+	title pulseGame;
 
 	float m_speedMult;
 
@@ -119,7 +119,7 @@ bool SimpleApp::Init()
 	//Early initialization of singleton
 	AudioManager::GetInstance();
 
-	pulseGame.StartScene("Pulse");
+	pulseGame.StartScene("title");
 
 	return true;
 }
