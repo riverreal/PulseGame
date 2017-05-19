@@ -6,11 +6,12 @@
 
 using namespace Elixir;
 
-void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif)
+void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif,int playerNum)
 {
 	Manager = sceneManager;
 	m_Combo = 0;
 	int NumofLane = (int)dif;
+	m_PlayerNum = playerNum;
 
 	m_timingBonus = 0;
 	//BGMÉtÉ@ÉCÉãê›íË
@@ -161,7 +162,7 @@ void RhythmManager::Update(float dt)
 
 	#pragma region input key 
 
-	if (GetAsyncKeyState(VK_DOWN) & 0x8000 && !m_modeEasy )
+	if (CommandInterpreter::GetInstance().isCenterNotes(m_PlayerNum) && !m_modeEasy )
 	{
 		if (!m_Press)
 		{
@@ -172,7 +173,7 @@ void RhythmManager::Update(float dt)
 			m_tween.AddTween(m_inputAnim.GetTweens()[3]);
 		}
 	}
-	else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 )
+	else if (CommandInterpreter::GetInstance().isRightNotes(m_PlayerNum))
 	{
 		if (!m_Press)
 		{
@@ -183,7 +184,7 @@ void RhythmManager::Update(float dt)
 			m_tween.AddTween(m_inputAnim.GetTweens()[1]);
 		}
 	}
-	else if (GetAsyncKeyState(VK_LEFT) & 0x8000 && !m_modeEasy && !m_modeNormal)
+	else if (CommandInterpreter::GetInstance().isLeftNotes(m_PlayerNum) && !m_modeEasy && !m_modeNormal)
 	{
 		if (!m_Press)
 		{

@@ -1,14 +1,14 @@
 #pragma once
-
 #include "../Source/System/IElixirGame.h"
 #include <vector>
 #include "../Source/Helper/TypeHelper.h"
 #include "../Source/Graphics/CameraManager.h"
+#include"CommandInterpreter.h"
 
 class PlayerShip
 {
 public:
-	void Initialize(Elixir::SceneManager* sceneManager, std::vector<Elixir::Vec3f> line, float radius);
+	void Initialize(Elixir::SceneManager* sceneManager, std::vector<Elixir::Vec3f> line, float radius, int playerNum);
 
 	void UpdateShipPos(float dt);
 
@@ -19,6 +19,7 @@ private:
 	float m_currentPos;
 	float m_aheadPos;
 	int m_aheadIndex;
+	int m_PlayerNum;
 
 	int m_currentIndex;
 	Elixir::GameObject* m_player;

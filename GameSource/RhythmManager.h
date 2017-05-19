@@ -4,6 +4,7 @@
 #include "../Source/Helper/TypeHelper.h"
 #include "../Source/Helper/ETween.h"
 #include "CourseSelect.h"
+#include"CommandInterpreter.h"
 
 
 enum DIFF
@@ -16,7 +17,7 @@ enum DIFF
 class RhythmManager
 {
 public:
-	void Initialize(Elixir::SceneManager* sceneManager , DIFF dif);
+	void Initialize(Elixir::SceneManager* sceneManager, DIFF dif, int playerNum);
 
 	void Update(float dt);
 
@@ -93,6 +94,8 @@ private:
 	
 	bool m_modeEasy = false;
 	bool m_modeNormal = false;
+
+	int m_PlayerNum;
 
 	//文字エフェクト
 	Elixir::GameObject *m_TextEffect;

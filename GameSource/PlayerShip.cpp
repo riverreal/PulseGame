@@ -6,7 +6,7 @@
 
 using namespace Elixir;
 
-void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line, float radius)
+void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line, float radius ,int playerNum)
 {
 	Manager = sceneManager;
 	m_currentIndex = 0;
@@ -27,6 +27,8 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 
 	m_camera = Manager->GetCurrentScene()->GetCamera();
 	m_camera->SetPosition(0.0f, 0.0f, 10.0f);
+
+	m_PlayerNum = playerNum;
 	
 	m_player = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
 	m_player->GetRenderer()->Model = Manager->GetModel()->AddModelFromFile("Resource/ships/shipImp.obj");
@@ -81,12 +83,12 @@ void PlayerShip::UpdateShipPos(float dt)
 	m_target = aheadPoint.Position;
 	SetPlayerPos(dt);
 
-	if (GetAsyncKeyState('E') & 0x8000)
+	if (CommandInterpreter::GetInstance().isStrafeRight(m_PlayerNum))
 	{
 		m_rotationAngle += 1.3f * dt;
 	}
 
-	if (GetAsyncKeyState('Q') & 0x8000)
+	if (CommandInterpreter::GetInstance().isStrafeLeft(m_PlayerNum))
 	{
 		m_rotationAngle -= 1.3f * dt;
 	}
