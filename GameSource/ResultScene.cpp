@@ -5,7 +5,7 @@
 using namespace Elixir;
 
 //start
-void result::Init()
+void ResultScene::Init()
 {
 	SetImage();
 	//シーンの移動
@@ -13,13 +13,13 @@ void result::Init()
 }
 
 //Update
-void result::Update(float dt)
+void ResultScene::Update(float dt)
 {
 
 }
 
 
-void result::SetNextButton()
+void ResultScene::SetNextButton()
 {
 	auto next = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
 	next->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/next_button.png");
@@ -27,7 +27,7 @@ void result::SetNextButton()
 	next->GetTransform()->Scale = Vec3f(0.5f, 0.5f, 0);
 }
 
-void result::SetImage()
+void ResultScene::SetImage()
 {
 	//画像表示　位置、サイズ
 

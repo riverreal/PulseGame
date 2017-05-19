@@ -5,7 +5,7 @@
 
 using namespace Elixir;
 
-class title : public IElixirGame
+class TitleSecne : public IElixirGame
 {
 public:
 	virtual void Init() override;
@@ -13,5 +13,5 @@ public:
 	void SetImage();
 
 private:
-	mode m_mode;
+	ModeScene m_mode;
 };

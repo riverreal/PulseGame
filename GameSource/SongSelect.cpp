@@ -5,7 +5,7 @@
 using namespace Elixir;
 
 //start
-void songselect::Init()
+void SongSelect::Init()
 {
 	SetImage();
 	//ƒV[ƒ“‚ÌˆÚ“®
@@ -13,7 +13,7 @@ void songselect::Init()
 }
 
 //Update
-void songselect::Update(float dt)
+void SongSelect::Update(float dt)
 {
 
 }

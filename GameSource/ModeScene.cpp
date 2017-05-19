@@ -5,7 +5,7 @@
 using namespace Elixir;
 
 //start
-void mode::Init()
+void ModeScene::Init()
 {
 	SetImage();
 	//シーンの移動
@@ -13,12 +13,12 @@ void mode::Init()
 }
 
 //Update
-void mode::Update(float dt)
+void ModeScene::Update(float dt)
 {
 
 }
 
-void mode::SetImage()
+void ModeScene::SetImage()
 {
 	//画像表示　位置、サイズ
 	auto modetitle = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);

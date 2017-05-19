@@ -4,7 +4,7 @@
 
 using namespace Elixir;
 
-class result : public IElixirGame
+class ResultScene : public IElixirGame
 {
 public:
 	virtual void Init() override;
