@@ -5,7 +5,7 @@
 using namespace Elixir;
 
 //start
-void title::Init()
+void TitleSecne::Init()
 {
 	SetImage();
 
@@ -15,7 +15,7 @@ void title::Init()
 }
 
 //Update
-void title::Update(float dt)
+void TitleSecne::Update(float dt)
 {
 	if (GetAsyncKeyState('S') & 0x8000)
 	{
@@ -23,7 +23,7 @@ void title::Update(float dt)
 	}
 }
 
-void title::SetImage()
+void TitleSecne::SetImage()
 {
 	//画像表示　位置、サイズ
 	auto title = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);

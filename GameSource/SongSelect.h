@@ -4,7 +4,7 @@
 
 using namespace Elixir;
 
-class songselect : public IElixirGame
+class SongSelect : public IElixirGame
 {
 public:
 	virtual void Init() override;
