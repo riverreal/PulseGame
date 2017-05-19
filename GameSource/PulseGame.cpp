@@ -38,35 +38,11 @@ void PulseGame::InitTestScene()
 	obj->SetName("Tube");
 	obj->GetTransform()->TextureScale = Vec3f(40.0f, 3.0f, 1.0f);
 
-	m_player.Initialize(Manager, m_lineData, radius,0);
-
-	m_rhythm.Initialize(Manager, DIFF::HARD,0);
+	m_playerManager.AddPlayer(Manager, 0, m_lineData, radius, DIFF::HARD);
 }
 
 void PulseGame::UpdateTestScene(float dt)
 {
-
-	if (GetAsyncKeyState('Q') & 0x8000)
-		CommandInterpreter::GetInstance().setStrafeLeft(0, true);
-	else
-		CommandInterpreter::GetInstance().setStrafeLeft(0, false);
-	if (GetAsyncKeyState('E') & 0x8000)
-		CommandInterpreter::GetInstance().setStrafeRight(0, true);
-	else
-		CommandInterpreter::GetInstance().setStrafeRight(0, false);
-	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
-		CommandInterpreter::GetInstance().setRightNotes(0, true);
-	else
-		CommandInterpreter::GetInstance().setRightNotes(0, false);
-	if (GetAsyncKeyState(VK_DOWN) & 0x8000)
-		CommandInterpreter::GetInstance().setCenterNotes(0, true);
-	else
-		CommandInterpreter::GetInstance().setCenterNotes(0, false);
-	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
-		CommandInterpreter::GetInstance().setLeftNotes(0, true);
-	else
-		CommandInterpreter::GetInstance().setLeftNotes(0, false);
-
 	if (GetAsyncKeyState('P') & 0x8000)
 	{
 		m_pause = true;
@@ -79,8 +55,7 @@ void PulseGame::UpdateTestScene(float dt)
 
 	if (!m_pause)
 	{
-		m_player.UpdateShipPos(dt);
-		m_rhythm.Update(dt);
+		m_playerManager.Update(dt);
 	}
 }
 

@@ -13,7 +13,8 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	m_aheadIndex = 0;
 	m_travelSpeed = 0.1f;
 	m_lineData = line;
-	m_rotationAngle = 0.0f;
+	m_rotationAngle = playerNum * XM_PI;
+
 	m_rotationSpeed = 1.3f;
 	m_cameraRadius = radius + 1.0f;
 	m_cameraZDistance = 1.3f;
@@ -74,9 +75,8 @@ void PlayerShip::UpdateShipPos(float dt)
 		}
 	}
 
-	m_currentCombo = ENote::GetInstance().Notify<int>("GetCombo");
-	m_timingBouns = ENote::GetInstance().Notify<int>("GetTimingBonus");
-
+	m_currentCombo = ENote::GetInstance().Notify<int>("GetCombo" + m_PlayerNum);
+	m_timingBouns = ENote::GetInstance().Notify<int>("GetTimingBonus" + m_PlayerNum);
 
 	auto aheadPoint = MathHelper::GetPointInCMSpline(m_lineData[m_aheadIndex], m_lineData[m_aheadIndex + 1], m_lineData[m_aheadIndex + 2], m_lineData[m_aheadIndex+ 3], m_aheadPos);
 
@@ -179,22 +179,26 @@ void PlayerShip::SetPlayerPos(float dt)
 	playerPos.x = pPos.x + deltaPos.x; playerPos.y = pPos.y + deltaPos.y; playerPos.z = pPos.z + deltaPos.z;
 	upVec.x = up.x; upVec.y = up.y; upVec.z = up.z;
 
-	Vec3f pc2(cos(rotationAngle) * m_cameraRadius, -m_cameraZDistance, sin(rotationAngle) * m_cameraRadius);
+	//Camera update
+	if (m_PlayerNum == 0)
+	{
+		Vec3f pc2(cos(rotationAngle) * m_cameraRadius, -m_cameraZDistance, sin(rotationAngle) * m_cameraRadius);
 
-	Vec3f cameraCirclePos;
-	cameraCirclePos.x = pc2.x * right.x + pc2.y * up.x + pc2.z * forward.x;
-	cameraCirclePos.y = pc2.x * right.y + pc2.y * up.y + pc2.z * forward.y;
-	cameraCirclePos.z = pc2.x * right.z + pc2.y * up.z + pc2.z * forward.z;
+		Vec3f cameraCirclePos;
+		cameraCirclePos.x = pc2.x * right.x + pc2.y * up.x + pc2.z * forward.x;
+		cameraCirclePos.y = pc2.x * right.y + pc2.y * up.y + pc2.z * forward.y;
+		cameraCirclePos.z = pc2.x * right.z + pc2.y * up.z + pc2.z * forward.z;
 
-	DirectX::XMFLOAT3 camPos;
-	camPos.x = cmPoint.Position.x + cameraCirclePos.x;
-	camPos.y = cmPoint.Position.y + cameraCirclePos.y;
-	camPos.z = cmPoint.Position.z + cameraCirclePos.z;
+		DirectX::XMFLOAT3 camPos;
+		camPos.x = cmPoint.Position.x + cameraCirclePos.x;
+		camPos.y = cmPoint.Position.y + cameraCirclePos.y;
+		camPos.z = cmPoint.Position.z + cameraCirclePos.z;
 
-	m_camera->SetPosition(camPos);
+		m_camera->SetPosition(camPos);
 
-	DirectX::XMFLOAT3 target;
-	target.x = m_target.x; target.y = m_target.y; target.z = m_target.z;
+		DirectX::XMFLOAT3 target;
+		target.x = m_target.x; target.y = m_target.y; target.z = m_target.z;
 
-	m_camera->SetLookAt(m_camera->GetPosition(), playerPos, upVec);//DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f));
+		m_camera->SetLookAt(m_camera->GetPosition(), playerPos, upVec);//DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f));
+	}
 }

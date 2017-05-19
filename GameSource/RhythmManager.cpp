@@ -18,8 +18,8 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif,in
 	AudioManager::GetInstance().AddControlledMusic("Resource/rhythmFolder/" + CourseDataArray[CourseID::hitorigoto].music +".mp3");
 	AudioManager::GetInstance().GetControlledMusic()->setIsPaused(true);
 
-	ENote::GetInstance().AddNote<int>("GetCombo", [this]() ->int {return this->GetCombo(); });
-	ENote::GetInstance().AddNote<int>("GetTimingBonus", [this]() ->int {return this->GetTimingBonus(); });
+	ENote::GetInstance().AddNote<int>("GetCombo" + playerNum, [this]() ->int {return this->GetCombo(); });
+	ENote::GetInstance().AddNote<int>("GetTimingBonus" + playerNum, [this]() ->int {return this->GetTimingBonus(); });
 
 	//PNFファイルゲット
 	auto FileContents = Manager->GetFileManager()->LoadFileLines("Resource/rhythmFolder/Pnf_Folder/" + CourseDataArray[CourseID::hitorigoto].music + ".pnf");

@@ -2,6 +2,7 @@
 
 #include "../Source/System/IElixirGame.h"
 #include"ModeScene.h"
+#include "PulseGame.h"
 
 using namespace Elixir;
 
@@ -13,5 +14,5 @@ public:
 	void SetImage();
 
 private:
-	ModeScene m_mode;
+	PulseGame m_mode;
 };
