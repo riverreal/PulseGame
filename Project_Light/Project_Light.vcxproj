@@ -165,6 +165,7 @@
     <ClCompile Include="..\External Soruce\WICTextureLoader\WICTextureLoader.cpp" />
     <ClCompile Include="..\GameSource\CommandInterpreter.cpp" />
     <ClCompile Include="..\GameSource\ModeScene.cpp" />
+    <ClCompile Include="..\GameSource\PlayerManager.cpp" />
     <ClCompile Include="..\GameSource\PlayerShip.cpp" />
     <ClCompile Include="..\GameSource\PulseGame.cpp" />
     <ClCompile Include="..\GameSource\ResultScene.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="..\GameSource\CommandInterpreter.h" />
     <ClInclude Include="..\GameSource\CourseSelect.h" />
     <ClInclude Include="..\GameSource\ModeScene.h" />
+    <ClInclude Include="..\GameSource\PlayerManager.h" />
     <ClInclude Include="..\GameSource\PlayerShip.h" />
     <ClInclude Include="..\GameSource\PulseGame.h" />
     <ClInclude Include="..\GameSource\ResultScene.h" />
