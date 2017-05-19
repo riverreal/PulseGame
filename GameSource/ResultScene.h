@@ -1,17 +1,16 @@
 #pragma once
 
 #include "../Source/System/IElixirGame.h"
-#include"ModeScene.h"
 
 using namespace Elixir;
 
-class title : public IElixirGame
+class result : public IElixirGame
 {
 public:
 	virtual void Init() override;
 	virtual void Update(float dt) override;
 	void SetImage();
+	void SetNextButton();
 
-private:
-	mode m_mode;
+
 };

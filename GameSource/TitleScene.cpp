@@ -8,6 +8,8 @@ using namespace Elixir;
 void title::Init()
 {
 	SetImage();
+
+	m_mode.StartScene("ModeScene");
 	//ƒV[ƒ“‚ÌˆÚ“®
 	//Manager->ChangeScene("gsgs");
 }
@@ -15,7 +17,10 @@ void title::Init()
 //Update
 void title::Update(float dt)
 {
-
+	if (GetAsyncKeyState('S') & 0x8000)
+	{
+		Manager->ChangeScene("ModeScene");
+	}
 }
 
 void title::SetImage()
@@ -30,5 +35,6 @@ void title::SetImage()
 	start->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/start_button.png");
 	start->GetTransform()->Position = Vec3f(0, -200, 0);
 	start->GetTransform()->Scale = Vec3f(0.5f, 0.5f, 0);
-}
 
+	
+}

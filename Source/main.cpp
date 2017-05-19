@@ -2,7 +2,7 @@
 #include "Includes/LEGraphics.h"
 #include <stdlib.h>
 #include <time.h>
-#include "../GameSource/SongSelect.h"
+#include "../GameSource/TitleScene.h"
 
 //16:9 resolutions
 //480p - WVGA (854 x 480)
@@ -34,7 +34,7 @@ public:
 private:
 	Camera m_smoothCamera;
 
-	songselect pulseGame;
+	title pulseGame;
 
 	float m_speedMult;
 
@@ -119,7 +119,7 @@ bool SimpleApp::Init()
 	//Early initialization of singleton
 	AudioManager::GetInstance();
 
-	pulseGame.StartScene("songselect");
+	pulseGame.StartScene("title");
 
 	return true;
 }
