@@ -222,6 +222,9 @@
     <ClCompile Include="..\GameSource\PlayerManager.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
+    <ClCompile Include="..\GameSource\AI.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\System\BaseApp.h">
@@ -441,6 +444,9 @@
       <Filter>Source Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="..\GameSource\PlayerManager.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameSource\AI.h">
       <Filter>Source Files\Game</Filter>
     </ClInclude>
   </ItemGroup>

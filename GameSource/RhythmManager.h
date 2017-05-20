@@ -86,11 +86,6 @@ private:
 		L"innerRingEffect",
 		L"ringEffect"
 	};
-
-	//判定時間
-	const int GREAT_TIME = 120;
-	const int GOOD_TIME = 220;
-	const int BAD_TIME = 340;
 	
 	//タイミングカウント
 	int m_TimingCount = 0;

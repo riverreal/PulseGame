@@ -7,7 +7,6 @@
 class AI
 {
 public:
-	AI();
 	~AI();
 
 	void Initialize(Elixir::SceneManager* sceneManager,int playerNum,PlayerShip* pship,RhythmManager* rhythm);

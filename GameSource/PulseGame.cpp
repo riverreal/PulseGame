@@ -38,7 +38,8 @@ void PulseGame::InitTestScene()
 	obj->SetName("Tube");
 	obj->GetTransform()->TextureScale = Vec3f(40.0f, 3.0f, 1.0f);
 
-	m_playerManager.AddPlayer(Manager, 0, m_lineData, radius, DIFF::HARD);
+	//m_playerManager.AddPlayer(Manager, 0, m_lineData, radius, DIFF::HARD);
+	m_playerManager.AddAI(Manager, 0, m_lineData, radius, DIFF::HARD);
 }
 
 void PulseGame::UpdateTestScene(float dt)

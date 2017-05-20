@@ -163,6 +163,7 @@
     <ClCompile Include="..\External Soruce\imgui\imgui_draw.cpp" />
     <ClCompile Include="..\External Soruce\jsoncpp\jsoncpp.cpp" />
     <ClCompile Include="..\External Soruce\WICTextureLoader\WICTextureLoader.cpp" />
+    <ClCompile Include="..\GameSource\AI.cpp" />
     <ClCompile Include="..\GameSource\CommandInterpreter.cpp" />
     <ClCompile Include="..\GameSource\ModeScene.cpp" />
     <ClCompile Include="..\GameSource\PlayerManager.cpp" />
@@ -222,6 +223,7 @@
     <ClInclude Include="..\External Soruce\jsoncpp\json\json-forwards.h" />
     <ClInclude Include="..\External Soruce\jsoncpp\json\json.h" />
     <ClInclude Include="..\External Soruce\WICTextureLoader\WICTextureLoader.h" />
+    <ClInclude Include="..\GameSource\AI.h" />
     <ClInclude Include="..\GameSource\CommandInterpreter.h" />
     <ClInclude Include="..\GameSource\CourseSelect.h" />
     <ClInclude Include="..\GameSource\ModeScene.h" />

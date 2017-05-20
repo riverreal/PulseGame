@@ -246,6 +246,16 @@ int RhythmManager::GetTimingBonus()
 	return m_timingBonus;
 }
 
+std::vector<double> RhythmManager::GetNotesTiming()
+{
+	return m_NotesTiming;
+}
+
+std::vector<int> RhythmManager::GetNotesLaneNumber()
+{
+	return m_NotesLaneNumber;
+}
+
 void RhythmManager::HitTimingCheck(Status* _status)
 {
 	if (_status == nullptr)

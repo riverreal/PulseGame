@@ -3,6 +3,7 @@
 #include "RhythmManager.h"
 #include "PlayerShip.h"
 #include "../Source/Includes/LESystem.h"
+#include "AI.h"
 #include <vector>
 
 class PlayerManager
@@ -32,4 +33,5 @@ private:
 	int m_registeredAI;
 	int m_playerNum;
 	std::vector<PlayerComponents> m_players;
+	std::vector<AI*> m_AI;
 };
