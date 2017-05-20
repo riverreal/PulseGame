@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Source/System/IElixirGame.h"
+#include"TitleScene.h"
 
 using namespace Elixir;
 
@@ -12,5 +13,6 @@ public:
 	void SetImage();
 	void SetNextButton();
 
-
+private:
+	TitleSecne m_title;
 };

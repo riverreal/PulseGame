@@ -8,6 +8,9 @@ using namespace Elixir;
 void ResultScene::Init()
 {
 	SetImage();
+	SetNextButton();
+
+	m_title.StartScene("TitleScene");
 	//ƒV[ƒ“‚ÌˆÚ“®
 	//Manager->ChangeScene("gsgs");
 }
@@ -15,7 +18,10 @@ void ResultScene::Init()
 //Update
 void ResultScene::Update(float dt)
 {
-
+	if (GetAsyncKeyState('S') & 0x8000)
+	{
+		Manager->ChangeScene("TitleScene");
+	}
 }
 
 

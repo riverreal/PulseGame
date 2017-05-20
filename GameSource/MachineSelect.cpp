@@ -1,24 +1,29 @@
-#include "SongSelect.h"
+#include "MachineSelect.h"
 #include "../Source/System/GameManager.h"
 #include "../Source/Includes/LESystem.h"
 
 using namespace Elixir;
 
 //start
-void SongSelect::Init()
+void MachineSelect::Init()
 {
 	SetImage();
+
+	m_pulse.StartScene("PulseGame");
 	//シーンの移動
 	//Manager->ChangeScene("gsgs");
 }
 
 //Update
-void SongSelect::Update(float dt)
+void MachineSelect::Update(float dt)
 {
-
+	if (GetAsyncKeyState('S') & 0x8000)
+	{
+		Manager->ChangeScene("PulseGame");
+	}
 }
 
-void SongSelect::SetImage()
+void MachineSelect::SetImage()
 {
 	//画像表示　位置、サイズ
 	auto title = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
