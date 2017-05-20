@@ -23,6 +23,13 @@ public:
 
 	int GetCombo();
 	int GetTimingBonus();
+	std::vector<double> GetNotesTiming();
+	std::vector<int>GetNotesLaneNumber();
+
+	//判定時間
+	const int GREAT_TIME = 120;
+	const int GOOD_TIME = 220;
+	const int BAD_TIME = 340;
 
 private:
 	//ノーツステータス
