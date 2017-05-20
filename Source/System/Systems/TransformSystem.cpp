@@ -23,6 +23,25 @@ void Elixir::TransformSystem::Update(GameObject * object, F32 deltaTime)
 		//Check if it's dynamic
 		if (transform->Dynamic)
 		{
+			transform->AbsolutePosition = transform->Position;
+			transform->AbsoluteRotation = transform->Rotation;
+			transform->AbsoluteScale = transform->Scale;
+
+			auto parent = object->GetParent();
+
+			//inherit transform informaiton from parent
+			if (parent != nullptr)
+			{
+				auto pTransform = parent->GetTransform();
+				if (pTransform != nullptr)
+				{
+					transform->AbsolutePosition = transform->AbsolutePosition + pTransform->AbsolutePosition;
+					transform->AbsoluteRotation = transform->AbsoluteRotation + pTransform->AbsoluteRotation;
+					transform->AbsoluteScale = transform->AbsoluteScale + pTransform->AbsoluteScale;
+				}
+			}
+
+			//transform->AbsolutePosition = transform->Position + object
 			UpdateMatrices(transform);
 		}
 	}
@@ -43,10 +62,10 @@ bool Elixir::TransformSystem::CheckDependancies(GameObject * object)
 void Elixir::TransformSystem::UpdateMatrices(Transform* transform)
 {
 	//object world Update
-	XMMATRIX scaling = XMMatrixScaling(transform->Scale.x, transform->Scale.y, transform->Scale.z);
-	XMMATRIX rotation = XMMatrixMultiply(XMMatrixMultiply(XMMatrixRotationY(XMConvertToRadians(transform->Rotation.y)),
-		XMMatrixRotationX(XMConvertToRadians(transform->Rotation.x))), XMMatrixRotationZ(XMConvertToRadians(transform->Rotation.z)));
-	XMMATRIX translation = XMMatrixTranslation(transform->Position.x, transform->Position.y, transform->Position.z);
+	XMMATRIX scaling = XMMatrixScaling(transform->AbsoluteScale.x, transform->AbsoluteScale.y, transform->AbsoluteScale.z);
+	XMMATRIX rotation = XMMatrixMultiply(XMMatrixMultiply(XMMatrixRotationY(XMConvertToRadians(transform->AbsoluteRotation.y)),
+		XMMatrixRotationX(XMConvertToRadians(transform->AbsoluteRotation.x))), XMMatrixRotationZ(XMConvertToRadians(transform->AbsoluteRotation.z)));
+	XMMATRIX translation = XMMatrixTranslation(transform->AbsolutePosition.x, transform->AbsolutePosition.y, transform->AbsolutePosition.z);
 	auto WorldMatrix = XMMatrixMultiply(XMMatrixMultiply(scaling, rotation), translation);
 
 	XMStoreFloat4x4(&transform->World4x4, WorldMatrix);

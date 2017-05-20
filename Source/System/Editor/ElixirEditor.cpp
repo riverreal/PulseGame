@@ -720,7 +720,6 @@ void Elixir::Editor::ResourceWindow()
 		{
 			int itemCounter = 0;
 			auto tManager = m_sceneManager->GetTextureManager();
-			Log() << "Max ID: " << tManager->GetMaxID() << "\n";
 			for (U32 i = tManager->GetFirstID(); i < tManager->GetMaxID(); ++i)
 			{
 				if (ImGui::ImageButton(tManager->GetTexture(i), ImVec2(50, 50)))
