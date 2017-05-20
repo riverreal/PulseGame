@@ -166,6 +166,11 @@ namespace Elixir
 			return Vec3f(x*scalar, y*scalar, z*scalar);
 		}
 
+		inline Vec3f operator/ (const float scalar) const
+		{
+			return Vec3f(x/scalar, y/scalar, z/scalar);
+		}
+
 		inline Vec3f operator+ (const Vec3f& sum) const
 		{
 			return Vec3f(x + sum.x, y + sum.y, z + sum.z);
