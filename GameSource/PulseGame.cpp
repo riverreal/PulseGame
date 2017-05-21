@@ -82,14 +82,20 @@ void PulseGame::UpdateTestScene(float dt)
 		m_player.UpdateShipPos(dt);
 		m_rhythm.Update(dt);
 	}
+
+
 }
 
 void PulseGame::Init()
 {
 	InitTestScene();
+
+	m_result.StartScene("ResultScene");
 }
 
 void PulseGame::Update(float dt)
 {
 	UpdateTestScene(dt);
+
+
 }

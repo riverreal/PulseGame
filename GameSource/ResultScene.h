@@ -12,5 +12,5 @@ public:
 	void SetImage();
 	void SetNextButton();
 
-
+private:
 };

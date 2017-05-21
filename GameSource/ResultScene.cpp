@@ -8,6 +8,8 @@ using namespace Elixir;
 void ResultScene::Init()
 {
 	SetImage();
+	SetNextButton();
+
 	//シーンの移動
 	//Manager->ChangeScene("gsgs");
 }
@@ -15,7 +17,10 @@ void ResultScene::Init()
 //Update
 void ResultScene::Update(float dt)
 {
-
+	if (GetAsyncKeyState('S') & 0x8000)
+	{
+		Manager->ChangeScene("TitleScene");
+	}
 }
 
 
@@ -30,8 +35,6 @@ void ResultScene::SetNextButton()
 void ResultScene::SetImage()
 {
 	//画像表示　位置、サイズ
-
-
 
 	auto title = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
 	title->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/result.title.png");

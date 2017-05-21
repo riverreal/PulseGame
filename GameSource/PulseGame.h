@@ -5,6 +5,7 @@
 #include "PlayerShip.h"
 #include "../Source/Helper/ETween.h"
 #include "RhythmManager.h"
+#include"ResultScene.h"
 
 using namespace Elixir;
 
@@ -22,4 +23,5 @@ private:
 	PlayerShip m_player;
 	RhythmManager m_rhythm;
 	bool m_pause;
+	ResultScene m_result;
 };
