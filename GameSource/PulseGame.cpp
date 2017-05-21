@@ -77,11 +77,6 @@ void PulseGame::UpdateTestScene(float dt)
 		m_pause = false;
 	}
 
-	if (GetAsyncKeyState('S') & 0x8000)
-	{
-		Manager->ChangeScene("ResultScene");
-	}
-
 	if (!m_pause)
 	{
 		m_player.UpdateShipPos(dt);
