@@ -267,14 +267,14 @@ namespace Elixir
 									backCulling = true;
 								}
 							}
-
-							m_deferredShader->Render(m_d3dDeviceContext, object, currentScene->GetCamera(), m_textureManager);
 						}
 					}
 					else if (object->Get2DRenderer() != nullptr)
 					{
 						Object2d.push_back(object);
 					}
+
+					m_deferredShader->Render(m_d3dDeviceContext, object, currentScene->GetCamera(), m_textureManager);
 				}
 
 				//To render inner sphere
