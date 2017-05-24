@@ -21,7 +21,7 @@ namespace Elixir
 	private:
 		//Check if the object has all the component dependancies
 		bool CheckDependancies(GameObject* object);
-		void UpdateMatrices(Transform* object);
+		void UpdateMatrices(Transform* object, Transform* parent = nullptr);
 
 	private:
 		bool m_initialRefreshDone = false;
