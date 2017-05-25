@@ -164,6 +164,7 @@
     <ClCompile Include="..\External Soruce\jsoncpp\jsoncpp.cpp" />
     <ClCompile Include="..\External Soruce\WICTextureLoader\WICTextureLoader.cpp" />
     <ClCompile Include="..\GameSource\CommandInterpreter.cpp" />
+    <ClCompile Include="..\GameSource\Hitjudgment.cpp" />
     <ClCompile Include="..\GameSource\MachineSelect.cpp" />
     <ClCompile Include="..\GameSource\ModeScene.cpp" />
     <ClCompile Include="..\GameSource\PlayerManager.cpp" />
@@ -225,6 +226,7 @@
     <ClInclude Include="..\External Soruce\WICTextureLoader\WICTextureLoader.h" />
     <ClInclude Include="..\GameSource\CommandInterpreter.h" />
     <ClInclude Include="..\GameSource\CourseSelect.h" />
+    <ClInclude Include="..\GameSource\Hitjudgment.h" />
     <ClInclude Include="..\GameSource\MachineSelect.h" />
     <ClInclude Include="..\GameSource\ModeScene.h" />
     <ClInclude Include="..\GameSource\PlayerManager.h" />
