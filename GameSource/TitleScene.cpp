@@ -17,7 +17,7 @@ void TitleSecne::Init()
 //Update
 void TitleSecne::Update(float dt)
 {
-	if (GetAsyncKeyState('S') & 0x8000)
+	if (GetAsyncKeyState('Z') & 0x8000)
 	{
 		Manager->ChangeScene("ModeScene");
 	}

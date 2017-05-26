@@ -32,15 +32,13 @@ void ModeScene::Update(float dt)
 
 	}
 
-	if (GetAsyncKeyState('A') & 0x8000)
+	if (GetAsyncKeyState('X') & 0x8000)
 	{
 		if (left->Get2DRenderer()->Enabled)
 		{
 			Manager->ChangeScene("SongSelect");
 		}
-	}else if(GetAsyncKeyState('D') & 0x8000)
-	{
-		if (right->Get2DRenderer()->Enabled)
+		else
 		{
 			Manager->ChangeScene("SongSelect");
 		}

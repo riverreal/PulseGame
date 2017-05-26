@@ -2,6 +2,7 @@
 
 #include "../Source/System/IElixirGame.h"
 #include"PulseGame.h"
+#include "../Source/Helper/ETween.h"
 
 using namespace Elixir;
 
@@ -14,4 +15,7 @@ public:
 
 private:
 	PulseGame m_pulse;
+	ETween<float> m_mainTEween;
+	GameObject * m_title;
+	GameObject * m_panel;
 };
