@@ -57,6 +57,8 @@ void Elixir::TransformSystem::UpdateMatrices(Transform* transform, Transform* pa
 
 	auto WorldMatrix = XMMatrixMultiply(XMMatrixMultiply(scaling, rotation), translation);
 
+	transform->AbsolutePosition = transform->Position;
+
 	if (parentTransform != nullptr)
 	{
 		auto parentMatrix = XMLoadFloat4x4(&parentTransform->World4x4);
@@ -64,6 +66,10 @@ void Elixir::TransformSystem::UpdateMatrices(Transform* transform, Transform* pa
 	}
 
 	XMStoreFloat4x4(&transform->World4x4, WorldMatrix);
+
+	transform->AbsolutePosition.x = transform->World4x4._41;
+	transform->AbsolutePosition.y = transform->World4x4._42;
+	transform->AbsolutePosition.z = transform->World4x4._43;
 
 	//tex transforma Update
 	scaling = XMMatrixScaling(transform->TextureScale.x, transform->TextureScale.y, transform->TextureScale.z);

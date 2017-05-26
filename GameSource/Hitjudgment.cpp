@@ -38,11 +38,11 @@ bool Hitjudgment::AABBColliding(Elixir::GameObject * obj1, Elixir::GameObject * 
 
 bool Hitjudgment::SpColliding(GameObject* obj1, GameObject* obj2)
 {
-	auto delta = obj2->GetTransform()->Position - obj1->GetTransform()->Position;
+	auto delta = obj2->GetTransform()->AbsolutePosition - obj1->GetTransform()->AbsolutePosition;
 	float deltaSq = delta.Dot(delta);
 
 	float avrgSca = obj1->GetTransform()->Scale.x + obj1->GetTransform()->Scale.y + obj1->GetTransform()->Scale.z;
-	avrgSca /= 5.7f;
+	avrgSca /= 3.0f;
 
 	float radiiSumSq = avrgSca + avrgSca;
 	radiiSumSq *= radiiSumSq;

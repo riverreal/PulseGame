@@ -22,7 +22,7 @@ void SongSelect::Update(float dt)
 {
 	if (GetAsyncKeyState('S') & 0x8000)
 	{
-		//Manager->ChangeScene("MachineSelect");
+		Manager->ChangeScene("MachineSelect");
 	}
 }
 

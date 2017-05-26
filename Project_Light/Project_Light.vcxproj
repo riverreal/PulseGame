@@ -213,6 +213,7 @@
     <ClCompile Include="..\Source\System\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\External Soruce\cpplinq.hpp" />
     <ClInclude Include="..\External Soruce\DDSTextureLoader\DDSTextureLoader.h" />
     <ClInclude Include="..\External Soruce\imgui\examples\directx11_example\imgui_impl_dx11.h" />
     <ClInclude Include="..\External Soruce\imgui\imconfig.h" />

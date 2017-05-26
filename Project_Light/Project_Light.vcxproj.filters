@@ -455,6 +455,9 @@
     <ClInclude Include="..\GameSource\Hitjudgment.h">
       <Filter>Source Files\Game</Filter>
     </ClInclude>
+    <ClInclude Include="..\External Soruce\cpplinq.hpp">
+      <Filter>External Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Source\Graphics\Shaders\LightPixelShader.hlsl">

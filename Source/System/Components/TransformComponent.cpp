@@ -16,6 +16,8 @@ void Elixir::Transform::Initialize()
 	Scale.y = 1.0f;
 	Scale.z = 1.0f;
 
+	AbsolutePosition = Vec3f(0.0f);
+
 	Dynamic = true;
 
 	TextureRotation = Vec3f(0.0f);

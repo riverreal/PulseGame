@@ -23,6 +23,10 @@ private:
 
 	int m_currentIndex;
 	Elixir::GameObject* m_player;
+	Elixir::GameObject* m_col1;
+	Elixir::GameObject* m_col2;
+	int m_colIndex;
+	bool m_colHasDetection;
 	Camera* m_camera;
 	//The target to look at
 	Elixir::Vec3f m_target;
@@ -38,7 +42,7 @@ private:
 	int m_currentCombo;
 	int m_timingBouns;
 	Elixir::Vec3f m_upVec;
-
+	std::vector<Elixir::GameObject*>m_ObstacleList;
 	//For convinience
 	Elixir::SceneManager* Manager;
 };
