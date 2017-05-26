@@ -239,7 +239,7 @@ std::vector<Elixir::GameObject*> Elixir::SceneManager::LoadScene(std::string fil
 	auto sData = m_fileManager->ReadSceneFile(filename);
 	
 	auto currentScene = GetCurrentScene();
-	currentScene->RemoveAllObjects();
+	//currentScene->RemoveAllObjects();
 
 	for (auto obj : sData.GameObjects)
 	{
