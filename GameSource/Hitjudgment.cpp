@@ -1,7 +1,7 @@
 #include "Hitjudgment.h"
 using namespace Elixir;
 
-bool Hitjudgment::Colliding(Elixir::GameObject * obj1, Elixir::GameObject * obj2)
+bool Hitjudgment::AABBColliding(Elixir::GameObject * obj1, Elixir::GameObject * obj2)
 {
 	auto box1Center = obj1->GetTransform()->Position;
 	auto box1Size = obj1->GetTransform()->Scale;
@@ -25,6 +25,7 @@ bool Hitjudgment::Colliding(Elixir::GameObject * obj1, Elixir::GameObject * obj2
 	box2Max.x = box2Center.x + box2Size.x / 2;
 	box2Max.y = box2Center.y + box2Size.y / 2;
 	box2Max.z = box2Center.z + box2Size.z / 2;
+
 	return(box1Max.x > box2Min.x &&
 		box1Min.x < box2Max.x&&
 		box1Max.y > box2Min.y&&
@@ -33,4 +34,23 @@ bool Hitjudgment::Colliding(Elixir::GameObject * obj1, Elixir::GameObject * obj2
 		box1Min.z < box2Max.z);
 	
 	
+}
+
+bool Hitjudgment::SpColliding(GameObject* obj1, GameObject* obj2)
+{
+	auto delta = obj2->GetTransform()->Position - obj1->GetTransform()->Position;
+	float deltaSq = delta.Dot(delta);
+
+	float avrgSca = obj1->GetTransform()->Scale.x + obj1->GetTransform()->Scale.y + obj1->GetTransform()->Scale.z;
+	avrgSca /= 5.7f;
+
+	float radiiSumSq = avrgSca + avrgSca;
+	radiiSumSq *= radiiSumSq;
+
+	if (deltaSq <= radiiSumSq)
+	{
+		return true;
+	}
+
+	return false;
 }

@@ -233,8 +233,9 @@ void Elixir::SceneManager::RetrieveSceneData(GameObject * obj, SceneData& sData)
 	}
 }
 
-void Elixir::SceneManager::LoadScene(std::string filename)
+std::vector<Elixir::GameObject*> Elixir::SceneManager::LoadScene(std::string filename)
 {
+	std::vector<GameObject*> goVec;
 	auto sData = m_fileManager->ReadSceneFile(filename);
 	
 	auto currentScene = GetCurrentScene();
@@ -279,7 +280,9 @@ void Elixir::SceneManager::LoadScene(std::string filename)
 			
 			ResetModel();
 		}
+		goVec.push_back(newObject);
 	}
+	return goVec;
 }
 
 Model * Elixir::SceneManager::GetModel()
