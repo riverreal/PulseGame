@@ -27,6 +27,7 @@ private:
 	Elixir::GameObject* m_col2;
 	int m_colIndex;
 	bool m_colHasDetection;
+	bool m_hasCollided;
 	Camera* m_camera;
 	//The target to look at
 	Elixir::Vec3f m_target;

@@ -42,9 +42,13 @@ bool Hitjudgment::SpColliding(GameObject* obj1, GameObject* obj2)
 	float deltaSq = delta.Dot(delta);
 
 	float avrgSca = obj1->GetTransform()->Scale.x + obj1->GetTransform()->Scale.y + obj1->GetTransform()->Scale.z;
-	avrgSca /= 3.0f;
+	avrgSca /= 6.0f;
+	
+	float avrgSca2 = obj2->GetTransform()->Scale.x + obj2->GetTransform()->Scale.y + obj2->GetTransform()->Scale.z;
+	avrgSca2 /= 6.0f;
 
-	float radiiSumSq = avrgSca + avrgSca;
+
+	float radiiSumSq = avrgSca + avrgSca2;
 	radiiSumSq *= radiiSumSq;
 
 	if (deltaSq <= radiiSumSq)

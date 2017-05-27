@@ -28,6 +28,7 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	m_timingBouns = 0;
 	m_upVec = Vec3f(1.0f, 0.0f, 0.0f);
 	m_colHasDetection = false;
+	m_hasCollided = false;
 
 	m_camera = Manager->GetCurrentScene()->GetCamera();
 	m_camera->SetPosition(0.0f, 0.0f, 10.0f);
@@ -50,40 +51,42 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 		>> orderby_ascending([](GameObject* obj) {return obj->GetTransform()->Position.Length(); })
 		>> to_vector();
 
-	for (auto &o : m_ObstacleList)
-	{
-		o->SetName("ok");
-	}
 	m_col1 = new GameObject();
 	m_col1->AddComponent<Transform>();
 	m_col1->AddComponent<Renderer3D>();
 	m_col1->GetRenderer()->Model = Manager->GetModel()->AddGeometry(MODEL_TYPE_SPHERE);
 	m_col1->GetTransform()->Position.z = 0.15f;
 	m_col1->GetTransform()->Scale = Vec3f(0.3f);
-	//m_player->AddChild(m_col1);
+	m_player->AddChild(m_col1);
 
 	m_col2 = Manager->GetCurrentScene()->CreateObject(OBJECT_RENDER);
 	m_col2->GetRenderer()->Model = Manager->GetModel()->AddGeometry(MODEL_TYPE_SPHERE);
-	//m_col2->GetTransform()->Position.z = -1.28f;
-	//m_col2->GetTransform()->Position.y = -m_pathRadius;
-	m_col2->GetTransform()->Scale = Vec3f(5
-		
-		
-		.0f);
-	//m_col2->GetRenderer()->Enabled = false;
-	//m_player->AddChild(m_col2);
-	m_col2->SetName("Col2");
+	m_col2->GetTransform()->Position.z = -1.28f;
+	m_col2->GetTransform()->Position.y = -m_pathRadius;
+	m_col2->GetTransform()->Scale = Vec3f(5.0f);
+	m_col2->GetRenderer()->Enabled = false;
+	m_player->AddChild(m_col2);
 }
 void PlayerShip::UpdateShipPos(float dt)
 {
-	if (Hitjudgment::SpColliding(m_ObstacleList[m_colIndex], m_col2))
+
+	if (Hitjudgment::SpColliding(m_ObstacleList[m_colIndex], m_col1))
 	{
-		m_ObstacleList[m_colIndex]->GetRenderer()->Material.emissive = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/255.png");
+		if (!m_hasCollided)
+		{
+			m_hasCollided = true;
+
+			//Hit process goes here!
+		}
 	}
 	else
 	{
-		m_ObstacleList[m_colIndex]->GetRenderer()->Material.emissive = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/0.png");
+		if (m_hasCollided)
+		{
+			m_hasCollided = false;
+		}
 	}
+
 
 	if (Hitjudgment::SpColliding(m_ObstacleList[m_colIndex], m_col2))
 	{
@@ -94,12 +97,14 @@ void PlayerShip::UpdateShipPos(float dt)
 		if (m_colHasDetection)
 		{
 			m_colHasDetection = false;
-			//m_colIndex++;
+			m_colIndex++;
+
+			m_colIndex = MathHelper::clamp(m_colIndex, 0, m_ObstacleList.size()-1);
 		}
 	}
 
 	Log() << m_colIndex << "\n";
-	/*
+	
 	auto speed = m_travelSpeed * dt +(m_currentCombo + m_timingBouns)* dt *0.001f;
 	m_currentPos+= speed;
 	m_aheadPos += speed;
@@ -148,7 +153,7 @@ void PlayerShip::UpdateShipPos(float dt)
 	{
 		m_rotationAngle -= 1.3f * dt;
 	}
-	*/
+	
 }
 
 void PlayerShip::SetPlayerPos(float dt)
@@ -248,10 +253,10 @@ void PlayerShip::SetPlayerPos(float dt)
 	camPos.y = cmPoint.Position.y + cameraCirclePos.y;
 	camPos.z = cmPoint.Position.z + cameraCirclePos.z;
 
-	//m_camera->SetPosition(camPos);
+	m_camera->SetPosition(camPos);
 
 	DirectX::XMFLOAT3 target;
 	target.x = m_target.x; target.y = m_target.y; target.z = m_target.z;
 
-	//m_camera->SetLookAt(m_camera->GetPosition(), playerPos, upVec);//DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f));
+	m_camera->SetLookAt(m_camera->GetPosition(), playerPos, upVec);//DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f));
 }
