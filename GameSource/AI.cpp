@@ -18,8 +18,8 @@ void AI::Initialize(Elixir::SceneManager* sceneManager, int playerNum, PlayerShi
 
 	m_randNum = rand() % 100;
 	
-	//m_diff = ENote::GetInstance().Notify<int>("AiDiff");
-	m_diff = 1;
+	m_diff = ENote::GetInstance().Notify<int>("AiDiff");
+	//m_diff = 1;
 
 }
 
@@ -32,9 +32,6 @@ void AI::Update(float dt)
 
 	if(!m_musicFinish)
 		RhythmHitCheck();
-
-	Log() << m_randNum;
-	
 }
 
 void AI::RhythmHitCheck()

@@ -8,6 +8,7 @@ GameObject::GameObject()
 	m_transform(nullptr),
 	m_2dRenderer(nullptr),
 	m_children(0),
+	m_parent(nullptr),
 	m_name("NewGameObject")
 {
 }
@@ -75,6 +76,18 @@ I32 GameObject::GetTag()
 	return m_tag;
 }
 
+void Elixir::GameObject::SetParent(GameObject * parent)
+{
+	//<!>Child Freeing yet to resolve<!>
+
+	m_parent = parent;
+}
+
+GameObject* GameObject::GetParent()
+{
+	return m_parent;
+}
+
 Transform* GameObject::GetTransform()
 {
 	return m_transform;
@@ -97,5 +110,6 @@ std::vector<GameObject*> GameObject::GetChildren()
 
 void GameObject::AddChild(GameObject* child)
 {
+	child->SetParent(this);
 	m_children.push_back(child);
 }

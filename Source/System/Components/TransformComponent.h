@@ -15,6 +15,8 @@ namespace Elixir
 		Vec3f Rotation;
 		Vec3f Scale;
 
+		Vec3f AbsolutePosition;
+
 		DirectX::XMFLOAT4X4 World4x4;
 
 		//Set to false if the object is

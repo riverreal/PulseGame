@@ -3,10 +3,12 @@
 #include "../Source/Includes/LESystem.h"
 #include "../Source/Helper/MathHelper.h"
 #include "../Source/Helper/ENote.h"
+#include"../External Soruce/cpplinq.hpp"
+#include "Hitjudgment.h"
 
 using namespace Elixir;
-
-void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line, float radius ,int playerNum)
+using namespace cpplinq;
+void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line, float radius, int playerNum)
 {
 	Manager = sceneManager;
 	m_currentIndex = 0;
@@ -23,14 +25,17 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	m_currentCombo = 0;
 	m_currentPos = 0.5f;
 	m_aheadPos = 0.7f;
+	m_colIndex = 0;
 	m_timingBouns = 0;
 	m_upVec = Vec3f(1.0f, 0.0f, 0.0f);
+	m_colHasDetection = false;
+	m_hasCollided = false;
 
 	m_camera = Manager->GetCurrentScene()->GetCamera();
 	m_camera->SetPosition(0.0f, 0.0f, 10.0f);
 
 	m_PlayerNum = playerNum;
-	
+
 	m_player = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
 	m_player->GetRenderer()->Model = Manager->GetModel()->AddModelFromFile("Resource/ships/shipImp.obj");
 	m_player->GetRenderer()->Material.albedo = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipAlbedoEm.png");
@@ -41,10 +46,65 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	m_player->GetTransform()->Scale = Vec3f(0.1f);
 	m_player->GetTransform()->Position = MathHelper::GetPointInCMSpline(m_lineData[0], m_lineData[1], m_lineData[2], m_lineData[3], m_currentPos).Position;
 	m_target = MathHelper::GetPointInCMSpline(m_lineData[0], m_lineData[1], m_lineData[2], m_lineData[3], m_aheadPos).Position;
-}
 
+	m_ObstacleList = Manager->LoadScene("Resource/test8couse.escene");
+	m_ObstacleList = from(m_ObstacleList)
+		>> orderby_ascending([](GameObject* obj) {return obj->GetTransform()->Position.Length(); })
+		>> to_vector();
+
+	m_col1 = new GameObject();
+	m_col1->AddComponent<Transform>();
+	m_col1->AddComponent<Renderer3D>();
+	m_col1->GetRenderer()->Model = Manager->GetModel()->AddGeometry(MODEL_TYPE_SPHERE);
+	m_col1->GetTransform()->Position.z = 0.15f;
+	m_col1->GetTransform()->Scale = Vec3f(0.3f);
+	m_player->AddChild(m_col1);
+
+	m_col2 = Manager->GetCurrentScene()->CreateObject(OBJECT_RENDER);
+	m_col2->GetRenderer()->Model = Manager->GetModel()->AddGeometry(MODEL_TYPE_SPHERE);
+	m_col2->GetTransform()->Position.z = -1.28f;
+	m_col2->GetTransform()->Position.y = -m_pathRadius;
+	m_col2->GetTransform()->Scale = Vec3f(5.0f);
+	m_col2->GetRenderer()->Enabled = false;
+	m_player->AddChild(m_col2);
+}
 void PlayerShip::UpdateShipPos(float dt)
 {
+
+	if (Hitjudgment::SpColliding(m_ObstacleList[m_colIndex], m_col1))
+	{
+		if (!m_hasCollided)
+		{
+			m_hasCollided = true;
+
+			//Hit process goes here!
+			ElixirLog("Collided!");
+		}
+	}
+	else
+	{
+		if (m_hasCollided)
+		{
+			m_hasCollided = false;
+		}
+	}
+
+
+	if (Hitjudgment::SpColliding(m_ObstacleList[m_colIndex], m_col2))
+	{
+		m_colHasDetection = true;
+	}
+	else
+	{
+		if (m_colHasDetection)
+		{
+			m_colHasDetection = false;
+			m_colIndex++;
+
+			m_colIndex = MathHelper::clamp(m_colIndex, 0, m_ObstacleList.size()-1);
+		}
+	}
+	
 	auto speed = m_travelSpeed * dt +(m_currentCombo + m_timingBouns)* dt *0.001f;
 	m_currentPos+= speed;
 	m_aheadPos += speed;
@@ -92,6 +152,7 @@ void PlayerShip::UpdateShipPos(float dt)
 	{
 		m_rotationAngle -= 1.3f * dt;
 	}
+	
 }
 
 void PlayerShip::SetPlayerPos(float dt)

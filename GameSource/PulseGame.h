@@ -2,8 +2,8 @@
 
 #include "../Source/System/IElixirGame.h"
 #include <vector>
-#include "../Source/Helper/ETween.h"
 #include "PlayerManager.h"
+#include"ResultScene.h"
 
 using namespace Elixir;
 
@@ -20,4 +20,5 @@ private:
 	std::vector<Vec3f> m_lineData;
 	PlayerManager m_playerManager;
 	bool m_pause;
+	ResultScene m_result;
 };

@@ -41,30 +41,36 @@ void DeferredShader::Shutdown()
 bool DeferredShader::Render(ID3D11DeviceContext * deviceContext, GameObject* object, Camera* camera, TextureManager* texManager)
 {
 	bool result;
-
-	auto albedo = texManager->GetTexture(object->GetRenderer()->Material.albedo);
-	auto normal = texManager->GetTexture(object->GetRenderer()->Material.normal);
-	auto roughness = texManager->GetTexture(object->GetRenderer()->Material.roughness);
-	auto metallic = texManager->GetTexture(object->GetRenderer()->Material.metallic);
-	auto emissive = texManager->GetTexture(object->GetRenderer()->Material.emissive);
-	auto transMatrix = XMLoadFloat4x4(&object->GetTransform()->TextureTransform4x4);
-	auto worldMatrix = XMLoadFloat4x4(&object->GetTransform()->World4x4);
-
-	result = SetShaderParameters(deviceContext, transMatrix, worldMatrix, 
-		camera->GetViewMatrix(), camera->GetProjectionMatrix(), albedo, roughness, metallic, normal, emissive);
-
-	if (!result)
+	if (object->GetRenderer() != nullptr)
 	{
-		return false;
-	}
+		auto albedo = texManager->GetTexture(object->GetRenderer()->Material.albedo);
+		auto normal = texManager->GetTexture(object->GetRenderer()->Material.normal);
+		auto roughness = texManager->GetTexture(object->GetRenderer()->Material.roughness);
+		auto metallic = texManager->GetTexture(object->GetRenderer()->Material.metallic);
+		auto emissive = texManager->GetTexture(object->GetRenderer()->Material.emissive);
+		auto transMatrix = XMLoadFloat4x4(&object->GetTransform()->TextureTransform4x4);
+		auto worldMatrix = XMLoadFloat4x4(&object->GetTransform()->World4x4);
 
-	RenderShader(deviceContext, object->GetRenderer()->Model);
+		result = SetShaderParameters(deviceContext, transMatrix, worldMatrix, 
+			camera->GetViewMatrix(), camera->GetProjectionMatrix(), albedo, roughness, metallic, normal, emissive);
+
+		if (!result)
+		{
+			return false;
+		}
+	
+		if(object->GetRenderer()->Enabled)
+			RenderShader(deviceContext, object->GetRenderer()->Model);
+	}
 
 	for(auto &child : object->GetChildren())
 	{
-		if (child->GetRenderer()->Enabled)
+		if (child->GetRenderer() != nullptr)
 		{
-			Render(deviceContext, child, camera, texManager);
+			if (child->GetRenderer()->Enabled)
+			{
+				Render(deviceContext, child, camera, texManager);
+			}
 		}
 	}
 

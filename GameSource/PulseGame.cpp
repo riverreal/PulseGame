@@ -58,14 +58,20 @@ void PulseGame::UpdateTestScene(float dt)
 	{
 		m_playerManager.Update(dt);
 	}
+
+
 }
 
 void PulseGame::Init()
 {
 	InitTestScene();
+
+	m_result.StartScene("ResultScene");
 }
 
 void PulseGame::Update(float dt)
 {
 	UpdateTestScene(dt);
+
+
 }

@@ -31,6 +31,9 @@ namespace Elixir
 		void SetTag(I32 tag);
 		I32 GetTag();
 
+		void SetParent(GameObject* parent);
+		GameObject* GetParent();
+
 		//Return the Transform Component
 		Transform* GetTransform();
 		//Return the 3D Renderer Component
@@ -49,6 +52,7 @@ namespace Elixir
 		//Built in pointers to
 		//Easy access components
 		//Limited to Renderer and Transform
+		GameObject* m_parent;
 
 		//Transform Component
 		Transform* m_transform;

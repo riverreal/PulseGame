@@ -27,7 +27,7 @@ namespace Elixir
 		void SaveCurrentScene();
 		void RetrieveSceneData(GameObject* obj, SceneData& sData);
 		//Loads a scene from a file (.escene)
-		void LoadScene(std::string filename);
+		std::vector<GameObject*> LoadScene(std::string filename);
 
 		Model* GetModel();
 		TextureManager* GetTextureManager();

@@ -108,3 +108,5 @@ bin/Debug/Intermediate/SongSelect.obj
 bin/Debug/Intermediate/TitleScene.obj
 bin/Debug/Intermediate/PlayerManager.obj
 bin/Debug/Intermediate/AI.obj
+bin/Debug/Intermediate/MachineSelect.obj
+bin/Debug/Intermediate/Hitjudgment.obj
