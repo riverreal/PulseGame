@@ -121,6 +121,11 @@ void PlayerShip::UpdateShipPos(float dt)
 			m_currentPos = 0.5f;
 			m_aheadPos = 0.7f;
 		}
+
+		if (m_currentIndex + 3 >= m_lineData.size() - 2)
+		{
+			Manager->ChangeScene("ResultScene");
+		}
 	}
 
 	if (m_aheadPos >= 1.0f)
