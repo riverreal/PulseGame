@@ -321,7 +321,18 @@ void Elixir::SceneManager::UpdateCurrentScene(float dt)
 	{
 		if(m_sceneInQueue != "")
 		{
+			auto previousScene = GetCurrentScene();
+			if (previousScene != nullptr)
+				previousScene->RemoveAllObjects();
+			else
+				return;
+
 			m_currentSceneName = m_sceneInQueue;
+		}
+
+		if (GetCurrentScene() == nullptr)
+		{
+			return;
 		}
 		
 		GetCurrentScene()->Init();

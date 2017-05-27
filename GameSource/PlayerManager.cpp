@@ -10,19 +10,7 @@ PlayerManager::PlayerManager()
 
 PlayerManager::~PlayerManager()
 {
-	for (auto &ai : m_AI)
-	{
-		delete ai;
-	}
-
-	for (auto &comp : m_players)
-	{
-		delete comp.rhythm;
-		delete comp.ship;
-	}
-
-	m_AI.clear();
-	m_players.clear();
+	Release();
 }
 
 void PlayerManager::AddPlayer(Elixir::SceneManager* manager, int playerNum, std::vector<Elixir::Vec3f> lineData, float radius, DIFF difficulty)
@@ -49,6 +37,23 @@ void PlayerManager::AddAI(Elixir::SceneManager* manager, int playerNum, std::vec
 	ai->Initialize(manager, playerNum, pComp.ship, pComp.rhythm);
 	m_AI.push_back(ai);
 	RegistAIPlayer();
+}
+
+void PlayerManager::Release()
+{
+	for (auto &ai : m_AI)
+	{
+		delete ai;
+	}
+
+	for (auto &comp : m_players)
+	{
+		delete comp.rhythm;
+		delete comp.ship;
+	}
+
+	m_AI.clear();
+	m_players.clear();
 }
 
 void PlayerManager::Update(float dt)

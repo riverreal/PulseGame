@@ -15,6 +15,8 @@ public:
 	void AddPlayer(Elixir::SceneManager* manager, int playerNum, std::vector<Elixir::Vec3f> lineData, float radius, DIFF difficulty);
 	void AddAI(Elixir::SceneManager* manager, int playerNum, std::vector<Elixir::Vec3f> lineData, float radius, DIFF difficulty);
 	
+	void Release();
+
 	void Update(float dt);
 
 	struct PlayerComponents
