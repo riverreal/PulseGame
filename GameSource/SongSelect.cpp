@@ -7,39 +7,57 @@ using namespace Elixir;
 //start
 void SongSelect::Init()
 {
+
 	SetImage();
+	BlackImage();
+
+	StartAnim();
+
 	m_machine.StartScene("MachineSelect");
 
 	ThisScene->SetIrradiance(Manager->GetTextureManager()->AddTexture(L"Resources/Textures/Cubemaps/Irradiance/Irradiance.dds"));
 	ThisScene->SetEnvMap(Manager->GetTextureManager()->AddTexture(L"Resources/Textures/Cubemaps/earth_moon_skybox.dds"));
 
-	//シーンの移動
-	//Manager->ChangeScene("gsgs");
+	ETween<F32> first_afterTween;
+	first_afterTween  = first_afterTween.From(&m_title->GetTransform()->Position.y).To(-310.0f).Time(0.7f);
+	ETween<F32> afterTween;
+	afterTween = afterTween.From(&m_panel->GetTransform()->Position.y).To(250.0f).Time(0.7f).Easing(ET_BACK_IN_OUT);
+	first_afterTween = first_afterTween.OnFinishChain(&afterTween);
+	m_mainTEween = m_mainTEween.OnFinishChain(&first_afterTween);
 }
 
 //Update
 void SongSelect::Update(float dt)
 {
-	if (GetAsyncKeyState('S') & 0x8000)
+	if (GetAsyncKeyState('Z') & 0x8000)
 	{
-		Manager->ChangeScene("MachineSelect");
+		BackAnim();
+		m_mainTEween = m_mainTEween.OnFinish([this]() {this->ChangeScene(); });
 	}
+
+	if (GetAsyncKeyState('X') & 0x8000)
+	{
+		BackAnim();
+		m_mainTEween = m_mainTEween.OnFinish([this]() {this->BackScene(); });
+	}
+
+	m_mainTEween.Update(dt);
 }
 
 void SongSelect::SetImage()
 {
 	//画像表示　位置、サイズ
-	auto  title = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
-	title->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/course_sel_title.png");
-	title->GetTransform()->Position = Vec3f(150, -400, 0);
-	title->GetTransform()->Scale = Vec3f(0.5f, 0.5f, 0);
+	m_title = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
+	m_title->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/course_sel_title.png");
+	m_title->GetTransform()->Position = Vec3f(0, -410, 0);
+	m_title->GetTransform()->Scale = Vec3f(0.5f, 0.5f, 0);
 
-	auto panel = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
-	panel->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/course_panel.png");
-	panel->GetTransform()->Position = Vec3f(0, 50, 0);
-	panel->GetTransform()->Scale = Vec3f(1.5f, 0.5f, 0);
+	m_panel = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
+	m_panel->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/course_panel.png");
+	m_panel->GetTransform()->Position = Vec3f(0, 500, 0);
+	m_panel->GetTransform()->Scale = Vec3f(1.2f, 0.5f, 0);
 
-	auto circle = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
+	/*auto circle = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
 	circle->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/level_circle.png");
 	circle->GetTransform()->Position = Vec3f(-300, 50, 0);
 	circle->GetTransform()->Scale = Vec3f(0.5f, 0.5f, 0);
@@ -47,20 +65,49 @@ void SongSelect::SetImage()
 	auto elem = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
 	elem->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/level_elem.png");
 	elem->GetTransform()->Position = Vec3f(-300, 50, 0);
-	elem->GetTransform()->Scale = Vec3f(0.5f, 0.5f, 0);
+	elem->GetTransform()->Scale = Vec3f(0.5f, 0.5f, 0);*/
 
-	auto planetsContainer = Manager->GetCurrentScene()->CreateObject(OBJECT_TRANSFORM);
+	auto back = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
+	back->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/back_button.png");
+	back->GetTransform()->Position = Vec3f(-400,-250 , 0);
+	back->GetTransform()->Scale = Vec3f(0.7f, 0.7f, 0);
 
-	float radius = 5.0f;
-	for (int i = 1; i < 10; ++i)
-	{
-		auto planet = new GameObject();
-		planet->AddComponent<Transform>();
-		planet->AddComponent<Renderer3D>();
-		planet->GetRenderer()->Model = Manager->GetModel()->AddGeometry(MODEL_TYPE_SPHERE);
-		planet->GetTransform()->Position.x = sinf(((2 * XM_PI) * 11) / i) * radius;
-		planet->GetTransform()->Position.z = cosf(((2 * XM_PI) * 11) / i) * radius;
-		planetsContainer->AddChild(planet);
-	}
+	auto next = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
+	next->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/next_button.png");
+	next->GetTransform()->Position = Vec3f(400, -250, 0);
+	next->GetTransform()->Scale = Vec3f(0.7f, 0.7f, 0);
+
+	auto earth = Manager->GetCurrentScene()->CreateObject(OBJECT_RENDER);
+	earth->GetRenderer()->Model = Manager->GetModel()->AddGeometry(MODEL_TYPE_SPHERE);
+	earth->GetRenderer()->Material.albedo = Manager->GetTextureManager()->AddTexture(L"Resource/earth.jpeg");
+	earth->GetTransform()->Position = Vec3f(1.4, -1.4, 5);
 }
 
+void SongSelect::BlackImage()
+{
+	m_back = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
+	m_back->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/0.png");
+	m_back->GetTransform()->Position = Vec3f(0, 0, 0);
+	m_back->GetTransform()->Scale = Vec3f(150, 100, 0);
+}
+
+void SongSelect::StartAnim()
+{
+	m_mainTEween = m_mainTEween.From(&m_back->GetTransform()->Position.x).To(-2000.0f).Time(0.7f);
+}
+
+void SongSelect::BackAnim()
+{
+	m_back->GetTransform()->Position.x = 2000;
+	m_mainTEween = m_mainTEween.From(&m_back->GetTransform()->Position.x).To(0.0f).Time(0.7f);
+}
+
+void SongSelect::ChangeScene()
+{
+	Manager->ChangeScene("MachineSelect");
+}
+
+void SongSelect::BackScene()
+{
+	Manager->ChangeScene("ModeScene");
+}

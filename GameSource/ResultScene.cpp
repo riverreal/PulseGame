@@ -8,38 +8,36 @@ using namespace Elixir;
 void ResultScene::Init()
 {
 	SetImage();
-	SetNextButton();
+	BlackImage();
+	StartAnim();
 
-	//シーンの移動
-	//Manager->ChangeScene("gsgs");
+	ETween<F32> first_afterTween;
+	first_afterTween = first_afterTween.From(&m_title->GetTransform()->Position.y).To(-310.0f).Time(0.7f);
+	m_mainTEween = m_mainTEween.OnFinishChain(&first_afterTween);
+
 }
 
 //Update
 void ResultScene::Update(float dt)
 {
-	if (GetAsyncKeyState('S') & 0x8000)
+	if (GetAsyncKeyState('Z') & 0x8000)
 	{
-		Manager->ChangeScene("TitleScene");
+		BackAnim();
+		m_mainTEween = m_mainTEween.OnFinish([this]() {this->ChangeScene(); });
 	}
+	m_mainTEween.Update(dt);
 }
 
 
-void ResultScene::SetNextButton()
-{
-	auto next = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
-	next->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/next_button.png");
-	next->GetTransform()->Position = Vec3f(-400, -300, 0);
-	next->GetTransform()->Scale = Vec3f(0.5f, 0.5f, 0);
-}
 
 void ResultScene::SetImage()
 {
 	//画像表示　位置、サイズ
 
-	auto title = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
-	title->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/result.title.png");
-	title->GetTransform()->Position = Vec3f(0, -380, 0);
-	title->GetTransform()->Scale = Vec3f(0.2f, 0.2f, 0);
+	m_title = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
+	m_title->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/result.title.png");
+	m_title->GetTransform()->Position = Vec3f(0, -410, 0);
+	m_title->GetTransform()->Scale = Vec3f(0.2f, 0.2f, 0);
 
 
 	auto resultpanel = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
@@ -104,5 +102,34 @@ void ResultScene::SetImage()
 	lvpanel->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/course_name_panel.png");
 	lvpanel->GetTransform()->Position = Vec3f(400, -300, 0);
 	lvpanel->GetTransform()->Scale = Vec3f(0.3f, 0.2f, 0);
+
+	auto next = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
+	next->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/next_button.png");
+	next->GetTransform()->Position = Vec3f(400, -250, 0);
+	next->GetTransform()->Scale = Vec3f(0.7f, 0.7f, 0);
+}
+
+void ResultScene::BlackImage()
+{
+	m_back = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
+	m_back->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/0.png");
+	m_back->GetTransform()->Position = Vec3f(0, 0, 0);
+	m_back->GetTransform()->Scale = Vec3f(150, 100, 0);
+}
+
+void ResultScene::StartAnim()
+{
+	m_mainTEween = m_mainTEween.From(&m_back->GetTransform()->Position.x).To(-2000.0f).Time(0.7f);
+}
+
+void ResultScene::BackAnim()
+{
+	m_back->GetTransform()->Position.x = 2000;
+	m_mainTEween = m_mainTEween.From(&m_back->GetTransform()->Position.x).To(0.0f).Time(0.7f);
+}
+
+void ResultScene::ChangeScene()
+{
+	Manager->ChangeScene("TitleScene");
 }
 

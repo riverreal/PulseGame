@@ -35,7 +35,8 @@ private:
 #if ELIXIR_EDITOR == true
 	Camera* m_smoothCamera;
 #endif
-	TitleSecne pulseGame;
+
+	TitleScene pulseGame;
 
 	float m_speedMult;
 

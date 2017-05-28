@@ -15,10 +15,16 @@ public:
 
 	virtual void Init() override;
 	virtual void Update(float dt) override;
+	void BlackImage();
+	void StartAnim();
+	void BackAnim();
+	void ChangeScene();
 
 private:
 	std::vector<Vec3f> m_lineData;
 	PlayerManager m_playerManager;
 	bool m_pause;
+	ETween<float> m_mainTEween;
 	ResultScene m_result;
+	GameObject * m_back;
 };
