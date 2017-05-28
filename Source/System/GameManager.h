@@ -16,6 +16,7 @@ namespace Elixir
 		SceneManager* GetSceneManager();
 		int GetScreenWidth();
 		int GetScreenHeight();
+		float GetDesignScale();
 
 	private:
 		GameManager() {};

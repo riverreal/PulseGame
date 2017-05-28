@@ -17,8 +17,10 @@ public:
 	void BackAnim();
 	void ChangeScene();
 	void BackScene();
+	void EnableInput();
 
 private:
+	bool m_inputEnabled;
 	PulseGame m_pulse;
 	ETween<float> m_mainTEween;
 	GameObject * m_title;

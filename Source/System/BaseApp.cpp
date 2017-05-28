@@ -144,6 +144,7 @@ namespace Elixir
 		GameManager::GetInstance().PrepareGame(m_sceneManager, m_width, m_height);
 
 		ENote::GetInstance().AddNote<void>("AutoSetSplitScreen", [this]() {return this->AutoSetSplitScreen(); });
+		ENote::GetInstance().AddNote<void>("SetNormalScreen", [this]() {return this->SetNormalScreen(); });
 
 #if ELIXIR_EDITOR == true
 		m_elixirEditor = new Editor();
@@ -438,6 +439,14 @@ namespace Elixir
 			m_deferredSkyViewport.Width = specResolution.x;
 		}
 		
+	}
+
+	void BaseApp::SetNormalScreen()
+	{
+		m_splitScreen = false;
+		XMFLOAT2 specResolution = GetSpecResolution(m_width, m_height);
+		m_deferredViewport.Width = specResolution.x;
+		m_deferredSkyViewport.Width = specResolution.x;
 	}
 
 	bool BaseApp::InitWindow()

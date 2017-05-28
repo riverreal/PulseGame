@@ -32,3 +32,8 @@ int Elixir::GameManager::GetScreenHeight()
 {
 	return m_height;
 }
+
+float Elixir::GameManager::GetDesignScale()
+{
+	return (float)m_width / 1280.0f;
+}

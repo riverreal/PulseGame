@@ -16,8 +16,10 @@ public:
 	void BlackImage();
 	void BackAnim();
 	void StartAnim();
+	void EnableInput();
 
 private:
+	bool m_inputEnabled;
 	ModeScene m_mode;
 	ETween<float> m_mainTEween;
 	GameObject * m_back;

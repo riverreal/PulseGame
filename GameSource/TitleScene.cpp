@@ -1,29 +1,43 @@
 #include "TitleScene.h"
 #include "../Source/System/GameManager.h"
 #include "../Source/Includes/LESystem.h"
+#include "../External Soruce/cpplinq.hpp"
 
 using namespace Elixir;
+using namespace cpplinq;
 
 //start
 void TitleScene::Init()
 {
+	m_mainTEween.ReleaseTweens();
+	m_inputEnabled = false;
+
 	SetImage();
 	BlackImage();
 	StartAnim();
 
 	m_mode.StartScene("ModeScene");
 
+	from(Manager->GetCurrentScene()->GetChildren())
+		>> where([](GameObject* obj) {return obj->Get2DRenderer() != nullptr; })
+		>> for_each([](GameObject* obj) {
+		obj->GetTransform()->Position = obj->GetTransform()->Position * GameManager::GetInstance().GetDesignScale(); 
+		obj->GetTransform()->Scale = obj->GetTransform()->Scale * GameManager::GetInstance().GetDesignScale();
+	});
 }
 
 //Update
 void TitleScene::Update(float dt)
 {
-	if (GetAsyncKeyState('Z') & 0x8000)
+	if (m_inputEnabled)
 	{
-		BackAnim();
-		m_mainTEween = m_mainTEween.OnFinish([this]() {this->ChangeScene(); });
+		if (GetAsyncKeyState('Z') & 0x8000)
+		{
+			BackAnim();
+			m_mainTEween = m_mainTEween.OnFinish([this]() {this->ChangeScene(); });
+		}
 	}
-
+	
 	m_mainTEween.Update(dt);
 }
 
@@ -51,7 +65,12 @@ void TitleScene::BlackImage()
 
 void TitleScene::StartAnim()
 {
-	m_mainTEween = m_mainTEween.From(&m_back->Get2DRenderer()->Color.a).To(-1.0f).Time(2.7f);
+	m_mainTEween = m_mainTEween.From(&m_back->Get2DRenderer()->Color.a).To(-1.0f).Time(1.0f).OnFinish([this]() {this->EnableInput(); });
+}
+
+void TitleScene::EnableInput()
+{
+	m_inputEnabled = true;
 }
 
 void TitleScene::BackAnim()

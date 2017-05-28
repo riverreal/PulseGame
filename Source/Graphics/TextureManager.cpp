@@ -108,7 +108,7 @@ ID3D11ShaderResourceView * TextureManager::GetTexture(U32 id)
 		return m_textureVector[id]->srv;
 	}
 
-	ElixirLog("TextureManager: ID provided index out of range.");
+	//ElixirLog("TextureManager: ID provided index out of range.");
 
 	return nullptr;
 }

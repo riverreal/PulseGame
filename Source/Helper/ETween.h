@@ -67,6 +67,7 @@ namespace Elixir
 		ETween Easing(EASING_FUNCTION easingType);
 
 		std::vector<tweenData<T>> GetTweens();
+		void ReleaseTweens();
 
 		void AddTweens(std::vector<tweenData<T>> tweens);
 
@@ -98,6 +99,12 @@ namespace Elixir
 
 	template<class T>ETween<T>::~ETween()
 	{}
+
+	template<class T> void ETween<T>::ReleaseTweens()
+	{
+		m_tweenVec.clear();
+		m_lastTweenIndex = -1;
+	}
 
 	template<class T>ETween<T> ETween<T>::From(T* initVal)
 	{

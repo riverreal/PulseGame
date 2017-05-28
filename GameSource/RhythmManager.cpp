@@ -2,9 +2,10 @@
 #include "../Source/System/GameManager.h"
 #include "../Source/Includes/LESystem.h"
 #include "../Source/Helper/ENote.h"
-
+#include "../External Soruce/cpplinq.hpp"
 
 using namespace Elixir;
+using namespace cpplinq;
 
 void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif,int playerNum)
 {
@@ -53,6 +54,7 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif,in
 			}
 		}
 	}
+
 	for (int i = 0; i < 10; i++)
 	{
 		//Notes
@@ -60,6 +62,7 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif,in
 		hit2d->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/" + COLOR_PATH[0]+L"_Hit.png");
 		hit2d->GetTransform()->Rotation.x = -90;
 		hit2d->GetTransform()->Position.z += 5;
+		hit2d->SetTag(m_PlayerNum);
 		hit2d->Get2DRenderer()->Enabled = false;
 		auto _status = Status(hit2d, 1000, false);
 		m_NotesStatus.push_back(_status);		
@@ -72,6 +75,7 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif,in
 		effectWave2d->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Effect/" + WAVE_EFFECT_PATH[1] + L".png");
 		effectWave2d->GetTransform()->Position = m_LanePos[i];
 		effectWave2d->Get2DRenderer()->Color.a = 0.7f;
+		effectWave2d->SetTag(m_PlayerNum);
 
 		//waveEffectAnim
 		m_waveAnim[i] = m_waveAnim[i].From(&effectWave2d->GetTransform()->Scale.x).To(2.5f).Time(0.3f)
@@ -84,6 +88,7 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif,in
 		auto Screen2d = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_2D);
 		Screen2d->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/" + COLOR_PATH[i] + L"_Box.png");
 		Screen2d->GetTransform()->Position = m_LanePos[i];
+		Screen2d->SetTag(m_PlayerNum);
 		
 		//inputAnimation
 		ETween<F32> endAnim;
@@ -96,11 +101,34 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif,in
 	}
 
 	m_TextEffect = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_2D);
-	m_TextEffect->Get2DRenderer()->Enabled = false;
+	m_TextEffect->SetTag(m_PlayerNum);
 	m_TextEffect->GetTransform()->Position = Vec3f(0, -75, 0);
 	
 	m_textAnim = m_textAnim.From(&m_TextEffect->Get2DRenderer()->Color.a).To(0.0f).Time(1.0f)
 		.From(&m_TextEffect->GetTransform()->Position.y).To(m_TextEffect->GetTransform()->Position.y + 30.0f).Time(1.0f);
+
+	m_TextEffect->Get2DRenderer()->Color.a = 0.0f;
+
+	if (playerNum == 2)
+	{
+		from(Manager->GetCurrentScene()->GetChildren())
+			>> where([playerNum](GameObject* obj) {return obj->Get2DRenderer() != nullptr && obj->GetTag() == playerNum; })
+			>> for_each([](GameObject* obj) {
+			obj->GetTransform()->Dynamic = false;
+			obj->Get2DRenderer()->Enabled = false;
+			obj->Get2DRenderer()->Color.a = 0.0f;
+		});
+	}
+	else
+	{
+		from(Manager->GetCurrentScene()->GetChildren())
+			>> where([](GameObject* obj) {return obj->Get2DRenderer() != nullptr; })
+			>> for_each([](GameObject* obj) {
+			obj->GetTransform()->Position = obj->GetTransform()->Position * GameManager::GetInstance().GetDesignScale();
+			obj->GetTransform()->Scale = obj->GetTransform()->Scale * GameManager::GetInstance().GetDesignScale();
+
+		});
+	}
 }
 
 void RhythmManager::Update(float dt)
@@ -119,7 +147,7 @@ void RhythmManager::Update(float dt)
 					m_timingBonus = 0;
 					lastNote->obj->Get2DRenderer()->Enabled = false;
 					m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[3] + L".png");
-					m_TextEffect->Get2DRenderer()->Enabled = true;
+					//m_TextEffect->Get2DRenderer()->Enabled = true;
 					m_tween.AddTweens(m_textAnim.GetTweens());
 				}
 			}
@@ -274,7 +302,7 @@ void RhythmManager::HitTimingCheck(Status* _status)
 		m_timingBonus += 2;
 		_status->obj->Get2DRenderer()->Enabled = false;
 		m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[0] + L".png");
-		m_TextEffect->Get2DRenderer()->Enabled = true;
+		//m_TextEffect->Get2DRenderer()->Enabled = true;
 		m_tween.AddTweens(m_textAnim.GetTweens());
 
 	}
@@ -285,7 +313,7 @@ void RhythmManager::HitTimingCheck(Status* _status)
 		m_timingBonus++;
 		_status->obj->Get2DRenderer()->Enabled = false;
 		m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[1] + L".png");
-		m_TextEffect->Get2DRenderer()->Enabled = true;
+		//m_TextEffect->Get2DRenderer()->Enabled = true;
 		m_tween.AddTweens(m_textAnim.GetTweens());
 	}
 	else if (timing <= BAD_TIME / 2)
@@ -295,7 +323,7 @@ void RhythmManager::HitTimingCheck(Status* _status)
 		
 		_status->obj->Get2DRenderer()->Enabled = false;
 		m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[2] + L".png");
-		m_TextEffect->Get2DRenderer()->Enabled = true;
+		//m_TextEffect->Get2DRenderer()->Enabled = true;
 		m_tween.AddTweens(m_textAnim.GetTweens());
 	}
 	else
@@ -305,7 +333,7 @@ void RhythmManager::HitTimingCheck(Status* _status)
 		m_timingBonus = 0;
 		_status->obj->Get2DRenderer()->Enabled = false;
 		m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[3] + L".png");
-		m_TextEffect->Get2DRenderer()->Enabled = true;
+		//m_TextEffect->Get2DRenderer()->Enabled = true;
 		m_tween.AddTweens(m_textAnim.GetTweens());
 		missFlag = true;
 	}

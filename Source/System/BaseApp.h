@@ -67,6 +67,7 @@ namespace Elixir
 		virtual void OnMouseMove(WPARAM btnState, int x, int y) {}
 
 		void AutoSetSplitScreen();
+		void SetNormalScreen();
 
 	protected:
 		bool InitWindow();

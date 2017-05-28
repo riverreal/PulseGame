@@ -15,9 +15,9 @@ public:
 	void ModeSelect_Left();
 	void ModeSelect_Right();
 	bool GetSplitScreen();
+	void EnableInput();
 
 private:
-	
 	void StartAnim();
 	void BackAnim();
 	void BlackImage();
@@ -25,6 +25,7 @@ private:
 
 
 private:
+	bool m_inputEnabled;
 	bool m_splitScreen;
 	ETween<float> m_mainTEween;
 	SongSelect m_song;

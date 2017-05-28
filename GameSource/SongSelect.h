@@ -17,8 +17,10 @@ public:
 	void BackAnim();
 	void ChangeScene();
 	void BackScene();
+	void EnableInput();
 
 private:
+	bool m_inputEnabled;
 	MachineSelect m_machine;
 	ETween<float> m_mainTEween;
 	GameObject * m_title;

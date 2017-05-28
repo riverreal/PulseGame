@@ -6,28 +6,27 @@
 void PulseGame::InitTestScene()
 {
 	ENote::GetInstance().Notify<void>("AutoSetSplitScreen");
-
+	
 	bool isSplit = ENote::GetInstance().Notify<bool>("GetSplitScreen");
-
 	if (isSplit)
 	{
-		ThisScene->GetCamera()->SetScreenAspect(((float)GameManager::GetInstance().GetScreenWidth() / 2.0f) / (float)GameManager::GetInstance().GetScreenHeight());
-		ThisScene->GetCamera()->BuildProjection();
-		ThisScene->GetSecCamera()->SetScreenAspect(((float)GameManager::GetInstance().GetScreenWidth() / 2.0f) / (float)GameManager::GetInstance().GetScreenHeight());
-		ThisScene->GetSecCamera()->BuildProjection();
+		Manager->GetCurrentScene()->GetCamera()->SetScreenAspect(((float)GameManager::GetInstance().GetScreenWidth() / 2.0f) / (float)GameManager::GetInstance().GetScreenHeight());
+		Manager->GetCurrentScene()->GetCamera()->BuildProjection();
+		Manager->GetCurrentScene()->GetSecCamera()->SetScreenAspect(((float)GameManager::GetInstance().GetScreenWidth() / 2.0f) / (float)GameManager::GetInstance().GetScreenHeight());
+		Manager->GetCurrentScene()->GetSecCamera()->BuildProjection();
 	}
 	else
 	{
-		ThisScene->GetCamera()->SetScreenAspect((float)GameManager::GetInstance().GetScreenWidth() / (float)GameManager::GetInstance().GetScreenHeight());
-		ThisScene->GetCamera()->BuildProjection();
+		Manager->GetCurrentScene()->GetCamera()->SetScreenAspect((float)GameManager::GetInstance().GetScreenWidth() / (float)GameManager::GetInstance().GetScreenHeight());
+		Manager->GetCurrentScene()->GetCamera()->BuildProjection();
 	}
 	
 
 	m_pause = true;
-	ThisScene->SetIrradiance(Manager->GetTextureManager()->AddTexture(L"Resources/Textures/Cubemaps/Irradiance/Irradiance.dds"));
-	ThisScene->SetEnvMap(Manager->GetTextureManager()->AddTexture(L"Resources/Textures/Cubemaps/earth_moon_skybox.dds"));
+	Manager->GetCurrentScene()->SetIrradiance(Manager->GetTextureManager()->AddTexture(L"Resources/Textures/Cubemaps/Irradiance/Irradiance.dds"));
+	Manager->GetCurrentScene()->SetEnvMap(Manager->GetTextureManager()->AddTexture(L"Resources/Textures/Cubemaps/earth_moon_skybox.dds"));
 
-	auto dirL = ThisScene->GetLight()->GetModDirectionalLight();
+	auto dirL = Manager->GetCurrentScene()->GetLight()->GetModDirectionalLight();
 
 	dirL->LightColor[0] = 1.0f;
 	dirL->LightColor[1] = 1.0f;
@@ -40,7 +39,7 @@ void PulseGame::InitTestScene()
 	dirL->Direction[1] = -0.6f;
 	dirL->Direction[2] = -0.8f;
 
-	ThisScene->GetCamera()->SetPosition(0.0f, 0.0f, -10.0f);
+	Manager->GetCurrentScene()->GetCamera()->SetPosition(0.0f, 0.0f, -10.0f);
 
 	m_lineData = LoadLine(Manager->GetFileManager()->LoadFile(CourseDataArray[CourseID::hitorigoto].path));
 
