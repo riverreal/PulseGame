@@ -16,6 +16,7 @@ public:
 	void StartAnim();
 	void BackAnim();
 	void ChangeScene();
+	void BackScene();
 
 private:
 	MachineSelect m_machine;

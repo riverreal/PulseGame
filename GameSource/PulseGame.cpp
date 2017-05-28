@@ -77,6 +77,7 @@ void PulseGame::UpdateTestScene(float dt)
 		m_pause = false;
 	}
 
+
 	if (!m_pause)
 	{
 		m_player.UpdateShipPos(dt);
@@ -86,16 +87,50 @@ void PulseGame::UpdateTestScene(float dt)
 
 }
 
+void PulseGame::BlackImage()
+{
+	m_back = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
+	m_back->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/0.png");
+	m_back->GetTransform()->Position = Vec3f(0, 0, 0);
+	m_back->GetTransform()->Scale = Vec3f(150, 100, 0);
+}
+
+void PulseGame::StartAnim()
+{
+	m_mainTEween = m_mainTEween.From(&m_back->GetTransform()->Position.x).To(-2000.0f).Time(0.7f);
+}
+
+void PulseGame::BackAnim()
+{
+	m_back->GetTransform()->Position.x = 2000;
+	m_mainTEween = m_mainTEween.From(&m_back->GetTransform()->Position.x).To(0.0f).Time(0.7f);
+}
+
 void PulseGame::Init()
 {
 	InitTestScene();
 
+	BlackImage();
+	StartAnim();
+
 	m_result.StartScene("ResultScene");
+
+
 }
 
 void PulseGame::Update(float dt)
 {
+	if (GetAsyncKeyState('Z') & 0x8000)
+	{
+		BackAnim();
+		m_mainTEween = m_mainTEween.OnFinish([this]() {this->ChangeScene(); });
+	}
+
 	UpdateTestScene(dt);
+	m_mainTEween.Update(dt);
+}
 
-
+void PulseGame::ChangeScene()
+{
+	Manager->ChangeScene("ResultScene");
 }

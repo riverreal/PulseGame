@@ -34,7 +34,7 @@ public:
 private:
 	Camera m_smoothCamera;
 
-	TitleSecne pulseGame;
+	TitleScene pulseGame;
 
 	float m_speedMult;
 
