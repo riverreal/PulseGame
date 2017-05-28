@@ -35,6 +35,6 @@ private:
 		bool humanFlag = false;
 	};
 
-	CommandFlags flagArray[2];
+	CommandFlags flagArray[3];
 
 };

@@ -35,6 +35,4 @@ void TitleSecne::SetImage()
 	start->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/start_button.png");
 	start->GetTransform()->Position = Vec3f(0, -200, 0);
 	start->GetTransform()->Scale = Vec3f(0.5f, 0.5f, 0);
-
-	
 }

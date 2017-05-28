@@ -13,7 +13,7 @@
 namespace Elixir
 {
 	const static int SCREEN_WIDTH = 1280;
-	const static int SCRENN_HEIGHT = 720;
+	const static int SCREEN_HEIGHT = 720;
 };
 
 using namespace Elixir;
@@ -32,8 +32,9 @@ public:
 	bool SceneInit();
 
 private:
-	Camera m_smoothCamera;
-
+#if ELIXIR_EDITOR == true
+	Camera* m_smoothCamera;
+#endif
 	TitleSecne pulseGame;
 
 	float m_speedMult;
@@ -44,7 +45,7 @@ private:
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
 {
-	SimpleApp myGame(hInstance, SCREEN_WIDTH, SCRENN_HEIGHT);
+	SimpleApp myGame(hInstance, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	if (!myGame.Init())
 	{
@@ -64,6 +65,10 @@ SimpleApp::SimpleApp(HINSTANCE instance, int width, int height)
 SimpleApp::~SimpleApp()
 {
 	BlendState::Shutdown();
+
+#if ELIXIR_EDITOR == true
+	SafeRelease(m_smoothCamera);
+#endif
 }
 
 bool SimpleApp::SceneInit()
@@ -118,6 +123,10 @@ bool SimpleApp::Init()
 
 	//Early initialization of singleton
 	AudioManager::GetInstance();
+	
+#if ELIXIR_EDITOR == true
+	m_smoothCamera = new Camera();
+#endif
 
 	pulseGame.StartScene("TitleScene");
 
@@ -131,19 +140,19 @@ void SimpleApp::Update(float dt)
 	{
 		if (GetAsyncKeyState('S') & 0x8000)
 		{
-			m_smoothCamera.Walk(-10.0f*dt * m_speedMult);
+			m_smoothCamera->Walk(-10.0f*dt * m_speedMult);
 		}
 		if (GetAsyncKeyState('W') & 0x8000)
 		{
-			m_smoothCamera.Walk(10.0f*dt* m_speedMult);
+			m_smoothCamera->Walk(10.0f*dt* m_speedMult);
 		}
 		if (GetAsyncKeyState('A') & 0x8000)
 		{
-			m_smoothCamera.Strafe(-10.0f*dt * m_speedMult);
+			m_smoothCamera->Strafe(-10.0f*dt * m_speedMult);
 		}
 		if (GetAsyncKeyState('D') & 0x8000)
 		{
-			m_smoothCamera.Strafe(10.0f*dt * m_speedMult);
+			m_smoothCamera->Strafe(10.0f*dt * m_speedMult);
 		}
 
 		if (GetAsyncKeyState('R') & 0x8000)
@@ -160,10 +169,10 @@ void SimpleApp::Update(float dt)
 		}
 	}
 
-	m_sceneManager->GetCurrentScene()->GetCamera()->SetPosition(MathHelper::lerp(m_sceneManager->GetCurrentScene()->GetCamera()->GetPosition(), m_smoothCamera.GetPosition(), 0.3f));
-	m_sceneManager->GetCurrentScene()->GetCamera()->SetLook(MathHelper::lerp(m_sceneManager->GetCurrentScene()->GetCamera()->GetLook(), m_smoothCamera.GetLook(), 0.3f));
-	m_sceneManager->GetCurrentScene()->GetCamera()->SetRight(MathHelper::lerp(m_sceneManager->GetCurrentScene()->GetCamera()->GetRight(), m_smoothCamera.GetRight(), 0.3f));
-	m_sceneManager->GetCurrentScene()->GetCamera()->SetUp(MathHelper::lerp(m_sceneManager->GetCurrentScene()->GetCamera()->GetUp(), m_smoothCamera.GetUp(), 0.3f));
+	m_sceneManager->GetCurrentScene()->GetCamera()->SetPosition(MathHelper::lerp(m_sceneManager->GetCurrentScene()->GetCamera()->GetPosition(), m_smoothCamera->GetPosition(), 0.3f));
+	m_sceneManager->GetCurrentScene()->GetCamera()->SetLook(MathHelper::lerp(m_sceneManager->GetCurrentScene()->GetCamera()->GetLook(), m_smoothCamera->GetLook(), 0.3f));
+	m_sceneManager->GetCurrentScene()->GetCamera()->SetRight(MathHelper::lerp(m_sceneManager->GetCurrentScene()->GetCamera()->GetRight(), m_smoothCamera->GetRight(), 0.3f));
+	m_sceneManager->GetCurrentScene()->GetCamera()->SetUp(MathHelper::lerp(m_sceneManager->GetCurrentScene()->GetCamera()->GetUp(), m_smoothCamera->GetUp(), 0.3f));
 
 #endif
 
@@ -198,8 +207,8 @@ void SimpleApp::OnMouseMove(WPARAM btnState, int x, int y)
 		float dx = XMConvertToRadians(0.15f*static_cast<float>(x - m_lastMousePos.x));
 		float dy = XMConvertToRadians(0.15f*static_cast<float>(y - m_lastMousePos.y));
 
-		m_smoothCamera.Pitch(dy);
-		m_smoothCamera.RotateY(dx);
+		m_smoothCamera->Pitch(dy);
+		m_smoothCamera->RotateY(dx);
 	}
 
 	m_lastMousePos.x = x;

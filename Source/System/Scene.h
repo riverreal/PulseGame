@@ -57,8 +57,12 @@ namespace Elixir
 		//Call this in Update function
 		void UpdateScene(F32 deltaTime);
 
+		void UpdateSecCameraSky(F32 deltaTime);
+
 		//Returns the camera used in the scene
 		Camera* GetCamera();
+
+		Camera* GetSecCamera();
 
 		//Returns the vector of objects
 		std::vector<GameObject*> GetChildren();
@@ -145,6 +149,7 @@ namespace Elixir
 		std::vector<GameObject*> m_objChildren;
 		GameObject* m_sky;
 		Camera* m_camera;
+		Camera* m_secondaryCamera;
 		Model* m_model;
 		//Deferred(Default) or Foreward
 		unsigned int m_renderingMode;

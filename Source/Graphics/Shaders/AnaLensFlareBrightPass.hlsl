@@ -15,14 +15,8 @@ float4 AnaLensFlareBrightPass(VertexOut input) : SV_TARGET
 {
 	float3 color = gHDRImage.Sample(samplerLinear, input.tex).rgb;
 	float avgLum = gAvrgLum.Sample(samplerLinear, float2(0.5f, 0.5f)).r;
-	color.b *= 1.5f;
-	if (color.r >= color.b)
-		color = float3(0, 0, 0);
-	else
-	{
-		color.g *= 0.3;
-		color.r = 0;
-	}
+
+	//color.b *= 1.5f;
 
 	color *= GetExposure(avgLum, 0.4, 3, 0.001);
 	color -= 0.5f;

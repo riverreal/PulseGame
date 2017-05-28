@@ -10,11 +10,12 @@ Camera::Camera()
 	m_look(0.0f, 0.0f, 1.0f),
 	m_FoV(0.8f)
 {
+	float width = (float)Elixir::GameManager::GetInstance().GetScreenWidth();
+	float height = (float)Elixir::GameManager::GetInstance().GetScreenHeight();
 	//Initialize default screen aspect
-	m_screenAspect = (float)Elixir::GameManager::GetInstance().GetScreenWidth() / (float)Elixir::GameManager::GetInstance().GetScreenHeight();
+	m_screenAspect = width / height;
 	BuildProjection();
-	//XMStoreFloat4x4(&m_orthoMatrix, XMMatrixOrthographicLH((float)Elixir::GameManager::GetInstance().GetScreenWidth(), (float)Elixir::GameManager::GetInstance().GetScreenHeight(), 0.1f, 1000.0f));
-	auto orthoMatrix = XMMatrixOrthographicLH(1600, 900, 0.1f, 1000.0f);
+	auto orthoMatrix = XMMatrixOrthographicLH(width, height, 0.1f, 1000.0f);
 	XMStoreFloat4x4(&m_orthoMatrix, orthoMatrix);
 }
 

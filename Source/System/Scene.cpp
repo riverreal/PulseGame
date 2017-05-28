@@ -14,6 +14,9 @@ Scene::Scene(Model* model)
 	m_camera = new Camera();
 	m_camera->SetPosition(0.0f, 3.0f, 0.0f);
 
+	m_secondaryCamera = new Camera();
+	m_secondaryCamera->SetPosition(0.0f, 3.0f, 0.0f);
+
 	m_lighting = new Light();
 
 	m_fog.Enabled = true;
@@ -37,6 +40,7 @@ Scene::~Scene()
 	CleanMemory();
 	SafeRelease(m_sky);
 	SafeRelease(m_camera);
+	SafeRelease(m_secondaryCamera);
 }
 
 void Scene::SetInitFunction(std::function<void()> init)
@@ -148,9 +152,25 @@ void Scene::UpdateScene(F32 deltaTime)
 	}
 }
 
+void Elixir::Scene::UpdateSecCameraSky(F32 deltaTime)
+{
+	if (m_sky)
+	{
+		m_sky->GetTransform()->Position = m_secondaryCamera->GetPosition();
+
+		auto tSystem = GetSystem<TransformSystem>();
+		tSystem->Update(m_sky, deltaTime);
+	}
+}
+
 Camera * Scene::GetCamera()
 {
 	return m_camera;
+}
+
+Camera * Elixir::Scene::GetSecCamera()
+{
+	return m_secondaryCamera;
 }
 
 std::vector<GameObject*> Scene::GetChildren()

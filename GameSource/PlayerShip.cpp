@@ -15,7 +15,7 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	m_aheadIndex = 0;
 	m_travelSpeed = 0.1f;
 	m_lineData = line;
-	m_rotationAngle = playerNum * XM_PI;
+	m_rotationAngle = playerNum * XM_PI / 2;
 
 	m_rotationSpeed = 1.3f;
 	m_cameraRadius = radius + 1.0f;
@@ -31,7 +31,11 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	m_colHasDetection = false;
 	m_hasCollided = false;
 
-	m_camera = Manager->GetCurrentScene()->GetCamera();
+	if (playerNum == 0)
+		m_camera = Manager->GetCurrentScene()->GetCamera();
+	else
+		m_camera = Manager->GetCurrentScene()->GetSecCamera();
+
 	m_camera->SetPosition(0.0f, 0.0f, 10.0f);
 
 	m_PlayerNum = playerNum;
@@ -246,7 +250,7 @@ void PlayerShip::SetPlayerPos(float dt)
 	upVec.x = up.x; upVec.y = up.y; upVec.z = up.z;
 
 	//Camera update
-	if (m_PlayerNum == 0)
+	if (m_PlayerNum == 0 || m_PlayerNum == 1)
 	{
 		Vec3f pc2(cos(rotationAngle) * m_cameraRadius, -m_cameraZDistance, sin(rotationAngle) * m_cameraRadius);
 
@@ -265,6 +269,6 @@ void PlayerShip::SetPlayerPos(float dt)
 		DirectX::XMFLOAT3 target;
 		target.x = m_target.x; target.y = m_target.y; target.z = m_target.z;
 
-		m_camera->SetLookAt(m_camera->GetPosition(), playerPos, upVec);//DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f));
+		m_camera->SetLookAt(m_camera->GetPosition(), playerPos, upVec);
 	}
 }

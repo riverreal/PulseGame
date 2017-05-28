@@ -1,12 +1,14 @@
 #include "ModeScene.h"
 #include "../Source/System/GameManager.h"
 #include "../Source/Includes/LESystem.h"
+#include "../Source/Helper/ENote.h"
 
 using namespace Elixir;
 
 //start
 void ModeScene::Init()
 {
+	m_splitScreen = false;
 	SetImage();
 	//ƒV[ƒ“‚ÌˆÚ“®
 	//Manager->ChangeScene("gsgs");
@@ -14,6 +16,7 @@ void ModeScene::Init()
 	ModeSelect_Right();
 	m_song.StartScene("SongSelect");
 
+	ENote::GetInstance().AddNote<bool>("GetSplitScreen", [this]() {return this->GetSplitScreen(); });
 }
 
 //Update
@@ -23,25 +26,26 @@ void ModeScene::Update(float dt)
 	{
 		left->Get2DRenderer()->Enabled = true;
 		right->Get2DRenderer()->Enabled = false;
-
 	}
 	else if(GetAsyncKeyState(VK_RIGHT) & 0x8000)
 	{
 		right->Get2DRenderer()->Enabled = true;
 		left->Get2DRenderer()->Enabled = false;
-
 	}
 
 	if (GetAsyncKeyState('A') & 0x8000)
 	{
 		if (left->Get2DRenderer()->Enabled)
 		{
+			m_splitScreen = false;
 			Manager->ChangeScene("SongSelect");
 		}
-	}else if(GetAsyncKeyState('D') & 0x8000)
+	}
+	else if(GetAsyncKeyState('D') & 0x8000)
 	{
 		if (right->Get2DRenderer()->Enabled)
 		{
+			m_splitScreen = true;
 			Manager->ChangeScene("SongSelect");
 		}
 	}
@@ -82,5 +86,10 @@ void ModeScene::ModeSelect_Right()
 	right->GetTransform()->Position = Vec3f(250, -170, 0);
 	right->GetTransform()->Scale = Vec3f(0.3f, 0.3f, 0);
 	right->Get2DRenderer()->Enabled = false;
+}
+
+bool ModeScene::GetSplitScreen()
+{
+	return m_splitScreen;
 }
 

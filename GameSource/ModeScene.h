@@ -13,8 +13,10 @@ public:
 	void SetImage();
 	void ModeSelect_Left();
 	void ModeSelect_Right();
+	bool GetSplitScreen();
 
 private:
+	bool m_splitScreen;
 	SongSelect m_song;
 	GameObject* left;
 	GameObject* right;

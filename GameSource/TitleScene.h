@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Source/System/IElixirGame.h"
-#include"ModeScene.h"
+#include "ModeScene.h"
 #include "PulseGame.h"
 
 using namespace Elixir;
@@ -14,5 +14,5 @@ public:
 	void SetImage();
 
 private:
-	PulseGame m_mode;
+	ModeScene m_mode;
 };

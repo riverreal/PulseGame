@@ -1,6 +1,6 @@
 #include "BaseApp.h"
 #include "../Helper/GeneralHelper.h"
-
+#include "../Helper/ENote.h"
 #include "GameManager.h"
 
 namespace Elixir
@@ -30,7 +30,8 @@ namespace Elixir
 		//m_depthSRV(0),
 		m_solidRS(0),
 		m_wireFrameRS(0),
-		m_sceneManager(0)
+		m_sceneManager(0),
+		m_splitScreen(false)
 	{
 		/*
 		AllocConsole();
@@ -138,15 +139,17 @@ namespace Elixir
 			MessageBox(0, L"Failed Preparing Draw", L"ERROR!", MB_OK);
 			return false;
 		}
-
+		
 		m_sceneManager = new SceneManager(m_textureManager);
-
 		GameManager::GetInstance().PrepareGame(m_sceneManager, m_width, m_height);
+
+		ENote::GetInstance().AddNote<void>("AutoSetSplitScreen", [this]() {return this->AutoSetSplitScreen(); });
 
 #if ELIXIR_EDITOR == true
 		m_elixirEditor = new Editor();
 		m_elixirEditor->Initialize(m_hWnd, m_d3dDevice, m_d3dDeviceContext, m_width, m_height, m_sceneManager);
 #endif
+
 		m_sceneManager->AddProjectTextures();
 		return true;
 	}
@@ -231,17 +234,17 @@ namespace Elixir
 					}
 				}
 
-				m_deferredBuffers->SetRenderTargets(m_d3dDeviceContext);
-				m_deferredBuffers->ClearRenderTargets(m_d3dDeviceContext);
-
-				m_d3dDeviceContext->RSSetViewports(1, &m_deferredViewport);
-
-				bool backCulling = true;
 				m_d3dDeviceContext->RSSetState(m_solidRS);
 
 				//Store temporary 2d objects to render after
 				std::vector<GameObject*> Object2d;
+				bool backCulling = true;
 
+				m_deferredBuffers->SetRenderTargets(m_d3dDeviceContext);
+				m_deferredBuffers->ClearRenderTargets(m_d3dDeviceContext);
+				
+				m_d3dDeviceContext->RSSetViewports(1, &m_deferredViewport);
+				
 				//iterate through every object to render it
 				for (auto &object : currentScene->GetChildren())
 				{
@@ -286,7 +289,65 @@ namespace Elixir
 					m_d3dDeviceContext->RSSetState(m_solidRS);
 				}
 
-				m_d3dDeviceContext->RSSetViewports(1, &m_deferredViewport);
+				if (m_splitScreen)
+				{
+					currentScene->GetSecCamera()->Update();
+
+					auto halfW = m_width / 2;
+					m_deferredSecViewport.TopLeftX = halfW;
+					m_deferredSecViewport.Width = halfW;
+					m_deferredSecSkyViewport.TopLeftX = halfW;
+					m_deferredSecSkyViewport.Width = halfW;
+
+					m_deferredViewport.Width = halfW;
+					m_deferredSkyViewport.Width = halfW;
+					m_defaultViewport.TopLeftX = 0.0f;
+					m_deferredSkyViewport.TopLeftX = 0.0f;
+
+					currentScene->UpdateSecCameraSky(dt);
+
+					m_d3dDeviceContext->RSSetViewports(1, &m_deferredSecViewport);
+
+					//iterate through every object to render it
+					for (auto &object : currentScene->GetChildren())
+					{
+						if (object->GetRenderer() != nullptr)
+						{
+							//render if not disabled
+							if (object->GetRenderer()->Enabled)
+							{
+								if (object->GetRenderer()->EnableBackFaceCulling == false)
+								{
+									//if last setting was the same skip raster state setting
+									if (backCulling)
+									{
+										m_d3dDeviceContext->RSSetState(m_solidNoCullRS);
+										backCulling = false;
+									}
+								}
+								else
+								{
+									if (!backCulling)
+									{
+										m_d3dDeviceContext->RSSetState(m_solidRS);
+										backCulling = true;
+									}
+								}
+							}
+						}
+
+						m_deferredShader->Render(m_d3dDeviceContext, object, currentScene->GetSecCamera(), m_textureManager);
+					}
+
+					//To render inner sphere
+					if (!m_sceneManager->GetCurrentScene()->GetNoSky())
+					{
+						m_d3dDeviceContext->RSSetViewports(1, &m_deferredSecSkyViewport);
+						m_d3dDeviceContext->RSSetState(m_solidNoCullRS);
+						m_skyShader->Render(m_d3dDeviceContext, currentScene->GetSky(), currentScene->GetSecCamera(), m_textureManager);
+						m_d3dDeviceContext->RSSetState(m_solidRS);
+					}
+				}
 
 				//m_deferredBuffers->SetPostpRenderTarget(m_d3dDeviceContext);
 				//Render to aux 0
@@ -296,6 +357,7 @@ namespace Elixir
 				m_ortho.Render(m_d3dDeviceContext);
 				auto envMap = m_textureManager->GetTexture(currentScene->GetEnvMap());
 				auto irradiance = m_textureManager->GetTexture(currentScene->GetIrradiance());
+
 				m_deferredLightShader->Render(m_d3dDeviceContext, offsetData(m_ortho.GetIndexCount(), 0, 0), envMap, irradiance, m_deferredBuffers->GetShaderResourceView(0), 
 					m_deferredBuffers->GetShaderResourceView(1), m_deferredBuffers->GetShaderResourceView(2), m_deferredBuffers->GetShaderResourceView(3), m_shadowMap->GetShadowMap(),
 					currentScene->GetLight(), currentScene->GetCamera(), currentScene->GetFog());
@@ -359,6 +421,23 @@ namespace Elixir
 		m_frameCnt++;
 		Update(m_gameTimer.DeltaTime());
 		Draw(m_gameTimer.DeltaTime());
+	}
+
+	void BaseApp::AutoSetSplitScreen()
+	{
+		m_splitScreen = ENote::GetInstance().Notify<bool>("GetSplitScreen");
+		if (m_splitScreen)
+		{
+			m_deferredViewport.Width / 2;
+			m_deferredSkyViewport.Width / 2;
+		}
+		else
+		{
+			XMFLOAT2 specResolution = GetSpecResolution(m_width, m_height);
+			m_deferredViewport.Width = specResolution.x;
+			m_deferredSkyViewport.Width = specResolution.x;
+		}
+		
 	}
 
 	bool BaseApp::InitWindow()
@@ -1006,19 +1085,33 @@ namespace Elixir
 		m_d3dDeviceContext->RSSetViewports(1, &m_defaultViewport);
 
 		XMFLOAT2 specResolution = GetSpecResolution(m_width, m_height);
-		m_deferredViewport.Width = (float)specResolution.x; //here
+		m_deferredViewport.Width = (float)specResolution.x;
 		m_deferredViewport.Height = (float)specResolution.y;
 		m_deferredViewport.MinDepth = 0.0f;
 		m_deferredViewport.MaxDepth = 0.9f;
 		m_deferredViewport.TopLeftX = 0.0f;
 		m_deferredViewport.TopLeftY = 0.0f;
 
-		m_deferredSkyViewport.Width = (float)specResolution.x; //here
+		m_deferredSkyViewport.Width = (float)specResolution.x;
 		m_deferredSkyViewport.Height = (float)specResolution.y;
 		m_deferredSkyViewport.MinDepth = 0.9f;
 		m_deferredSkyViewport.MaxDepth = 1.0f;
 		m_deferredSkyViewport.TopLeftX = 0.0f;
 		m_deferredSkyViewport.TopLeftY = 0.0f;
+
+		m_deferredSecViewport.Width = (float)specResolution.x / 2.0f;
+		m_deferredSecViewport.Height = (float)specResolution.y;
+		m_deferredSecViewport.MinDepth = 0.0f;
+		m_deferredSecViewport.MaxDepth = 0.9f;
+		m_deferredSecViewport.TopLeftX = m_deferredSecViewport.Width;
+		m_deferredSecViewport.TopLeftY = 0.0f;
+
+		m_deferredSecSkyViewport.Width = (float)specResolution.x / 2.0f;
+		m_deferredSecSkyViewport.Height = (float)specResolution.y;
+		m_deferredSecSkyViewport.MinDepth = 0.9f;
+		m_deferredSecSkyViewport.MaxDepth = 1.0f;
+		m_deferredSecSkyViewport.TopLeftX = m_deferredSecSkyViewport.Width;
+		m_deferredSecSkyViewport.TopLeftY = 0.0f;
 
 		//-------------------------------------------------------------------
 		//Matrix

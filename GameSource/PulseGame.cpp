@@ -1,9 +1,28 @@
 #include "PulseGame.h"
 #include "../Source/System/GameManager.h"
 #include "../Source/Includes/LESystem.h"
+#include "../Source/Helper/ENote.h"
 
 void PulseGame::InitTestScene()
-{	
+{
+	ENote::GetInstance().Notify<void>("AutoSetSplitScreen");
+
+	bool isSplit = ENote::GetInstance().Notify<bool>("GetSplitScreen");
+
+	if (isSplit)
+	{
+		ThisScene->GetCamera()->SetScreenAspect(((float)GameManager::GetInstance().GetScreenWidth() / 2.0f) / (float)GameManager::GetInstance().GetScreenHeight());
+		ThisScene->GetCamera()->BuildProjection();
+		ThisScene->GetSecCamera()->SetScreenAspect(((float)GameManager::GetInstance().GetScreenWidth() / 2.0f) / (float)GameManager::GetInstance().GetScreenHeight());
+		ThisScene->GetSecCamera()->BuildProjection();
+	}
+	else
+	{
+		ThisScene->GetCamera()->SetScreenAspect((float)GameManager::GetInstance().GetScreenWidth() / (float)GameManager::GetInstance().GetScreenHeight());
+		ThisScene->GetCamera()->BuildProjection();
+	}
+	
+
 	m_pause = true;
 	ThisScene->SetIrradiance(Manager->GetTextureManager()->AddTexture(L"Resources/Textures/Cubemaps/Irradiance/Irradiance.dds"));
 	ThisScene->SetEnvMap(Manager->GetTextureManager()->AddTexture(L"Resources/Textures/Cubemaps/earth_moon_skybox.dds"));
@@ -38,9 +57,18 @@ void PulseGame::InitTestScene()
 	obj->SetName("Tube");
 	obj->GetTransform()->TextureScale = Vec3f(40.0f, 3.0f, 1.0f);
 
-	//m_playerManager.AddPlayer(Manager, 0, m_lineData, radius, DIFF::HARD);
 	m_playerManager.Release();
-	m_playerManager.AddAI(Manager, 0, m_lineData, radius, DIFF::HARD);
+	m_playerManager.AddPlayer(Manager, 0, m_lineData, radius, DIFF::HARD);
+
+	if (isSplit)
+	{
+		m_playerManager.AddPlayer(Manager, 1, m_lineData, radius, DIFF::HARD);
+	}
+	else
+	{
+		m_playerManager.AddAI(Manager, 2, m_lineData, radius, DIFF::HARD);
+	}
+	
 }
 
 void PulseGame::UpdateTestScene(float dt)
@@ -59,8 +87,6 @@ void PulseGame::UpdateTestScene(float dt)
 	{
 		m_playerManager.Update(dt);
 	}
-
-
 }
 
 void PulseGame::Init()

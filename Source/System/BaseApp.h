@@ -66,6 +66,8 @@ namespace Elixir
 		virtual void OnMouseUp(WPARAM btnState, int x, int y) {}
 		virtual void OnMouseMove(WPARAM btnState, int x, int y) {}
 
+		void AutoSetSplitScreen();
+
 	protected:
 		bool InitWindow();
 		bool InitD3D();
@@ -95,6 +97,7 @@ namespace Elixir
 
 		bool m_resizing; //not used
 		bool m_appPaused;
+		bool m_splitScreen;
 
 		Timer m_gameTimer;
 		static int m_frameCnt;
@@ -131,6 +134,10 @@ namespace Elixir
 		D3D11_VIEWPORT m_defaultViewport;
 		D3D11_VIEWPORT m_deferredViewport;
 		D3D11_VIEWPORT m_deferredSkyViewport;
+
+		D3D11_VIEWPORT m_deferredSecViewport;
+		D3D11_VIEWPORT m_deferredSecSkyViewport;
+
 		DirectX::XMMATRIX m_orthoMatrix;
 
 		SceneManager* m_sceneManager;
