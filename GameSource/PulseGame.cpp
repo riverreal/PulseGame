@@ -6,7 +6,7 @@
 void PulseGame::InitTestScene()
 {
 	ENote::GetInstance().Notify<void>("AutoSetSplitScreen");
-	
+
 	bool isSplit = ENote::GetInstance().Notify<bool>("GetSplitScreen");
 	if (isSplit)
 	{

@@ -14,6 +14,26 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif,in
 	int NumofLane = (int)dif;
 	m_PlayerNum = playerNum;
 
+	bool isSplit = ENote::GetInstance().Notify<bool>("GetSplitScreen");
+
+	m_LanePos[0] = Vec3f(200, -210, 0);
+	m_LanePos[1] = Vec3f(0, -240, 0);
+	m_LanePos[2] = Vec3f(-200, -210, 0);
+
+	if (isSplit)
+	{
+		m_LanePos[1].x = ((1280.0f / 4) * 1) - 640.0f;
+		m_LanePos[0].x = m_LanePos[1].x + 130;
+		m_LanePos[2].x = m_LanePos[1].x - 130;
+	}
+
+	if (playerNum == 1)
+	{
+		m_LanePos[0].x += 640.0f;
+		m_LanePos[1].x += 640.0f;
+		m_LanePos[2].x += 640.0f;
+	}
+
 	m_timingBonus = 0;
 	//BGMÉtÉ@ÉCÉãê›íË
 	AudioManager::GetInstance().AddControlledMusic("Resource/rhythmFolder/" + CourseDataArray[CourseID::hitorigoto].music +".mp3");
