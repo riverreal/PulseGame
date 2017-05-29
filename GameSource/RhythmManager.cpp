@@ -122,7 +122,8 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif,in
 
 	m_TextEffect = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_2D);
 	m_TextEffect->SetTag(m_PlayerNum);
-	m_TextEffect->GetTransform()->Position = Vec3f(0, -75, 0);
+	m_TextEffect->GetTransform()->Position = m_LanePos[1];
+	m_TextEffect->GetTransform()->Position.y += 120;
 	
 	m_textAnim = m_textAnim.From(&m_TextEffect->Get2DRenderer()->Color.a).To(0.0f).Time(1.0f)
 		.From(&m_TextEffect->GetTransform()->Position.y).To(m_TextEffect->GetTransform()->Position.y + 30.0f).Time(1.0f);
