@@ -7,9 +7,11 @@ using namespace Elixir;
 //start
 void ResultScene::Init()
 {
-	SetImage();
-	SetNextButton();
-
+	//SetImage();
+	//SetNextButton();
+	TextImage();
+	AudioManager::GetInstance().GetControlledMusic()->setIsPaused(true);
+	//AudioManager::GetInstance().GetControlledMusic()->drop();
 	//ƒV[ƒ“‚ÌˆÚ“®
 	//Manager->ChangeScene("gsgs");
 }
@@ -21,8 +23,58 @@ void ResultScene::Update(float dt)
 	{
 		Manager->ChangeScene("TitleScene");
 	}
+	m_MachineAnim.Update(dt);
+	m_textAnim.Update(dt);
+	m_textAnim2.Update(dt);
 }
 
+void ResultScene::TextImage()
+{
+	m_text = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
+	m_text->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/winner.png");
+	m_text->GetTransform()->Position = Vec3f(0, -200, 0);
+	//text->GetTransform()->Scale = Vec3f(0.2f, 0.2f, 0);
+
+
+	m_Machine = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
+	m_Machine->GetRenderer()->Model = Manager->GetModel()->AddModelFromFile("Resource/ships/shipImp.obj");
+	m_Machine->GetRenderer()->Material.albedo = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipAlbedoEm.png");
+	m_Machine->GetRenderer()->Material.metallic = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipMetallic.png");
+	m_Machine->GetRenderer()->Material.normal = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipNormal.png");
+	m_Machine->GetRenderer()->Material.emissive = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipEmissive.png");
+	m_Machine->GetRenderer()->Material.roughness = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/75.png");
+	m_Machine->GetTransform()->Scale = Vec3f(0.3f);
+	m_Machine->GetTransform()->Position = Vec3f(0, 0, 5);
+	m_Machine->GetTransform()->Rotation = Vec3f(0, 30, 0);
+
+	DirectX::XMFLOAT3 playerPos, upVec;
+	playerPos.x = m_Machine->GetTransform()->Position.x;
+	playerPos.y = m_Machine->GetTransform()->Position.y; 
+	playerPos.z = m_Machine->GetTransform()->Position.z;
+	upVec.x = 0; upVec.y = 1; upVec.z = 0;
+	Manager->GetCurrentScene()->GetCamera()->SetPosition(0, 3, 0);
+	Manager->GetCurrentScene()->GetCamera()->SetLookAt(Manager->GetCurrentScene()->GetCamera()->GetPosition(), playerPos, upVec);
+	m_Machine->GetTransform()->Position = Vec3f(60, 0, 60);
+	m_MachineAnim = m_MachineAnim.From(&m_Machine->GetTransform()->Position).To(Vec3f(0, 0, 5)).Time(4.0f).Easing(ET_QUINT_OUT);
+	TextAnimLoop(true);
+}
+
+void ResultScene::TextAnimLoop(bool flag)
+{
+
+	
+	if (flag)
+	{
+		m_textAnim = m_textAnim.From(&m_text->GetTransform()->Scale).To(Vec3f(0.9f, 0.9f, 1.0f)).Time(1.0f)
+			.OnFinish([this]() {this->TextAnimLoop(false); });
+	}
+	else
+	{
+		m_textAnim2 = m_textAnim2.From(&m_text->GetTransform()->Scale).To(Vec3f(1.1f, 1.1f, 1.0f)).Time(1.0f)
+			.OnFinish([this]() {this->TextAnimLoop(true); });
+	}
+		
+}
 
 void ResultScene::SetNextButton()
 {
