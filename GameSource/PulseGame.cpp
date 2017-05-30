@@ -41,20 +41,20 @@ void PulseGame::InitTestScene()
 
 	Manager->GetCurrentScene()->GetCamera()->SetPosition(0.0f, 0.0f, -10.0f);
 
-	m_lineData = LoadLine(Manager->GetFileManager()->LoadFile(CourseDataArray[CourseID::hitorigoto].path));
+	m_lineData = LoadLine(Manager->GetFileManager()->LoadFile(CourseDataArray[CourseID::course03].path));
 
 	auto smoothLine = MathHelper::CatmullromSpline(m_lineData, 20, false);
 	auto tangents = MathHelper::CatmullromSpline(m_lineData, 20, true);
 
 	auto obj = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
 
-	float radius = 1.0f;
+	float radius = 1.3f;
 
 	obj->GetRenderer()->Model = Manager->GetModel()->AddTubeFromLineData(smoothLine, tangents, radius, smoothLine);
 	obj->GetRenderer()->Material.roughness = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/75.png");
 	obj->GetRenderer()->Material.metallic = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/25.png");
 	obj->SetName("Tube");
-	obj->GetTransform()->TextureScale = Vec3f(40.0f, 3.0f, 1.0f);
+	obj->GetTransform()->TextureScale = Vec3f(80.0f, 6.0f, 1.0f);
 
 	m_playerManager.Release();
 	m_playerManager.AddPlayer(Manager, 0, m_lineData, radius, DIFF::HARD);

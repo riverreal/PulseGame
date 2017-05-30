@@ -36,14 +36,14 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif,in
 
 	m_timingBonus = 0;
 	//BGMファイル設定
-	AudioManager::GetInstance().AddControlledMusic("Resource/rhythmFolder/" + CourseDataArray[CourseID::hitorigoto].music +".mp3");
+	AudioManager::GetInstance().AddControlledMusic("Resource/rhythmFolder/" + CourseDataArray[CourseID::course03].music +".mp3");
 	AudioManager::GetInstance().GetControlledMusic()->setIsPaused(true);
 
 	ENote::GetInstance().AddNote<int>("GetCombo" + playerNum, [this]() ->int {return this->GetCombo(); });
 	ENote::GetInstance().AddNote<int>("GetTimingBonus" + playerNum, [this]() ->int {return this->GetTimingBonus(); });
 
 	//PNFファイルゲット
-	auto FileContents = Manager->GetFileManager()->LoadFileLines("Resource/rhythmFolder/Pnf_Folder/" + CourseDataArray[CourseID::hitorigoto].music + ".pnf");
+	auto FileContents = Manager->GetFileManager()->LoadFileLines("Resource/rhythmFolder/Pnf_Folder/" + CourseDataArray[CourseID::course03].music + ".pnf");
 	//lineを,で分割して代入
 	for (auto & line : FileContents)
 	{

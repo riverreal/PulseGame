@@ -13,13 +13,13 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	Manager = sceneManager;
 	m_currentIndex = 0;
 	m_aheadIndex = 0;
-	m_travelSpeed = 0.1f;
+	m_travelSpeed = 0.05f;
 	m_lineData = line;
 	m_rotationAngle = playerNum * XM_PI / 2;
 
 	m_rotationSpeed = 1.3f;
-	m_cameraRadius = radius + 1.0f;
-	m_cameraZDistance = 1.3f;
+	m_cameraRadius = radius + 0.8f;
+	m_cameraZDistance = 1.0f;
 	m_pathRadius = radius + 0.5f;
 	m_target = Vec3f(0.0f, 10.0f, -10.0f);
 	m_currentCombo = 0;
@@ -47,7 +47,7 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	m_player->GetRenderer()->Material.normal = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipNormal.png");
 	m_player->GetRenderer()->Material.emissive = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipEmissive.png");
 	m_player->GetRenderer()->Material.roughness = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/75.png");
-	m_player->GetTransform()->Scale = Vec3f(0.1f);
+	m_player->GetTransform()->Scale = Vec3f(0.04f);
 	m_player->GetTransform()->Position = MathHelper::GetPointInCMSpline(m_lineData[0], m_lineData[1], m_lineData[2], m_lineData[3], m_currentPos).Position;
 	m_target = MathHelper::GetPointInCMSpline(m_lineData[0], m_lineData[1], m_lineData[2], m_lineData[3], m_aheadPos).Position;
 
