@@ -21,4 +21,16 @@ private:
 	ETween<float> m_mainTEween;
 	GameObject * m_title;
 	GameObject * m_back;
+	void SetNextButton();
+	void TextAnimLoop(bool flag);
+
+private:
+	
+	void TextImage();
+	
+	GameObject* m_Machine;
+	GameObject* m_text;
+	ETween<Vec3f> m_MachineAnim;
+	ETween<Vec3f> m_textAnim;
+	ETween<Vec3f> m_textAnim2;
 };

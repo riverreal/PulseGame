@@ -145,9 +145,8 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif,in
 		from(Manager->GetCurrentScene()->GetChildren())
 			>> where([](GameObject* obj) {return obj->Get2DRenderer() != nullptr; })
 			>> for_each([](GameObject* obj) {
-			obj->GetTransform()->Position = obj->GetTransform()->Position * GameManager::GetInstance().GetDesignScale();
-			obj->GetTransform()->Scale = obj->GetTransform()->Scale * GameManager::GetInstance().GetDesignScale();
-
+			//obj->GetTransform()->Position = obj->GetTransform()->Position * GameManager::GetInstance().GetDesignScale();
+			//obj->GetTransform()->Scale = obj->GetTransform()->Scale * GameManager::GetInstance().GetDesignScale();
 		});
 	}
 }
