@@ -39,18 +39,33 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	m_camera->SetPosition(0.0f, 0.0f, 10.0f);
 
 	m_PlayerNum = playerNum;
-
-	m_player = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
-	m_player->GetRenderer()->Model = Manager->GetModel()->AddModelFromFile("Resource/ships/shipImp.obj");
-	m_player->GetRenderer()->Material.albedo = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipAlbedoEm.png");
-	m_player->GetRenderer()->Material.metallic = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipMetallic.png");
-	m_player->GetRenderer()->Material.normal = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipNormal.png");
-	m_player->GetRenderer()->Material.emissive = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipEmissive.png");
-	m_player->GetRenderer()->Material.roughness = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/75.png");
-	m_player->GetTransform()->Scale = Vec3f(0.04f);
+	if (playerNum == 0)
+	{
+		m_player = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
+		m_player->GetRenderer()->Model = Manager->GetModel()->AddModelFromFile("Resource/ships/shipImp.obj");
+		m_player->GetRenderer()->Material.albedo = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipAlbedoEm.png");
+		m_player->GetRenderer()->Material.metallic = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipMetallic.png");
+		m_player->GetRenderer()->Material.normal = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipNormal.png");
+		m_player->GetRenderer()->Material.emissive = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipEmissive.png");
+		m_player->GetRenderer()->Material.roughness = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/75.png");
+		m_player->GetTransform()->Scale = Vec3f(0.04f);
+	}
+	else
+	{
+		m_player = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
+		m_player->GetRenderer()->Model = Manager->GetModel()->AddModelFromFile("Resource/ships/Final.obj");
+		m_player->GetRenderer()->Material.albedo = Manager->GetTextureManager()->AddTexture(L"Resource/ships/Final_Material__482_BaseColor.png");
+		m_player->GetRenderer()->Material.metallic = Manager->GetTextureManager()->AddTexture(L"Resource/ships/Material__482_metallic.jpg");
+		m_player->GetRenderer()->Material.normal = Manager->GetTextureManager()->AddTexture(L"Resource/ships/Final_Material__482_Normal.png");
+		m_player->GetRenderer()->Material.emissive = Manager->GetTextureManager()->AddTexture(L"Resource/ships/Final_Material__482_Emissive.jpg");
+		m_player->GetRenderer()->Material.roughness = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/75.png");
+		m_player->GetTransform()->Scale = Vec3f(0.004f);
+		m_player->SetName("Number2");
+	}
+	
 	m_player->GetTransform()->Position = MathHelper::GetPointInCMSpline(m_lineData[0], m_lineData[1], m_lineData[2], m_lineData[3], m_currentPos).Position;
 	m_target = MathHelper::GetPointInCMSpline(m_lineData[0], m_lineData[1], m_lineData[2], m_lineData[3], m_aheadPos).Position;
-
+	
 	m_ObstacleList = Manager->LoadScene("Resource/test8couse.escene");
 	m_ObstacleList = from(m_ObstacleList)
 		>> orderby_ascending([](GameObject* obj) {return obj->GetTransform()->Position.Length(); })
