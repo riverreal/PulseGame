@@ -122,12 +122,6 @@ void PulseGame::Init()
 
 void PulseGame::Update(float dt)
 {
-	if (GetAsyncKeyState('Z') & 0x8000)
-	{
-		BackAnim();
-		m_mainTEween = m_mainTEween.OnFinish([this]() {this->ChangeScene(); });
-	}
-
 	UpdateTestScene(dt);
 	m_mainTEween.Update(dt);
 }

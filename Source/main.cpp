@@ -12,8 +12,8 @@
 
 namespace Elixir
 {
-	const static int SCREEN_WIDTH = 1280;
-	const static int SCREEN_HEIGHT = 720;
+	const static int SCREEN_WIDTH = 1600;
+	const static int SCREEN_HEIGHT = 900;
 };
 
 using namespace Elixir;

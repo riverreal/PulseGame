@@ -51,6 +51,7 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 		m_player->GetTransform()->Scale = Vec3f(0.04f);
 	}
 	else
+
 	{
 		m_player = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
 		m_player->GetRenderer()->Model = Manager->GetModel()->AddModelFromFile("Resource/ships/Final.obj");
@@ -59,7 +60,7 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 		m_player->GetRenderer()->Material.normal = Manager->GetTextureManager()->AddTexture(L"Resource/ships/Final_Material__482_Normal.png");
 		m_player->GetRenderer()->Material.emissive = Manager->GetTextureManager()->AddTexture(L"Resource/ships/Final_Material__482_Emissive.jpg");
 		m_player->GetRenderer()->Material.roughness = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/75.png");
-		m_player->GetTransform()->Scale = Vec3f(0.004f);
+		m_player->GetTransform()->Scale = Vec3f(0.002f);
 		m_player->SetName("Number2");
 	}
 	
