@@ -1,12 +1,15 @@
 #include "ResultScene.h"
 #include "../Source/System/GameManager.h"
 #include "../Source/Includes/LESystem.h"
+#include "../Source/Helper/ENote.h"
 
 using namespace Elixir;
 
 //start
 void ResultScene::Init()
 {
+	ENote::GetInstance().Notify<void>("SetNormalScreen");
+
 	/*
 	SetImage();
 	BlackImage();
@@ -31,6 +34,7 @@ void ResultScene::Update(float dt)
 	{
 		//BackAnim();
 		//m_mainTEween = m_mainTEween.OnFinish([this]() {this->ChangeScene(); });
+		ChangeScene();
 	}
 
 	m_mainTEween.Update(dt);
