@@ -36,7 +36,7 @@ namespace Elixir
 		std::unordered_map<std::string, std::function<float()>> m_floatNotes;
 		std::unordered_map<std::string, std::function<int()>> m_intNotes;
 		std::unordered_map<std::string, std::function<bool()>> m_boolNotes;
-
+		std::unordered_map<std::string, std::function<std::string()>> m_stringNotes;
 	};
 
 	
