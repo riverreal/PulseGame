@@ -62,6 +62,19 @@ bool Elixir::ENote::Notify<bool>(std::string note)
 	return false;
 }
 
+template<>
+std::string Elixir::ENote::Notify<std::string>(std::string note)
+{
+	if (m_stringNotes.count(note) == 0)
+		return "";
+
+	auto func = m_stringNotes.find(note)->second;
+	if (func)
+		return func();
+
+	return "";
+}
+
 //AddNote methods-------------------------------------------------------
 
 template<>
@@ -86,6 +99,12 @@ template<>
 void Elixir::ENote::AddNote<bool>(std::string note, std::function<bool()> noteFunc)
 {
 	m_boolNotes[note] = noteFunc;
+}
+
+template<>
+void Elixir::ENote::AddNote<std::string>(std::string note, std::function<std::string()> noteFunc)
+{
+	m_stringNotes[note] = noteFunc;
 }
 
 //DeleteNote methods-------------------------------------------------------
@@ -127,5 +146,15 @@ void Elixir::ENote::DeleteNote<bool>(std::string note)
 	if (m_boolNotes.count(note) != 0)
 	{
 		m_boolNotes.erase(note);
+	}
+}
+
+template<>
+void Elixir::ENote::DeleteNote<std::string>(std::string note)
+{
+	//if exists
+	if (m_stringNotes.count(note) != 0)
+	{
+		m_stringNotes.erase(note);
 	}
 }
