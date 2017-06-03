@@ -8,11 +8,11 @@ Texture2D gAnaLensFlare : register(t3);
 SamplerState samplerLinear;
 //true = 1
 //false = 0
-#define TONEMAPPING 0
-#define EYE_ADAPTATION 0
-#define FXAA 0
-#define HDR_BLOOM 0
-#define ANAMORPHIC_LENS_FLARE 0
+#define TONEMAPPING 1
+#define EYE_ADAPTATION 1
+#define FXAA 1
+#define HDR_BLOOM 1
+#define ANAMORPHIC_LENS_FLARE 1
 
 cbuffer PostProcessParam : register(b0)
 {

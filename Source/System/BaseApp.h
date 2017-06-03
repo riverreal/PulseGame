@@ -5,7 +5,7 @@
 #pragma comment(lib, "d3dcompiler.lib")
 
 #define WIN32_LEAN_AND_MEAN
-#define ELIXIR_EDITOR true;
+#define ELIXIR_EDITOR false;
 
 #include <Windows.h>
 #include <windowsx.h>
@@ -37,7 +37,7 @@ using namespace DirectX;
 
 namespace Elixir
 {
-	const bool FULL_SCREEN = false;
+	const bool FULL_SCREEN = true;
 	//const bool RESIZEABLE = false; ------------- Feature Not Added
 	const static float SCREEN_DEPTH = 1000.0f;
 	const static float SCREEN_NEAR = 0.1f;

@@ -22,16 +22,16 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif,in
 
 	if (isSplit)
 	{
-		m_LanePos[1].x = ((1280.0f / 4) * 1) - 640.0f;
+		m_LanePos[1].x = ((1600.0f / 4.0f) * 1) - 800.0f;
 		m_LanePos[0].x = m_LanePos[1].x + 130;
 		m_LanePos[2].x = m_LanePos[1].x - 130;
 	}
 
 	if (playerNum == 1)
 	{
-		m_LanePos[0].x += 640.0f;
-		m_LanePos[1].x += 640.0f;
-		m_LanePos[2].x += 640.0f;
+		m_LanePos[0].x += 800.0f;
+		m_LanePos[1].x += 800.0f;
+		m_LanePos[2].x += 800.0f;
 	}
 
 	m_timingBonus = 0;
