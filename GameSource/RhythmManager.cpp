@@ -20,18 +20,20 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif,in
 	m_LanePos[1] = Vec3f(0, -240, 0);
 	m_LanePos[2] = Vec3f(-200, -210, 0);
 
+	auto screenW = GameManager::GetInstance().GetScreenWidth();
+	auto halfScreenW = screenW * 0.5;
 	if (isSplit)
 	{
-		m_LanePos[1].x = ((1600.0f / 4.0f) * 1) - 800.0f;
+		m_LanePos[1].x = ((screenW / 4.0f) * 1) - halfScreenW;
 		m_LanePos[0].x = m_LanePos[1].x + 130;
 		m_LanePos[2].x = m_LanePos[1].x - 130;
 	}
 
 	if (playerNum == 1)
 	{
-		m_LanePos[0].x += 800.0f;
-		m_LanePos[1].x += 800.0f;
-		m_LanePos[2].x += 800.0f;
+		m_LanePos[0].x += halfScreenW;
+		m_LanePos[1].x += halfScreenW;
+		m_LanePos[2].x += halfScreenW;
 	}
 
 	m_timingBonus = 0;
