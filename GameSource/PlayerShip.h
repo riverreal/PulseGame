@@ -3,7 +3,7 @@
 #include <vector>
 #include "../Source/Helper/TypeHelper.h"
 #include "../Source/Graphics/CameraManager.h"
-#include"CommandInterpreter.h"
+#include "CommandInterpreter.h"
 
 class PlayerShip
 {

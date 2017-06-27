@@ -21,25 +21,9 @@ void PulseGame::InitTestScene()
 		Manager->GetCurrentScene()->GetCamera()->BuildProjection();
 	}
 	
-
 	m_pause = true;
-	Manager->GetCurrentScene()->SetIrradiance(Manager->GetTextureManager()->AddTexture(L"Resources/Textures/Cubemaps/Irradiance/Irradiance.dds"));
-	Manager->GetCurrentScene()->SetEnvMap(Manager->GetTextureManager()->AddTexture(L"Resources/Textures/Cubemaps/earth_moon_skybox.dds"));
 
-	auto dirL = Manager->GetCurrentScene()->GetLight()->GetModDirectionalLight();
-
-	dirL->LightColor[0] = 1.0f;
-	dirL->LightColor[1] = 1.0f;
-	dirL->LightColor[2] = 1.0f;
-
-	dirL->LightIntensity[0] = 1.0f;
-	dirL->LightIntensity[1] = 0.1f;
-
-	dirL->Direction[0] = 0.1f;
-	dirL->Direction[1] = -0.6f;
-	dirL->Direction[2] = -0.8f;
-
-	Manager->GetCurrentScene()->GetCamera()->SetPosition(0.0f, 0.0f, -10.0f);
+	m_stageManager.Initialize(Manager);
 
 	m_lineData = LoadLine(Manager->GetFileManager()->LoadFile(CourseDataArray[CourseID::course03].path));
 

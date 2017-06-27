@@ -3,7 +3,8 @@
 #include "../Source/System/IElixirGame.h"
 #include <vector>
 #include "PlayerManager.h"
-#include"ResultScene.h"
+#include "ResultScene.h"
+#include "StageManager.h"
 
 using namespace Elixir;
 
@@ -23,6 +24,7 @@ public:
 private:
 	std::vector<Vec3f> m_lineData;
 	PlayerManager m_playerManager;
+	StageManager m_stageManager;
 	bool m_pause;
 	ETween<float> m_mainTEween;
 	ResultScene m_result;
