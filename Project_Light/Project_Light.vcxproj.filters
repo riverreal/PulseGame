@@ -61,6 +61,21 @@
     <Filter Include="Source Files\Game\Scenes">
       <UniqueIdentifier>{bc8971f6-ba4c-46e6-8fdf-35b427896124}</UniqueIdentifier>
     </Filter>
+    <Filter Include="External Source\rxcpp">
+      <UniqueIdentifier>{b6244435-42f7-45d6-bde1-efe59541dfd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Source\rxcpp\operators">
+      <UniqueIdentifier>{32a40d69-e9c9-4b2f-94bb-ceb0f24561e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Source\rxcpp\schedulers">
+      <UniqueIdentifier>{d0de9a01-c0f6-47e9-8d42-43370d87ea94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Source\rxcpp\sources">
+      <UniqueIdentifier>{ba0ccd8b-ae45-4824-914e-e60760e87e67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Source\rxcpp\subjects">
+      <UniqueIdentifier>{aab6b5cb-d40b-4237-9b82-0b094c14c1b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\main.cpp">
@@ -469,6 +484,309 @@
     </ClInclude>
     <ClInclude Include="..\GameSource\StageManager.h">
       <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\rx.hpp">
+      <Filter>External Source\rxcpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\rx-connectable_observable.hpp">
+      <Filter>External Source\rxcpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\rx-coordination.hpp">
+      <Filter>External Source\rxcpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\rx-coroutine.hpp">
+      <Filter>External Source\rxcpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\rx-grouped_observable.hpp">
+      <Filter>External Source\rxcpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\rx-includes.hpp">
+      <Filter>External Source\rxcpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\rx-lite.hpp">
+      <Filter>External Source\rxcpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\rx-notification.hpp">
+      <Filter>External Source\rxcpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\rx-observable.hpp">
+      <Filter>External Source\rxcpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\rx-observer.hpp">
+      <Filter>External Source\rxcpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\rx-operators.hpp">
+      <Filter>External Source\rxcpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\rx-predef.hpp">
+      <Filter>External Source\rxcpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\rx-scheduler.hpp">
+      <Filter>External Source\rxcpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\rx-sources.hpp">
+      <Filter>External Source\rxcpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\rx-subjects.hpp">
+      <Filter>External Source\rxcpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\rx-subscriber.hpp">
+      <Filter>External Source\rxcpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\rx-subscription.hpp">
+      <Filter>External Source\rxcpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\rx-test.hpp">
+      <Filter>External Source\rxcpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\rx-trace.hpp">
+      <Filter>External Source\rxcpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\rx-util.hpp">
+      <Filter>External Source\rxcpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-all.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-amb.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-any.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-buffer_count.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-buffer_time.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-buffer_time_count.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-combine_latest.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-concat.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-concat_map.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-connect_forever.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-debounce.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-delay.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-distinct.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-distinct_until_changed.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-element_at.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-filter.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-finally.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-flat_map.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-group_by.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-ignore_elements.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-lift.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-map.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-merge.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-multicast.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-observe_on.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-on_error_resume_next.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-pairwise.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-publish.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-reduce.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-ref_count.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-repeat.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-replay.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-retry.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-retry-repeat-common.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-sample_time.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-scan.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-sequence_equal.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-skip.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-skip_last.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-skip_until.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-start_with.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-subscribe.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-subscribe_on.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-switch_if_empty.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-switch_on_next.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-take.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-take_last.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-take_until.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-take_while.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-tap.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-time_interval.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-timeout.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-timestamp.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-window.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-window_time.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-window_time_count.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-window_toggle.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-with_latest_from.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\operators\rx-zip.hpp">
+      <Filter>External Source\rxcpp\operators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\schedulers\rx-currentthread.hpp">
+      <Filter>External Source\rxcpp\schedulers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\schedulers\rx-eventloop.hpp">
+      <Filter>External Source\rxcpp\schedulers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\schedulers\rx-immediate.hpp">
+      <Filter>External Source\rxcpp\schedulers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\schedulers\rx-newthread.hpp">
+      <Filter>External Source\rxcpp\schedulers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\schedulers\rx-runloop.hpp">
+      <Filter>External Source\rxcpp\schedulers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\schedulers\rx-sameworker.hpp">
+      <Filter>External Source\rxcpp\schedulers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\schedulers\rx-test.hpp">
+      <Filter>External Source\rxcpp\schedulers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\schedulers\rx-virtualtime.hpp">
+      <Filter>External Source\rxcpp\schedulers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\sources\rx-create.hpp">
+      <Filter>External Source\rxcpp\sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\sources\rx-defer.hpp">
+      <Filter>External Source\rxcpp\sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\sources\rx-empty.hpp">
+      <Filter>External Source\rxcpp\sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\sources\rx-error.hpp">
+      <Filter>External Source\rxcpp\sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\sources\rx-interval.hpp">
+      <Filter>External Source\rxcpp\sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\sources\rx-iterate.hpp">
+      <Filter>External Source\rxcpp\sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\sources\rx-never.hpp">
+      <Filter>External Source\rxcpp\sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\sources\rx-range.hpp">
+      <Filter>External Source\rxcpp\sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\sources\rx-scope.hpp">
+      <Filter>External Source\rxcpp\sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\sources\rx-timer.hpp">
+      <Filter>External Source\rxcpp\sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\subjects\rx-behavior.hpp">
+      <Filter>External Source\rxcpp\subjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\subjects\rx-replaysubject.hpp">
+      <Filter>External Source\rxcpp\subjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\subjects\rx-subject.hpp">
+      <Filter>External Source\rxcpp\subjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External Soruce\rxcpp\subjects\rx-synchronize.hpp">
+      <Filter>External Source\rxcpp\subjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

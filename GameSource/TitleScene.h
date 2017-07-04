@@ -3,6 +3,7 @@
 #include "../Source/System/IElixirGame.h"
 #include "ModeScene.h"
 #include "../Source/Helper/ETween.h"
+#include "../External Soruce/rxcpp/rx.hpp"
 
 using namespace Elixir;
 
@@ -19,8 +20,10 @@ public:
 	void EnableInput();
 
 private:
+	bool m_isNextButtonPressed;
 	bool m_inputEnabled;
 	ModeScene m_mode;
 	ETween<float> m_mainTEween;
 	GameObject * m_back;
+	rxcpp::subjects::subject<bool> m_trigger;
 };
