@@ -125,11 +125,12 @@ bool SimpleApp::Init()
 	//Early initialization of singleton
 	AudioManager::GetInstance();
 	
+	pulseGame.StartScene("TitleScene");
+
 #if ELIXIR_EDITOR == true
 	m_smoothCamera = new Camera();
+	m_smoothCamera->SetPosition(m_sceneManager->GetCurrentScene()->GetCamera()->GetPosition());
 #endif
-
-	pulseGame.StartScene("TitleScene");
 
 	return true;
 }

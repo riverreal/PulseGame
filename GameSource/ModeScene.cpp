@@ -13,6 +13,8 @@ void ModeScene::Init()
 	m_mainTEween.ReleaseTweens();
 	m_inputEnabled = false;
 	m_splitScreen = false;
+
+	//Set UI-------------------------------
 	SetImage();
 	ModeSelect_Left();
 	ModeSelect_Right();
@@ -26,7 +28,7 @@ void ModeScene::Init()
 		obj->GetTransform()->Position = obj->GetTransform()->Position * GameManager::GetInstance().GetDesignScale();
 		obj->GetTransform()->Scale = obj->GetTransform()->Scale * GameManager::GetInstance().GetDesignScale();
 	});
-	
+
 	m_song.StartScene("SongSelect");
 
 	ENote::GetInstance().AddNote<bool>("GetSplitScreen", [this]() {return this->GetSplitScreen(); });
@@ -36,7 +38,9 @@ void ModeScene::Init()
 		.Time(0.3f).OnFinish([this]() {this->EnableInput(); }).Easing(ET_BACK_OUT);
 	m_mainTEween = m_mainTEween.OnFinishChain(&first_afterTween);
 
+	//Set 3d---------------------------------
 	
+
 }
 
 //Update
@@ -64,7 +68,7 @@ void ModeScene::Update(float dt)
 				m_mainTEween = m_mainTEween.OnFinish([this]() {this->ChangeScene(); });
 				m_inputEnabled = false;
 			}
-			else if(right->Get2DRenderer()->Enabled)
+			else if (right->Get2DRenderer()->Enabled)
 			{
 				m_splitScreen = true;
 				BackAnim();

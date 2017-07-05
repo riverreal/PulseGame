@@ -207,6 +207,7 @@
     <ClCompile Include="..\Source\System\GameObject.cpp" />
     <ClCompile Include="..\Source\System\IElixirGame.cpp" />
     <ClCompile Include="..\Source\System\InputManager.cpp" />
+    <ClCompile Include="..\Source\System\Package.cpp" />
     <ClCompile Include="..\Source\System\Scene.cpp" />
     <ClCompile Include="..\Source\System\SceneManager.cpp" />
     <ClCompile Include="..\Source\System\Systems\IScriptSystem.cpp" />
@@ -385,6 +386,7 @@
     <ClInclude Include="..\Source\System\GameObject.h" />
     <ClInclude Include="..\Source\System\IElixirGame.h" />
     <ClInclude Include="..\Source\System\InputManager.h" />
+    <ClInclude Include="..\Source\System\Package.h" />
     <ClInclude Include="..\Source\System\Scene.h" />
     <ClInclude Include="..\Source\System\SceneManager.h" />
     <ClInclude Include="..\Source\System\Systems\IScriptSystem.h" />

@@ -170,3 +170,12 @@ static std::vector<std::string> split(const std::string& input, char delimiter)
 	}
 	return result;
 }
+
+static std::string XOREncryptDecrypt(std::string toEncrypt, const char* key) {
+	std::string output = toEncrypt;
+
+	for (int i = 0; i < toEncrypt.size(); i++)
+		output[i] = toEncrypt[i] ^ key[i % (sizeof(key) / sizeof(char))];
+
+	return output;
+}
