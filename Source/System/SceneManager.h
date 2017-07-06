@@ -3,6 +3,7 @@
 #include "Scene.h"
 #include "FileIO.h"
 #include "../Graphics/TextureManager.h"
+#include "Package.h"
 
 namespace Elixir
 {
@@ -32,6 +33,7 @@ namespace Elixir
 		Model* GetModel();
 		TextureManager* GetTextureManager();
 		FileIO* GetFileManager();
+		Package* GetPackage();
 
 		void ResetModel();
 		void ResetFileIO();
@@ -51,5 +53,6 @@ namespace Elixir
 		Model* m_model;
 		TextureManager* m_textureManager;
 		FileIO* m_fileManager;
+		Package* m_package;
 	};
 }

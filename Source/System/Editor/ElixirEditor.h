@@ -7,6 +7,7 @@
 #include <string>
 #include "../SceneManager.h"
 #include "ElixirLog.h"
+#include "../Package.h"
 
 namespace Elixir
 {
@@ -89,6 +90,7 @@ namespace Elixir
 			WINDOW,
 			SCENE_PROPERTIES,
 			OBJECT_LIST,
+			PACKAGE_MANAGER,
 			MORE,
 			OPTION,
 			LANGUAGE,
@@ -97,6 +99,7 @@ namespace Elixir
 			LANG_SPA,
 			SCENE_PROP_TOOLTIP,
 			OBJ_LIST_TOOLTIP,
+			PACKAGE_MANAGER_TOOLTIP,
 			OBJ_COMPONENT,
 			NAME,
 			POSITION,
@@ -118,7 +121,7 @@ namespace Elixir
 			LOAD_DOTS
 		};
 
-		UITerm m_langTerm[35] = 
+		UITerm m_langTerm[37] = 
 		{
 			UITerm("File", "ファイル", "Archivo"),
 			UITerm("New Scene", "新しいシーン", "Nueva Escena"),
@@ -128,6 +131,7 @@ namespace Elixir
 			UITerm("Window", "ウィンドウ", "Ventana"),
 			UITerm("Scene Properties", "シーンプロパティー", "Propiedad de Escena"),
 			UITerm("Object List", "オブジェクトリスト", "Lista de Objetos"),
+			UITerm("Package Manager", "パッケージマネージャー", "Administrador de Package"),
 			UITerm("More...", "追加", "Mas..."),
 			UITerm("Option", "オプション", "Opciones"),
 			UITerm("Language", "言語", "Lenguaje"),
@@ -136,6 +140,7 @@ namespace Elixir
 			UITerm("Spanish", "スペイン語", "Español"),
 			UITerm("Change Scene properties.", "シーンの設定などを変える", "Cambiar propiedades de Escena."),
 			UITerm("Display all Objects from current Scene.", "現在のシーンのオブジェクトをリストで表します", "Mostrar lista de todos los Objetos en esta Escena."),
+			UITerm("Manage GameObject for Packages", "パッケージするゲームオブジェクトの管理", "Administrar GameObject para Package"),
 			UITerm("Object Components", "オブジェクトコンポーネント", "Componentes de Objeto"),
 			UITerm("Name", "名前", "Nombre"),
 			UITerm("Position", "位置", "Posicion"),
@@ -166,6 +171,7 @@ namespace Elixir
 		void ScenePropertyWindow();
 		void ObjectListWindow();
 		void ObjectComponentWindow();
+		void PackageManager();
 		void ResourceWindow();
 
 		void TransformEditor();
@@ -180,6 +186,10 @@ namespace Elixir
 
 	private:
 		std::vector<GameObject*> m_lineDots;
+		std::vector<GameObject*> m_goForPackage;
+		std::string m_packageFilename;
+
+		Package* m_package;
 
 		LANGUAGES m_language;
 		UIImages m_uiImages;
@@ -203,11 +213,13 @@ namespace Elixir
 		bool m_logOpen;
 		bool m_objectAddOpen;
 		bool m_resourceWindow;
+		bool m_packageManagerOpen;
 
 		bool m_textureSelectionEnabled;
 
 		U32 m_selectedTexture;
 		GameObject* m_selectedObject;
+		GameObject* m_selectedPackageGO;
 		ElixirLogger m_elixirLogger;
 		SceneManager* m_sceneManager;
 	};

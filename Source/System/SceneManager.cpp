@@ -9,6 +9,7 @@ Elixir::SceneManager::SceneManager(TextureManager* tManager)
 {
 	m_fileManager = new FileIO();
 	m_textureManager = tManager;
+	m_package = new Package(this);
 
 	m_model = new Model();
 }
@@ -298,6 +299,11 @@ TextureManager * Elixir::SceneManager::GetTextureManager()
 Elixir::FileIO * Elixir::SceneManager::GetFileManager()
 {
 	return m_fileManager;
+}
+
+Elixir::Package * Elixir::SceneManager::GetPackage()
+{
+	return m_package;
 }
 
 void Elixir::SceneManager::ResetModel()

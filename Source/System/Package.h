@@ -1,16 +1,17 @@
 #pragma once
 
-#include "SceneManager.h"
 #include "GameObject.h"
 
 namespace Elixir
 {
+	class SceneManager;
+
 	class Package
 	{
 	public:
 		Package(SceneManager* manager);
 
-		void LoadPackage(std::string filepath);
+		std::vector<GameObject*> LoadPackage(std::string filepath);
 		void CreatePackage(std::string filepath, std::vector<GameObject*> goVec);
 
 	private:

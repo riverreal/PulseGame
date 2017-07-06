@@ -4,6 +4,7 @@
 #pragma execution_character_set("utf-8")
 
 #include "../../jsoncpp/json/json.h"
+#include "../Package.h"
 
 Elixir::Editor::Editor()
 	:m_language(ENGLISH),
@@ -16,6 +17,10 @@ Elixir::Editor::Editor()
 	m_objectAddOpen(false),
 	m_resourceWindow(false),
 	m_textureSelectionEnabled(false),
+	m_packageManagerOpen(false),
+	m_packageFilename(""),
+	m_package(nullptr),
+	m_selectedPackageGO(nullptr),
 	m_selectedTexture(0)
 {}
 
@@ -27,6 +32,8 @@ void Elixir::Editor::Initialize(void* hwnd, ID3D11Device* device, ID3D11DeviceCo
 {
 	m_hwnd = hwnd;
 	InitIMGUI(hwnd, device, deviceContext);
+
+	m_package = scenemanager->GetPackage();
 
 	m_screenWidth = width;
 	m_screenHeight = height;
@@ -58,6 +65,7 @@ void Elixir::Editor::Update()
 void Elixir::Editor::Shutdown()
 {
 	ShutdownIMGUI();
+	SafeRelease(m_package);
 }
 
 void Elixir::Editor::Input()
@@ -91,6 +99,7 @@ void Elixir::Editor::UpdateIMGUI()
 	ObjectComponentWindow();
 	FPSOverlay();
 	ResourceWindow();
+	PackageManager();
 	m_elixirLogger.Draw("Log", &m_logOpen, 60);
 
 	ImGui::Render();
@@ -165,6 +174,12 @@ void Elixir::Editor::MainMenuBar()
 				m_objectListOpen ^= 1;
 			}
 			SetToolTip(m_langTerm[OBJ_LIST_TOOLTIP].GetTerm(m_language).c_str());
+
+			if (ImGui::MenuItem(m_langTerm[PACKAGE_MANAGER].GetTerm(m_language).c_str(), NULL, m_packageManagerOpen))
+			{
+				m_packageManagerOpen ^= 1;
+			}
+			SetToolTip(m_langTerm[PACKAGE_MANAGER_TOOLTIP].GetTerm(m_language).c_str());
 
 			if (ImGui::MenuItem(m_langTerm[RESOURCE_WINDOW].GetTerm(m_language).c_str(), NULL, m_resourceWindow))
 			{
@@ -514,9 +529,20 @@ void Elixir::Editor::ObjectListWindow()
 						m_lineDots.erase(m_lineDots.begin() + dotNum);
 						ResetLineDotNames();
 					}
+
+					for (int i = 0; i < m_goForPackage.size(); ++i)
+					{
+						if (m_goForPackage[i] == m_selectedObject)
+						{
+							m_goForPackage.erase(m_goForPackage.begin() + i);
+							break;
+						}
+					}
+
 					m_sceneManager->GetCurrentScene()->RemoveObject(m_selectedObject);
 					m_objComponentOpen = false;
 					m_selectedObject = nullptr;
+
 				}
 			}
 			SetToolTip(m_langTerm[REMOVE_SEL_OBJECT].GetTerm(m_language).c_str());
@@ -629,12 +655,19 @@ void Elixir::Editor::ObjectListWindow()
 				nodeFlags |= ImGuiTreeNodeFlags_Selected;
 			}
 
+			if (obj->GetTag() == 100)
+			{
+				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.4f, 0.4f, 1.0f, 1.0f));
+			}
 			ImGui::TreeNodeEx(obj->GetName().c_str(), nodeFlags);
 			if (ImGui::IsItemClicked())
 			{
 				m_selectedObject = obj;
 				m_objComponentOpen = true;
-
+			}
+			if (obj->GetTag() == 100)
+			{
+				ImGui::PopStyleColor();
 			}
 		}
 		//ImGui::EndChild();
@@ -675,8 +708,18 @@ void Elixir::Editor::ObjectComponentWindow()
 
 		if (ImGui::Button(m_langTerm[ADD_COMPONENT].GetTerm(m_language).c_str()))
 		{
-			
 			ImGui::OpenPopup("compPopup");
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("Send To Package"))
+		{
+			if (m_selectedObject != nullptr && m_selectedObject->GetTag() != 100)
+			{
+				m_selectedObject->SetTag(100);
+				m_goForPackage.push_back(m_selectedObject);
+			}
 		}
 
 		if (ImGui::BeginPopup("compPopup"))
@@ -703,12 +746,70 @@ void Elixir::Editor::ObjectComponentWindow()
 		}
 
 		TransformEditor();
-
 		RenderEditor();
 
 		ImGui::End();
 	}
 
+}
+
+void Elixir::Editor::PackageManager()
+{
+	if (m_packageManagerOpen)
+	{
+		if (ImGui::Begin("Package Manager", &m_packageManagerOpen))
+		{
+			static int selectedIndex = -1;
+
+			char buf[64];
+			strncpy(buf, m_packageFilename.c_str(), sizeof(buf));
+			buf[sizeof(buf) - 1] = 0;
+			ImGui::Text("File Name: ");
+			ImGui::SameLine();
+			ImGui::InputText("##Filename", buf, 64);
+			m_packageFilename = buf;
+
+			ImGui::Separator();
+
+			if (ImGui::Button("Remove from Package"))
+			{
+				if (m_selectedPackageGO != nullptr && selectedIndex >= 0)
+				{
+					m_selectedPackageGO->SetTag(0);
+					m_goForPackage.erase(m_goForPackage.begin() + selectedIndex);
+					selectedIndex = -1;
+				}
+			}
+
+			ImGui::SameLine();
+
+			if (ImGui::Button("Package"))
+			{
+				m_package->CreatePackage(m_packageFilename, m_goForPackage);
+			}
+
+			ImGui::Separator();
+
+			for (int i = 0; i < m_goForPackage.size(); ++i)
+			{
+				ImGuiTreeNodeFlags nodeFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
+				if (m_selectedPackageGO == m_goForPackage[i])
+				{
+					nodeFlags |= ImGuiTreeNodeFlags_Selected;
+				}
+
+				ImGui::TreeNodeEx(m_goForPackage[i]->GetName().c_str(), nodeFlags);
+				if (ImGui::IsItemClicked())
+				{
+					m_selectedPackageGO = m_goForPackage[i];
+					selectedIndex = i;
+					m_objComponentOpen = true;
+				}
+			}
+
+			ImGui::End();
+		}
+	}
 }
 
 void Elixir::Editor::ResourceWindow()
