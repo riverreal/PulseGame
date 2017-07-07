@@ -2,6 +2,9 @@
 #include "../Helper/GeneralHelper.h"
 #include "../Helper/ENote.h"
 #include "GameManager.h"
+#include "../../External Soruce/cpplinq.hpp"
+
+using namespace cpplinq;
 
 namespace Elixir
 {
@@ -241,6 +244,8 @@ namespace Elixir
 				std::vector<GameObject*> Object2d;
 				bool backCulling = true;
 
+				static int object2dCount = 0;
+
 				m_deferredBuffers->SetRenderTargets(m_d3dDeviceContext);
 				m_deferredBuffers->ClearRenderTargets(m_d3dDeviceContext);
 				
@@ -386,9 +391,26 @@ namespace Elixir
 				SetZBufferOff();
 				float blendFact[] = {0.0f, 0.0f, 0.0f, 0.0f};
 				m_d3dDeviceContext->OMSetBlendState(BlendState::BSTransparent, blendFact, 0xffffffff);
-				for (auto &object : Object2d)
+
+				bool changed2D = false;
+				if (Object2d.size() != object2dCount)
 				{
-					if (object->Get2DRenderer()->Enabled)
+					object2dCount = Object2d.size();
+					changed2D = true;
+				}
+
+				static std::vector<GameObject*> orderer2DObject;
+
+				if (changed2D)
+				{
+					orderer2DObject = from(Object2d)
+						>> orderby_ascending([](GameObject* obj) {return obj->Get2DRenderer()->ZOrder; })
+						>> to_vector();
+				}
+
+				for (auto &object : orderer2DObject)
+				{
+					if (object->Get2DRenderer() != nullptr && object->Get2DRenderer()->Enabled)
 					{
 						m_tex2DShader->Render(m_d3dDeviceContext, object, currentScene->GetCamera(), m_textureManager);
 					}

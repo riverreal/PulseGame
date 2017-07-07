@@ -27,7 +27,6 @@ private:
 private:
 	
 	void TextImage();
-	
 	GameObject* m_Machine;
 	GameObject* m_text;
 	ETween<Vec3f> m_MachineAnim;

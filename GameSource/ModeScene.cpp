@@ -14,10 +14,23 @@ void ModeScene::Init()
 	m_inputEnabled = false;
 	m_splitScreen = false;
 
+	auto dirL = Manager->GetCurrentScene()->GetLight()->GetModDirectionalLight();
+
+	dirL->LightColor[0] = 1.0f;
+	dirL->LightColor[1] = 1.0f;
+	dirL->LightColor[2] = 1.0f;
+
+	dirL->LightIntensity[0] = 2.0f;
+	dirL->LightIntensity[1] = 0.5f;
+	dirL->Direction[0] = 0.6f;
+	dirL->Direction[1] = -0.6f;
+	dirL->Direction[2] = 0.8f;
+
+	Manager->GetCurrentScene()->SetIrradiance(Manager->GetTextureManager()->AddTexture(L"Resource/Cubemaps/Irradiance/Irradiance.dds"));
+	Manager->GetCurrentScene()->SetEnvMap(Manager->GetTextureManager()->AddTexture(L"Resource/Cubemaps/earth_moon_skybox.dds"));
+
 	//Set UI-------------------------------
 	SetImage();
-	ModeSelect_Left();
-	ModeSelect_Right();
 
 	BlackImage();
 	StartAnim();
@@ -32,12 +45,12 @@ void ModeScene::Init()
 	m_song.StartScene("SongSelect");
 
 	ENote::GetInstance().AddNote<bool>("GetSplitScreen", [this]() {return this->GetSplitScreen(); });
-
+	/*
 	ETween<F32> first_afterTween;
 	first_afterTween = first_afterTween.From(&m_modetitle->GetTransform()->Position.y).To(-310.0f * GameManager::GetInstance().GetDesignScale())
 		.Time(0.3f).OnFinish([this]() {this->EnableInput(); }).Easing(ET_BACK_OUT);
 	m_mainTEween = m_mainTEween.OnFinishChain(&first_afterTween);
-
+	*/
 	//Set 3d---------------------------------
 	
 
@@ -84,9 +97,11 @@ void ModeScene::Update(float dt)
 
 void ModeScene::SetImage()
 {
+	Manager->GetPackage()->LoadPackage("Packages/ModeScene.pkg");
+	/*
 	//画像表示　位置、サイズ
 	m_modetitle = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
-	m_modetitle->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/mode_title.png");
+	m_modetitle->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/ModeScene/mode_select.png");
 	m_modetitle->GetTransform()->Position = Vec3f(0, -410, 0);
 	m_modetitle->GetTransform()->Scale = Vec3f(0.7f, 0.7f, 0);
 
@@ -104,24 +119,7 @@ void ModeScene::SetImage()
 	next->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/next_button.png");
 	next->GetTransform()->Position = Vec3f(500, -300, 0);
 	next->GetTransform()->Scale = Vec3f(0.7f, 0.7f, 0);
-}
-
-void ModeScene::ModeSelect_Left()
-{
-	left = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
-	left->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/mode_select.png");
-	left->GetTransform()->Position = Vec3f(-250, -100, 0);
-	left->GetTransform()->Scale = Vec3f(0.5f, 0.5f, 0);
-	left->Get2DRenderer()->Enabled = false;
-}
-
-void ModeScene::ModeSelect_Right()
-{
-	right = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
-	right->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/mode_select.png");
-	right->GetTransform()->Position = Vec3f(250, -100, 0);
-	right->GetTransform()->Scale = Vec3f(0.5f, 0.5f, 0);
-	right->Get2DRenderer()->Enabled = false;
+	*/
 }
 
 bool ModeScene::GetSplitScreen()
@@ -137,7 +135,7 @@ void ModeScene::EnableInput()
 void ModeScene::BlackImage()
 {
 	m_back = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
-	m_back->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/0.png");
+	m_back->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/balls/0.png");
 	m_back->GetTransform()->Position = Vec3f(0, 0, 0);
 	m_back->GetTransform()->Scale = Vec3f(150, 100, 0);
 }

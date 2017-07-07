@@ -12,8 +12,6 @@ public:
 	virtual void Init() override;
 	virtual void Update(float dt) override;
 	void SetImage();
-	void ModeSelect_Left();
-	void ModeSelect_Right();
 	bool GetSplitScreen();
 	void EnableInput();
 

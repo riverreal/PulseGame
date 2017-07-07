@@ -833,7 +833,8 @@ void Elixir::Editor::ResourceWindow()
 				if (ImGui::IsItemHovered())
 				{
 					ImGui::BeginTooltip();
-					ImGui::Text(tManager->GetTextureName(i).c_str());
+					std::string tooltip = std::to_string(i) + ", " + tManager->GetTextureName(i).c_str();
+					ImGui::Text(tooltip.c_str());
 					ImGui::EndTooltip();
 				}
 
@@ -969,7 +970,7 @@ void Elixir::Editor::RenderEditor()
 					//erasing full exe path -13 (13 is /bin/Debug/.exe)
 					auto numOfChar = rootPath.length() - 13;
 					filename.erase(0, numOfChar);
-
+					std::replace(filename.begin(), filename.end(), '\\', '/');
 					if (filename != L"")
 					{
 						m_selectedObject->GetRenderer()->Material.albedo = m_sceneManager->GetTextureManager()->AddTexture(filename);
@@ -985,7 +986,7 @@ void Elixir::Editor::RenderEditor()
 					auto numOfChar = rootPath.length() - 13;
 					filename.erase(0, numOfChar);
 
-
+					std::replace(filename.begin(), filename.end(), '\\', '/');
 					if (filename != L"")
 					{
 						m_selectedObject->GetRenderer()->Material.normal = m_sceneManager->GetTextureManager()->AddTexture(filename);
@@ -1001,7 +1002,7 @@ void Elixir::Editor::RenderEditor()
 					auto numOfChar = rootPath.length() - 13;
 					filename.erase(0, numOfChar);
 
-
+					std::replace(filename.begin(), filename.end(), '\\', '/');
 					if (filename != L"")
 					{
 						m_selectedObject->GetRenderer()->Material.roughness = m_sceneManager->GetTextureManager()->AddTexture(filename);
@@ -1017,7 +1018,7 @@ void Elixir::Editor::RenderEditor()
 					auto numOfChar = rootPath.length() - 13;
 					filename.erase(0, numOfChar);
 
-
+					std::replace(filename.begin(), filename.end(), '\\', '/');
 					if (filename != L"")
 					{
 						m_selectedObject->GetRenderer()->Material.metallic = m_sceneManager->GetTextureManager()->AddTexture(filename);
@@ -1032,7 +1033,7 @@ void Elixir::Editor::RenderEditor()
 					//erasing full exe path -13 (13 is /bin/Debug/.exe)
 					auto numOfChar = rootPath.length() - 13;
 					filename.erase(0, numOfChar);
-
+					std::replace(filename.begin(), filename.end(), '\\', '/');
 					if (filename != L"")
 					{
 						m_selectedObject->GetRenderer()->Material.emissive = m_sceneManager->GetTextureManager()->AddTexture(filename);
@@ -1057,6 +1058,8 @@ void Elixir::Editor::RenderEditor()
 		{
 			ImGui::Checkbox("Enabled", &m_selectedObject->Get2DRenderer()->Enabled);
 
+			ImGui::DragInt("ZOrder", &m_selectedObject->Get2DRenderer()->ZOrder);
+
 			if (ImGui::TreeNode("Texture"))
 			{
 				std::wstring filename = L"";
@@ -1070,6 +1073,7 @@ void Elixir::Editor::RenderEditor()
 					//erasing full exe path -13 (13 is /bin/Debug/.exe)
 					auto numOfChar = rootPath.length() - 13;
 					filename.erase(0, numOfChar);
+					std::replace(filename.begin(), filename.end(), '\\', '/');
 
 					if (filename != L"")
 					{

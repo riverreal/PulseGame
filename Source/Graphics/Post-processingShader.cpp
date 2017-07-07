@@ -77,12 +77,12 @@ bool PostProcessShader::Render(ID3D11DeviceContext * deviceContext, offsetData o
 	deviceContext->OMGetRenderTargets(1, &defRT, &defDSV);
 	
 	//Get the original image to downsample until 1x1
-	//RenderAverageIllum(deviceContext);
+	RenderAverageIllum(deviceContext);
 	
 	//Get the adapted luminance with proper old/new lum control
-	//RenderAdaptedLum(deviceContext, dt);
+	RenderAdaptedLum(deviceContext, dt);
 
-	//RenderBloom(deviceContext);
+	RenderBloom(deviceContext);
 
 	//Render to back buffer
 	deviceContext->OMSetRenderTargets(1, &defRT, defDSV);

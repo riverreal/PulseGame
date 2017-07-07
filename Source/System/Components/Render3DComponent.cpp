@@ -12,4 +12,5 @@ void Elixir::Renderer3D::Initialize()
 	Material.roughness = 3;
 	Material.metallic = 4;
 	Material.emissive = 4;
+
 }

@@ -18,11 +18,16 @@ void TitleScene::Init()
 {
 	m_isNextButtonPressed = false;
 	m_mainTEween.ReleaseTweens();
+	m_crystalTween.ReleaseTweens();
+	m_crystalTween2.ReleaseTweens();
 	m_inputEnabled = false;
 
 	SetImage();
 	BlackImage();
 	StartAnim();
+
+	Manager->GetCurrentScene()->SetIrradiance(Manager->GetTextureManager()->AddTexture(L"Resource/Cubemaps/Irradiance/Irradiance.dds"));
+	Manager->GetCurrentScene()->SetEnvMap(Manager->GetTextureManager()->AddTexture(L"Resource/Cubemaps/earth_moon_skybox.dds"));
 
 	m_mode.StartScene("ModeScene");
 
@@ -55,30 +60,27 @@ void TitleScene::Update(float dt)
 	}
 	
 	m_mainTEween.Update(dt);
+	m_crystalTween.Update(dt);
+	m_crystalTween2.Update(dt);
 }
 
 void TitleScene::SetImage()
 {
-	/*
-	//画像表示　位置、サイズ
-	auto title = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
-	title->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/pulse_title.png");
-	title->GetTransform()->Position = Vec3f(0, 150, 0);
-	title->GetTransform()->Scale = Vec3f(0.5f, 0.5f, 0);
-
-	auto start = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
-	start->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/start_button.png");
-	start->GetTransform()->Position = Vec3f(0, -200, 0);
-	start->GetTransform()->Scale = Vec3f(0.5f, 0.5f, 0);
-	*/
-
 	Manager->GetPackage()->LoadPackage("Packages/TitleScene.pkg");
+
+	m_crystal = Manager->GetCurrentScene()->GetObjectByName("Crystal");
+	auto whiteBG = Manager->GetCurrentScene()->GetObjectByName("WhiteBG");
+	auto pulseTitle = Manager->GetCurrentScene()->GetObjectByName("PulseTitle");
+
+	m_mainTEween = m_mainTEween.From(&m_crystal->Get2DRenderer()->Color.a).To(1.0f).Time(2.0f).OnFinish([this]() { this->CrystalAnimation(true); });
+	m_mainTEween = m_mainTEween.From(&pulseTitle->Get2DRenderer()->Color.a).To(1.0f).Time(2.0f);
+	m_mainTEween = m_mainTEween.From(&whiteBG->GetTransform()->Scale.y).To(0.0f).Time(1.6f).Easing(EASING_FUNCTION::ET_CUBIC_IN_OUT);
 }
 
 void TitleScene::BlackImage()
 {
 	m_back = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
-	m_back->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/0.png");
+	m_back->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/balls/0.png");
 	m_back->GetTransform()->Position = Vec3f(0, 0, 0);
 	m_back->GetTransform()->Scale = Vec3f(150, 100, 0);
 }
@@ -93,6 +95,28 @@ void TitleScene::EnableInput()
 	m_inputEnabled = true;
 }
 
+void TitleScene::CrystalAnimation(bool up)
+{
+	float increment = 20.0f;
+	increment *= up ? 1.0f : -1.0f;
+
+	float duration = 1.0f;
+
+	if (up)
+	{
+		m_crystalTween = m_crystalTween.From(&m_crystal->GetTransform()->Position.y)
+			.To(m_crystal->GetTransform()->Position.y + increment).Time(duration).Easing(EASING_FUNCTION::ET_QUINT_IN_OUT)
+			.OnFinish([this, up]() {this->CrystalAnimation(!up); });
+	}
+	else
+	{
+		m_crystalTween2 = m_crystalTween2.From(&m_crystal->GetTransform()->Position.y)
+			.To(m_crystal->GetTransform()->Position.y + increment).Time(duration + 0.2f).Easing(EASING_FUNCTION::ET_QUINT_IN_OUT)
+			.OnFinish([this, up]() {this->CrystalAnimation(!up); });
+	}
+	
+}
+
 void TitleScene::BackAnim()
 {
 	m_back->GetTransform()->Position.x = 2000;
@@ -101,7 +125,6 @@ void TitleScene::BackAnim()
 	m_mainTEween = m_mainTEween.OnFinish([this]() {this->ChangeScene(); });
 	m_trigger.get_subscription().unsubscribe();
 }
-
 
 void TitleScene::ChangeScene()
 {

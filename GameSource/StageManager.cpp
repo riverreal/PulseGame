@@ -13,8 +13,8 @@ void StageManager::Initialize(SceneManager* manager)
 
 	srand(time(NULL));
 
-	m_manager->GetCurrentScene()->SetIrradiance(m_manager->GetTextureManager()->AddTexture(L"Resources/Textures/Cubemaps/Irradiance/Irradiance.dds"));
-	m_manager->GetCurrentScene()->SetEnvMap(m_manager->GetTextureManager()->AddTexture(L"Resources/Textures/Cubemaps/earth_moon_skybox.dds"));
+	m_manager->GetCurrentScene()->SetIrradiance(m_manager->GetTextureManager()->AddTexture(L"Resource/Cubemaps/Irradiance/Irradiance.dds"));
+	m_manager->GetCurrentScene()->SetEnvMap(m_manager->GetTextureManager()->AddTexture(L"Resource/Cubemaps/earth_moon_skybox.dds"));
 
 	auto dirL = m_manager->GetCurrentScene()->GetLight()->GetModDirectionalLight();
 
