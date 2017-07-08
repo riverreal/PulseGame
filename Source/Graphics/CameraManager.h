@@ -32,7 +32,7 @@ public:
 	DirectX::XMFLOAT3 GetLook() const;
 
 	DirectX::XMVECTOR GetPositionXM() const;
-	DirectX::XMFLOAT3 GetPosition() const;
+	DirectX::XMFLOAT3 GetPosition();
 	
 	DirectX::XMMATRIX GetViewMatrix() const;
 	DirectX::XMMATRIX GetProjectionMatrix() const;

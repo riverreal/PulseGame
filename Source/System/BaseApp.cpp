@@ -152,6 +152,18 @@ namespace Elixir
 #if ELIXIR_EDITOR == true
 		m_elixirEditor = new Editor();
 		m_elixirEditor->Initialize(m_hWnd, m_d3dDevice, m_d3dDeviceContext, m_width, m_height, m_sceneManager);
+#else
+		m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/elixirIconSmall.png");
+		m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/xButtonA.png");
+		m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/-ButtonA.png");
+		m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/trashCanIcon.png");
+		m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/plusIcon.png");
+		m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/newIcon.png");
+		m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/cubeIcon.png");
+		m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/sphereIcon.png");
+		m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/cylinderIcon.png");
+		m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/planeIcon.png");
+		m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/lineIcon.png");
 #endif
 
 		m_sceneManager->AddProjectTextures();
@@ -243,8 +255,6 @@ namespace Elixir
 				//Store temporary 2d objects to render after
 				std::vector<GameObject*> Object2d;
 				bool backCulling = true;
-
-				static int object2dCount = 0;
 
 				m_deferredBuffers->SetRenderTargets(m_d3dDeviceContext);
 				m_deferredBuffers->ClearRenderTargets(m_d3dDeviceContext);
@@ -393,9 +403,9 @@ namespace Elixir
 				m_d3dDeviceContext->OMSetBlendState(BlendState::BSTransparent, blendFact, 0xffffffff);
 
 				bool changed2D = false;
-				if (Object2d.size() != object2dCount)
+				if (Object2d != m_prev2dObjVec)
 				{
-					object2dCount = Object2d.size();
+					m_prev2dObjVec = Object2d;
 					changed2D = true;
 				}
 
@@ -418,6 +428,10 @@ namespace Elixir
 				m_d3dDeviceContext->OMSetBlendState(NULL, blendFact, 0xffffffff);
 				SetZBufferOn();
 			}
+		}
+		else
+		{
+			m_sceneManager->UpdateCurrentScene(dt);
 		}
 
 #if ELIXIR_EDITOR == true

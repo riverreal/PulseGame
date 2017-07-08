@@ -1,13 +1,13 @@
 {
-   "HomePlanet" : {
-      "Name" : "HomePlanet",
+   "CrystalFrame" : {
+      "Name" : "CrystalFrame",
       "Renderer3D" : {
          "CastShadow" : true,
          "Enabled" : true,
          "EnabledBackCulling" : true,
          "Material" : {
-            "albedo" : 84,
-            "emissive" : 26,
+            "albedo" : 78,
+            "emissive" : 25,
             "metallic" : 4,
             "normal" : 2,
             "roughness" : 3
@@ -15,25 +15,25 @@
          "Model" : {
             "ModelPath" : "",
             "ModelTypePrimitive" : true,
-            "PrimitiveType" : 1
+            "PrimitiveType" : 4
          }
       },
       "Transform" : {
          "Dynamic" : true,
          "Position" : {
             "x" : 0.0,
-            "y" : -96.510002136230469,
-            "z" : 169.510009765625
+            "y" : 4.7000002861022949,
+            "z" : 28.000001907348633
          },
          "Rotation" : {
-            "x" : 69.200004577636719,
-            "y" : 0.0,
-            "z" : 0.0
+            "x" : -90.0,
+            "y" : 90.0,
+            "z" : 90.0
          },
          "Scale" : {
-            "x" : 82.710006713867188,
-            "y" : 82.709999084472656,
-            "z" : 82.709999084472656
+            "x" : 44.800003051757813,
+            "y" : 11.200000762939453,
+            "z" : 44.799999237060547
          },
          "TexPos" : {
             "x" : 0.0,
@@ -48,7 +48,60 @@
          "TexScale" : {
             "x" : 1.0,
             "y" : 1.0,
-            "z" : 1.0
+            "z" : 0.0
+         }
+      }
+   },
+   "HomePlanet" : {
+      "Name" : "HomePlanet",
+      "Renderer3D" : {
+         "CastShadow" : true,
+         "Enabled" : true,
+         "EnabledBackCulling" : true,
+         "Material" : {
+            "albedo" : 84,
+            "emissive" : 17,
+            "metallic" : 23,
+            "normal" : 2,
+            "roughness" : 25
+         },
+         "Model" : {
+            "ModelPath" : "",
+            "ModelTypePrimitive" : true,
+            "PrimitiveType" : 1
+         }
+      },
+      "Transform" : {
+         "Dynamic" : true,
+         "Position" : {
+            "x" : -2.8000001907348633,
+            "y" : 8.8700008392333984,
+            "z" : 148.61000061035156
+         },
+         "Rotation" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "Scale" : {
+            "x" : 20.0,
+            "y" : 20.0,
+            "z" : 20.0
+         },
+         "TexPos" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexRot" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexScale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 0.0
          }
       }
    },
@@ -69,7 +122,7 @@
          "Dynamic" : true,
          "Position" : {
             "x" : 0.0,
-            "y" : -436.99002075195313,
+            "y" : -310.0,
             "z" : 0.0
          },
          "Rotation" : {
@@ -95,7 +148,213 @@
          "TexScale" : {
             "x" : 1.0,
             "y" : 1.0,
+            "z" : 0.0
+         }
+      }
+   },
+   "MultiTarget" : {
+      "Name" : "MultiTarget",
+      "Renderer3D" : {
+         "CastShadow" : false,
+         "Enabled" : false,
+         "EnabledBackCulling" : false,
+         "Material" : {
+            "albedo" : 1,
+            "emissive" : 4,
+            "metallic" : 4,
+            "normal" : 2,
+            "roughness" : 3
+         },
+         "Model" : {
+            "ModelPath" : "",
+            "ModelTypePrimitive" : true,
+            "PrimitiveType" : 0
+         }
+      },
+      "Transform" : {
+         "Dynamic" : false,
+         "Position" : {
+            "x" : 16.540000915527344,
+            "y" : 4.0,
+            "z" : 20.900001525878906
+         },
+         "Rotation" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "Scale" : {
+            "x" : 1.0,
+            "y" : 1.0,
             "z" : 1.0
+         },
+         "TexPos" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexRot" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexScale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 1.0
+         }
+      }
+   },
+   "Multiplayer" : {
+      "Name" : "Multiplayer",
+      "Renderer3D" : {
+         "CastShadow" : true,
+         "Enabled" : true,
+         "EnabledBackCulling" : true,
+         "Material" : {
+            "albedo" : 83,
+            "emissive" : 4,
+            "metallic" : 4,
+            "normal" : 2,
+            "roughness" : 3
+         },
+         "Model" : {
+            "ModelPath" : "",
+            "ModelTypePrimitive" : true,
+            "PrimitiveType" : 4
+         }
+      },
+      "Transform" : {
+         "Dynamic" : true,
+         "Position" : {
+            "x" : 8.1000003814697266,
+            "y" : 3.5000002384185791,
+            "z" : 4.3000001907348633
+         },
+         "Rotation" : {
+            "x" : -56.000003814697266,
+            "y" : 90.0,
+            "z" : 90.0
+         },
+         "Scale" : {
+            "x" : 5.5999999046325684,
+            "y" : 1.0,
+            "z" : 0.76999998092651367
+         },
+         "TexPos" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexRot" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexScale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 0.0
+         }
+      }
+   },
+   "NextButton" : {
+      "Name" : "NextButton",
+      "Renderer2D" : {
+         "Color" : {
+            "a" : 0.75000005960464478,
+            "b" : 1.7999999523162842,
+            "g" : 1.7999999523162842,
+            "r" : 1.8000000715255737
+         },
+         "Enabled" : true,
+         "TexID" : 46,
+         "ZOrder" : 0
+      },
+      "Transform" : {
+         "Dynamic" : true,
+         "Position" : {
+            "x" : 477.43002319335938,
+            "y" : -290.5,
+            "z" : 0.0
+         },
+         "Rotation" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "Scale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 1.0
+         },
+         "TexPos" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexRot" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexScale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 1.0
+         }
+      }
+   },
+   "PlanetHalo" : {
+      "Name" : "PlanetHalo",
+      "Renderer3D" : {
+         "CastShadow" : true,
+         "Enabled" : true,
+         "EnabledBackCulling" : true,
+         "Material" : {
+            "albedo" : 86,
+            "emissive" : 25,
+            "metallic" : 4,
+            "normal" : 2,
+            "roughness" : 3
+         },
+         "Model" : {
+            "ModelPath" : "",
+            "ModelTypePrimitive" : true,
+            "PrimitiveType" : 4
+         }
+      },
+      "Transform" : {
+         "Dynamic" : true,
+         "Position" : {
+            "x" : -2.1200001239776611,
+            "y" : 9.2300004959106445,
+            "z" : 148.49000549316406
+         },
+         "Rotation" : {
+            "x" : -90.0,
+            "y" : 0.0,
+            "z" : 90.0
+         },
+         "Scale" : {
+            "x" : 20.920000076293945,
+            "y" : 1.0,
+            "z" : 20.920000076293945
+         },
+         "TexPos" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexRot" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexScale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 0.0
          }
       }
    },
@@ -121,7 +380,7 @@
       "Transform" : {
          "Dynamic" : true,
          "Position" : {
-            "x" : 1.0,
+            "x" : 2.1000001430511475,
             "y" : 3.0000002384185791,
             "z" : 4.1999998092651367
          },
@@ -174,7 +433,7 @@
       "Transform" : {
          "Dynamic" : true,
          "Position" : {
-            "x" : 2.0400002002716064,
+            "x" : 2.9900002479553223,
             "y" : 2.8500001430511475,
             "z" : 4.0
          },
@@ -213,10 +472,10 @@
          "EnabledBackCulling" : true,
          "Material" : {
             "albedo" : 67,
-            "emissive" : 4,
-            "metallic" : 24,
+            "emissive" : 87,
+            "metallic" : 88,
             "normal" : 2,
-            "roughness" : 24
+            "roughness" : 89
          },
          "Model" : {
             "ModelPath" : "Resource\\ships\\ship01.obj",
@@ -227,7 +486,7 @@
       "Transform" : {
          "Dynamic" : true,
          "Position" : {
-            "x" : -1.440000057220459,
+            "x" : -1.940000057220459,
             "y" : 2.9000000953674316,
             "z" : 4.2000002861022949
          },
@@ -255,6 +514,165 @@
             "x" : 1.0,
             "y" : 1.0,
             "z" : 1.0
+         }
+      }
+   },
+   "SinglePlayer" : {
+      "Name" : "SinglePlayer",
+      "Renderer3D" : {
+         "CastShadow" : true,
+         "Enabled" : true,
+         "EnabledBackCulling" : true,
+         "Material" : {
+            "albedo" : 44,
+            "emissive" : 4,
+            "metallic" : 4,
+            "normal" : 2,
+            "roughness" : 3
+         },
+         "Model" : {
+            "ModelPath" : "",
+            "ModelTypePrimitive" : true,
+            "PrimitiveType" : 4
+         }
+      },
+      "Transform" : {
+         "Dynamic" : true,
+         "Position" : {
+            "x" : -7.1600003242492676,
+            "y" : 3.5000002384185791,
+            "z" : 4.0399999618530273
+         },
+         "Rotation" : {
+            "x" : -132.10000610351563,
+            "y" : 90.0,
+            "z" : 90.0
+         },
+         "Scale" : {
+            "x" : 5.6000003814697266,
+            "y" : 1.0,
+            "z" : 0.77000004053115845
+         },
+         "TexPos" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexRot" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexScale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 0.0
+         }
+      }
+   },
+   "SingleTarget" : {
+      "Name" : "SingleTarget",
+      "Renderer3D" : {
+         "CastShadow" : false,
+         "Enabled" : false,
+         "EnabledBackCulling" : false,
+         "Material" : {
+            "albedo" : 1,
+            "emissive" : 4,
+            "metallic" : 4,
+            "normal" : 2,
+            "roughness" : 3
+         },
+         "Model" : {
+            "ModelPath" : "",
+            "ModelTypePrimitive" : true,
+            "PrimitiveType" : 0
+         }
+      },
+      "Transform" : {
+         "Dynamic" : false,
+         "Position" : {
+            "x" : -14.080000877380371,
+            "y" : 4.0,
+            "z" : 17.30000114440918
+         },
+         "Rotation" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "Scale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 1.0
+         },
+         "TexPos" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexRot" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexScale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 1.0
+         }
+      }
+   },
+   "Star" : {
+      "Name" : "Star",
+      "Renderer3D" : {
+         "CastShadow" : true,
+         "Enabled" : true,
+         "EnabledBackCulling" : false,
+         "Material" : {
+            "albedo" : 86,
+            "emissive" : 24,
+            "metallic" : 4,
+            "normal" : 2,
+            "roughness" : 3
+         },
+         "Model" : {
+            "ModelPath" : "",
+            "ModelTypePrimitive" : true,
+            "PrimitiveType" : 4
+         }
+      },
+      "Transform" : {
+         "Dynamic" : true,
+         "Position" : {
+            "x" : 298.84002685546875,
+            "y" : 146.3800048828125,
+            "z" : 427.71002197265625
+         },
+         "Rotation" : {
+            "x" : 45.400001525878906,
+            "y" : -9.4000005722045898,
+            "z" : 635.10003662109375
+         },
+         "Scale" : {
+            "x" : 22.760000228881836,
+            "y" : 1.0,
+            "z" : 22.760000228881836
+         },
+         "TexPos" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexRot" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexScale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 0.0
          }
       }
    }

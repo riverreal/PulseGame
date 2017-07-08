@@ -23,11 +23,11 @@
 <t><name>Resource/elem_panel.png</name><ID>38</ID></t>
 <t><name>Resource/level_circle.png</name><ID>39</ID></t>
 <t><name>Resource/level_elem.png</name><ID>40</ID></t>
-<t><name>Resource/ModeScene/maltiplayer.png</name><ID>41</ID></t>
-<t><name>Resource/ModeScene/mode_select.png</name><ID>42</ID></t>
+<t><name>Resource/balls/0.png</name><ID>41</ID></t>
+<t><name>Resource/balls/0.png</name><ID>42</ID></t>
 <t><name>Resource/ModeScene/mode_title.png</name><ID>43</ID></t>
 <t><name>Resource/ModeScene/singleplayer.png</name><ID>44</ID></t>
-<t><name>Resource/multiplayer.png</name><ID>45</ID></t>
+<t><name>Resource/balls/0.png</name><ID>45</ID></t>
 <t><name>Resource/next_button.png</name><ID>46</ID></t>
 <t><name>Resource/result.title.png</name><ID>47</ID></t>
 <t><name>Resource/result_panel.png</name><ID>48</ID></t>
@@ -58,7 +58,7 @@
 <t><name>Resource/ship_panel.png</name><ID>73</ID></t>
 <t><name>Resource/ship_sel_title.png</name><ID>74</ID></t>
 <t><name>Resource/ship_status_bar.png</name><ID>75</ID></t>
-<t><name>Resource/singleplayer.png</name><ID>76</ID></t>
+<t><name>Resource/balls/0.png</name><ID>76</ID></t>
 <t><name>Resource/start_button.png</name><ID>77</ID></t>
 <t><name>Resource/TitleScene/CrystalEffect.png</name><ID>78</ID></t>
 <t><name>Resource/TitleScene/PulseCrystal.png</name><ID>79</ID></t>
@@ -67,3 +67,9 @@
 <t><name>Resource/winner.png</name><ID>82</ID></t>
 <t><name>Resource/ModeScene/multiplayer.png</name><ID>83</ID></t>
 <t><name>Resource/ModeScene/modePlanet.png</name><ID>84</ID></t>
+<t><name>Resource/effects/dot.png</name><ID>85</ID></t>
+<t><name>Resource/effects/dotYellow.png</name><ID>86</ID></t>
+<t><name>Resource/ships/ship01Emissive.jpg</name><ID>87</ID></t>
+<t><name>Resource/ships/ship01Metallic.jpg</name><ID>88</ID></t>
+<t><name>Resource/ships/ship01Roughness.jpg</name><ID>89</ID></t>
+<t><name>Resource/ModeScene/mode_select.png</name><ID>90</ID></t>

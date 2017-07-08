@@ -71,8 +71,7 @@ void Elixir::SceneManager::ChangeScene(std::string name)
 	{
 		m_sceneInQueue = scene->GetName();
 		m_sceneChanged = true;
-	}
-		
+	}	
 }
 
 Elixir::Scene* Elixir::SceneManager::GetCurrentScene()
@@ -341,6 +340,7 @@ void Elixir::SceneManager::UpdateCurrentScene(float dt)
 			return;
 		}
 		
+		
 		GetCurrentScene()->Init();
 
 		if (!m_model->Initialize(m_textureManager->GetDevice()))
@@ -350,6 +350,8 @@ void Elixir::SceneManager::UpdateCurrentScene(float dt)
 
 		m_sceneChanged = false;
 	}
-
-	GetCurrentScene()->Update(dt);
+	else
+	{
+		GetCurrentScene()->Update(dt);
+	}
 }
