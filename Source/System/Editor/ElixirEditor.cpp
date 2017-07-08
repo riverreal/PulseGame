@@ -944,6 +944,12 @@ void Elixir::Editor::RenderEditor()
 					
 					if (filename != "")
 					{
+						auto resPos = filename.find("Resource");
+						if (resPos != std::string::npos)
+						{
+							filename = filename.substr(resPos);
+						}
+
 						m_selectedObject->GetRenderer()->ModelTypePrimitive = false;
 						m_selectedObject->GetRenderer()->ModelPath = filename;
 						m_selectedObject->GetRenderer()->Model = m_sceneManager->GetModel()->AddModelFromFile(filename);
