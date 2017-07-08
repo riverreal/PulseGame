@@ -1,86 +1,39 @@
 {
-   "Base" : {
-      "Name" : "Base",
+   "HomePlanet" : {
+      "Name" : "HomePlanet",
       "Renderer3D" : {
          "CastShadow" : true,
          "Enabled" : true,
          "EnabledBackCulling" : true,
          "Material" : {
-            "albedo" : 28,
-            "emissive" : 25,
+            "albedo" : 84,
+            "emissive" : 26,
             "metallic" : 4,
             "normal" : 2,
-            "roughness" : 27
+            "roughness" : 3
          },
          "Model" : {
             "ModelPath" : "",
             "ModelTypePrimitive" : true,
-            "PrimitiveType" : 0
+            "PrimitiveType" : 1
          }
       },
       "Transform" : {
          "Dynamic" : true,
          "Position" : {
             "x" : 0.0,
-            "y" : 2.0099999904632568,
-            "z" : 5.4600000381469727
+            "y" : -96.510002136230469,
+            "z" : 169.510009765625
          },
          "Rotation" : {
-            "x" : 0.0,
+            "x" : 69.200004577636719,
             "y" : 0.0,
             "z" : 0.0
          },
          "Scale" : {
-            "x" : 13.49000072479248,
-            "y" : 1.0,
-            "z" : 11.860000610351563
-         },
-         "TexPos" : {
-            "x" : 0.0,
-            "y" : 0.0,
-            "z" : 0.0
-         },
-         "TexRot" : {
-            "x" : 0.0,
-            "y" : 0.0,
-            "z" : 0.0
-         },
-         "TexScale" : {
-            "x" : 1.0,
-            "y" : 1.0,
-            "z" : 1.0
-         }
-      }
-   },
-   "Frame" : {
-      "Name" : "Frame",
-      "Renderer2D" : {
-         "Color" : {
-            "a" : 1.0,
-            "b" : 1.0,
-            "g" : 1.0,
-            "r" : 1.0
-         },
-         "Enabled" : true,
-         "TexID" : 42,
-         "ZOrder" : 0
-      },
-      "Transform" : {
-         "Dynamic" : true,
-         "Position" : {
-            "x" : -270.0,
-            "y" : -170.0,
-            "z" : 0.0
-         },
-         "Rotation" : {
-            "x" : 0.0,
-            "y" : 0.0,
-            "z" : 0.0
-         },
-         "Scale" : {
-            "x" : 0.4100000262260437,
-            "y" : 0.5,
-            "z" : 0.5
+            "x" : 82.710006713867188,
+            "y" : 82.709999084472656,
+            "z" : 82.709999084472656
          },
          "TexPos" : {
             "x" : 0.0,
@@ -146,53 +99,6 @@
          }
       }
    },
-   "MultiPlayer" : {
-      "Name" : "MultiPlayer",
-      "Renderer2D" : {
-         "Color" : {
-            "a" : 1.0,
-            "b" : 1.0,
-            "g" : 1.0,
-            "r" : 1.0
-         },
-         "Enabled" : true,
-         "TexID" : 41,
-         "ZOrder" : 0
-      },
-      "Transform" : {
-         "Dynamic" : true,
-         "Position" : {
-            "x" : 270.0,
-            "y" : -170.0,
-            "z" : 0.0
-         },
-         "Rotation" : {
-            "x" : 0.0,
-            "y" : 0.0,
-            "z" : 0.0
-         },
-         "Scale" : {
-            "x" : 0.40999999642372131,
-            "y" : 0.40999999642372131,
-            "z" : 1.0
-         },
-         "TexPos" : {
-            "x" : 0.0,
-            "y" : 0.0,
-            "z" : 0.0
-         },
-         "TexRot" : {
-            "x" : 0.0,
-            "y" : 0.0,
-            "z" : 0.0
-         },
-         "TexScale" : {
-            "x" : 1.0,
-            "y" : 1.0,
-            "z" : 1.0
-         }
-      }
-   },
    "ShipMulti01" : {
       "Name" : "ShipMulti01",
       "Renderer3D" : {
@@ -207,7 +113,7 @@
             "roughness" : 3
          },
          "Model" : {
-            "ModelPath" : "C:\\Users\\Nextgen\\Documents\\ElixirEngine\\Project_Light\\Resource\\ships\\shipImp.obj",
+            "ModelPath" : "Resource\\ships\\shipImp.obj",
             "ModelTypePrimitive" : false,
             "PrimitiveType" : 3452816845
          }
@@ -260,7 +166,7 @@
             "roughness" : 66
          },
          "Model" : {
-            "ModelPath" : "C:\\Users\\Nextgen\\Documents\\ElixirEngine\\Project_Light\\Resource\\ships\\Final.obj",
+            "ModelPath" : "Resource\\ships\\Final.obj",
             "ModelTypePrimitive" : false,
             "PrimitiveType" : 3452816845
          }
@@ -313,7 +219,7 @@
             "roughness" : 24
          },
          "Model" : {
-            "ModelPath" : "C:\\Users\\Nextgen\\Documents\\ElixirEngine\\Project_Light\\Resource\\ships\\ship01.obj",
+            "ModelPath" : "Resource\\ships\\ship01.obj",
             "ModelTypePrimitive" : false,
             "PrimitiveType" : 3452816845
          }
@@ -333,53 +239,6 @@
          "Scale" : {
             "x" : 1.0,
             "y" : 1.0,
-            "z" : 1.0
-         },
-         "TexPos" : {
-            "x" : 0.0,
-            "y" : 0.0,
-            "z" : 0.0
-         },
-         "TexRot" : {
-            "x" : 0.0,
-            "y" : 0.0,
-            "z" : 0.0
-         },
-         "TexScale" : {
-            "x" : 1.0,
-            "y" : 1.0,
-            "z" : 1.0
-         }
-      }
-   },
-   "SinglePlayer" : {
-      "Name" : "SinglePlayer",
-      "Renderer2D" : {
-         "Color" : {
-            "a" : 1.0,
-            "b" : 1.0,
-            "g" : 1.0,
-            "r" : 1.0
-         },
-         "Enabled" : true,
-         "TexID" : 44,
-         "ZOrder" : 0
-      },
-      "Transform" : {
-         "Dynamic" : true,
-         "Position" : {
-            "x" : -270.0,
-            "y" : -170.0,
-            "z" : 0.0
-         },
-         "Rotation" : {
-            "x" : 0.0,
-            "y" : 0.0,
-            "z" : 0.0
-         },
-         "Scale" : {
-            "x" : 0.4100000262260437,
-            "y" : 0.40999999642372131,
             "z" : 1.0
          },
          "TexPos" : {
