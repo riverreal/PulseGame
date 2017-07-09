@@ -14,15 +14,15 @@ Package::Package(SceneManager * manager)
 std::vector<GameObject*> Package::LoadPackage(std::string filepath)
 {
 	std::string packageData = m_manager->GetFileManager()->LoadFile(filepath);
-	auto decrypted = XOREncryptDecrypt(packageData, m_encKey);
-	return DeserializePackage(decrypted);
+	//auto decrypted = XOREncryptDecrypt(packageData, m_encKey);
+	return DeserializePackage(packageData);
 }
 
 void Package::CreatePackage(std::string filepath, std::vector<GameObject*> goVec)
 {
 	auto content = SerializePackage(goVec);
-	auto encrypted = XOREncryptDecrypt(content, m_encKey);
-	m_manager->GetFileManager()->SaveFile(filepath + ".pkg", encrypted);
+	//auto encrypted = XOREncryptDecrypt(content, m_encKey);
+	m_manager->GetFileManager()->SaveFile(filepath + ".pkg", content);
 }
 
 std::string Package::SerializePackage(std::vector<GameObject*> goVec)
@@ -85,6 +85,7 @@ std::string Package::SerializePackage(std::vector<GameObject*> goVec)
 			auto rend2D = obj->Get2DRenderer();
 			renderer2d["Enabled"] = rend2D->Enabled;
 			renderer2d["TexID"] = rend2D->Texture;
+			renderer2d["ZOrder"] = rend2D->ZOrder;
 
 			Json::Value color;
 			color["r"] = rend2D->Color.r;
@@ -180,7 +181,8 @@ std::vector<GameObject*> Package::DeserializePackage(std::string packageData)
 				auto renderer2d = obj->AddComponent<Renderer2D>();
 				renderer2d->Enabled = rend2dVal.get("Enabled", true).asBool();
 				renderer2d->Texture = rend2dVal.get("TexID", 0).asUInt();
-				
+				renderer2d->ZOrder = rend2dVal.get("ZOrder", 0).asInt();
+
 				auto color = rend2dVal["Color"];
 				renderer2d->Color.r = color.get("r", 1.0f).asFloat();
 				renderer2d->Color.g = color.get("g", 1.0f).asFloat();
@@ -206,9 +208,9 @@ std::vector<GameObject*> Package::DeserializePackage(std::string packageData)
 				renderer3d->ModelTypePrimitive = modelVal.get("ModelTypePrimitive", false).asBool();
 				renderer3d->PrimitiveType = modelVal.get("PrimitiveType", 0).asUInt();
 
-				if (renderer3d->PrimitiveType)
+				if (renderer3d->ModelTypePrimitive)
 				{
-					renderer3d->Model = m_manager->GetModel()->AddGeometry(renderer3d->ModelTypePrimitive);
+					renderer3d->Model = m_manager->GetModel()->AddGeometry(renderer3d->PrimitiveType);
 				}
 				else
 				{

@@ -164,6 +164,7 @@ namespace Elixir
 		Fog m_fog;
 		bool m_sceneReady;
 		bool m_noSky;
+		bool m_nextFrameReady;
 	};
 }
 

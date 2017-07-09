@@ -58,7 +58,7 @@ offsetData Model::AddGeometry(int modelType)
 		shapes.CreateScreenLayer(meshData);
 		break;
 	case MODEL_TYPE_SPHERE:
-		shapes.CreateSphere(0.5f, 20, 20, meshData);
+		shapes.CreateSphere(0.5f, 40, 40, meshData);
 		break;
 	default:
 		shapes.CreateCube(1.0f, 1.0f, 1.0f, meshData);

@@ -9,4 +9,6 @@ void Elixir::Renderer2D::Initialize()
 	Color.g = 1.0f;
 	Color.b = 1.0f;
 	Color.a = 1.0f;
+
+	ZOrder = 0;
 }

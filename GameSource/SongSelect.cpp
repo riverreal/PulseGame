@@ -51,6 +51,10 @@ void SongSelect::Init()
 		.To(285.0f * GameManager::GetInstance().GetDesignScale()).Time(0.5f).Easing(ET_BACK_OUT).OnFinish([this]() {this->EnableInput(); });
 	first_afterTween = first_afterTween.OnFinishChain(&afterTween);
 	m_mainTEween = m_mainTEween.OnFinishChain(&first_afterTween);
+
+	auto camera = Manager->GetCurrentScene()->GetCamera();
+	camera->SetPosition(XMFLOAT3(20.0f, 1.0f, 1.0f));
+	camera->Update();
 }
 
 //Update
@@ -67,6 +71,8 @@ void SongSelect::Update(float dt)
 
 		if (GetAsyncKeyState('X') & 0x8000)
 		{
+			
+			Log() << Manager->GetCurrentScene()->GetCamera()->GetPosition().x << "\n";
 			BackAnim();
 			m_mainTEween = m_mainTEween.OnFinish([this]() {this->BackScene(); });
 			m_inputEnabled = false;
@@ -122,6 +128,7 @@ void SongSelect::BlackImage()
 	m_back->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/0.png");
 	m_back->GetTransform()->Position = Vec3f(0, 0, 0);
 	m_back->GetTransform()->Scale = Vec3f(150, 100, 0);
+	m_back->Get2DRenderer()->Enabled = false;
 }
 
 void SongSelect::StartAnim()

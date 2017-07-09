@@ -203,7 +203,6 @@ namespace Elixir
 
 		bool m_movingWindow;
 
-
 		//window open booleans--------
 		bool m_ScenePropOpen;
 		bool m_objectListOpen;

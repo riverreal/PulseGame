@@ -12,8 +12,6 @@ public:
 	virtual void Init() override;
 	virtual void Update(float dt) override;
 	void SetImage();
-	void ModeSelect_Left();
-	void ModeSelect_Right();
 	bool GetSplitScreen();
 	void EnableInput();
 
@@ -28,9 +26,14 @@ private:
 	bool m_inputEnabled;
 	bool m_splitScreen;
 	ETween<float> m_mainTEween;
+	ETween<Vec3f> m_targetTween;
 	SongSelect m_song;
-	GameObject* left;
-	GameObject* right;
 	GameObject * m_back;
 	GameObject * m_modetitle;
+	Vec3f m_camPos;
+	Vec3f m_camLookAt;
+	Vec3f m_singleTarget;
+	Vec3f m_multiTarget;
+	bool m_singlePlayerMode;
+	int m_waitFrame;
 };

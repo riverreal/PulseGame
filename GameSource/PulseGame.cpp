@@ -35,8 +35,8 @@ void PulseGame::InitTestScene()
 	float radius = 1.3f;
 
 	obj->GetRenderer()->Model = Manager->GetModel()->AddTubeFromLineData(smoothLine, tangents, radius, smoothLine);
-	obj->GetRenderer()->Material.roughness = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/75.png");
-	obj->GetRenderer()->Material.metallic = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/25.png");
+	obj->GetRenderer()->Material.roughness = Manager->GetTextureManager()->AddTexture(L"Resource/balls/75.png");
+	obj->GetRenderer()->Material.metallic = Manager->GetTextureManager()->AddTexture(L"Resource/balls/25.png");
 	obj->SetName("Tube");
 	obj->GetTransform()->TextureScale = Vec3f(80.0f, 6.0f, 1.0f);
 

@@ -5,7 +5,7 @@
 #pragma comment(lib, "d3dcompiler.lib")
 
 #define WIN32_LEAN_AND_MEAN
-#define ELIXIR_EDITOR true;
+#define ELIXIR_EDITOR false;
 
 #include <Windows.h>
 #include <windowsx.h>
@@ -103,6 +103,8 @@ namespace Elixir
 		Timer m_gameTimer;
 		static int m_frameCnt;
 		static float m_timeElapsed;
+
+		std::vector<GameObject*> m_prev2dObjVec;
 
 		//d3d related
 		IDXGISwapChain* m_swapChain;

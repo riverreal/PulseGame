@@ -18,7 +18,7 @@ float4 AnaLensFlareBrightPass(VertexOut input) : SV_TARGET
 
 	//color.b *= 1.5f;
 
-	color *= GetExposure(avgLum, 0.4, 3, 0.001);
+	color *= GetExposure(avgLum, 1.0, 3, 0.001);
 	color -= 0.5f;
 	color = max(color, 0.0f);
 	color /= (10.0f + color);

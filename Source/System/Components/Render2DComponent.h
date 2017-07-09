@@ -16,6 +16,8 @@ namespace Elixir
 		bool Enabled;
 		//Stores the texture ID
 		U32 Texture;
+		
+		I32 ZOrder;
 		//The opacity of the texture at the range of [0.0f, 1.0f]
 		Color Color;
 	};

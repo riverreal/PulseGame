@@ -8,14 +8,15 @@ Scene::Scene(Model* model)
 	:m_renderingMode(RENDER_MODE::DEFERRED_RENDERING),
 	m_model(model),
 	m_sceneReady(false),
+	m_nextFrameReady(true),
 	m_name("NewScene"),
 	m_noSky(true)
 {
 	m_camera = new Camera();
-	m_camera->SetPosition(0.0f, 3.0f, 0.0f);
+	//m_camera->SetPosition(0.0f, 3.0f, 0.0f);
 
 	m_secondaryCamera = new Camera();
-	m_secondaryCamera->SetPosition(0.0f, 3.0f, 0.0f);
+	//m_secondaryCamera->SetPosition(0.0f, 3.0f, 0.0f);
 
 	m_lighting = new Light();
 
@@ -55,6 +56,17 @@ void Elixir::Scene::SetUpdateFunction(std::function<void(float)> update)
 
 void Scene::Init()
 {
+	m_sceneReady = false;
+
+	SafeRelease(m_camera);
+	SafeRelease(m_secondaryCamera);
+
+	m_camera = new Camera();
+	m_camera->SetPosition(0.0f, 3.0f, 0.0f);
+
+	m_secondaryCamera = new Camera();
+	m_secondaryCamera->SetPosition(0.0f, 3.0f, 0.0f);
+
 	InitFunction();
 
 	SceneReady();
@@ -290,7 +302,9 @@ Fog Scene::GetFog()
 
 void Scene::SceneReady()
 {
-	m_sceneReady = true;
+	m_nextFrameReady = true;
+
+	m_camera->Update();
 
 	for (auto &system : m_systems)
 	{
@@ -311,6 +325,15 @@ void Scene::SceneReady()
 
 bool Scene::IsSceneReady()
 {
+	if (!m_nextFrameReady)
+	{
+		m_sceneReady = true;
+	}
+	else
+	{
+		m_nextFrameReady = false;
+	}
+
 	return m_sceneReady;
 }
 

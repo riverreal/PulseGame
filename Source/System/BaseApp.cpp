@@ -2,6 +2,9 @@
 #include "../Helper/GeneralHelper.h"
 #include "../Helper/ENote.h"
 #include "GameManager.h"
+#include "../../External Soruce/cpplinq.hpp"
+
+using namespace cpplinq;
 
 namespace Elixir
 {
@@ -149,6 +152,18 @@ namespace Elixir
 #if ELIXIR_EDITOR == true
 		m_elixirEditor = new Editor();
 		m_elixirEditor->Initialize(m_hWnd, m_d3dDevice, m_d3dDeviceContext, m_width, m_height, m_sceneManager);
+#else
+		m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/elixirIconSmall.png");
+		m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/xButtonA.png");
+		m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/-ButtonA.png");
+		m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/trashCanIcon.png");
+		m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/plusIcon.png");
+		m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/newIcon.png");
+		m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/cubeIcon.png");
+		m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/sphereIcon.png");
+		m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/cylinderIcon.png");
+		m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/planeIcon.png");
+		m_sceneManager->GetTextureManager()->AddEditorTexture(L"Elixir/Editor/lineIcon.png");
 #endif
 
 		m_sceneManager->AddProjectTextures();
@@ -386,9 +401,26 @@ namespace Elixir
 				SetZBufferOff();
 				float blendFact[] = {0.0f, 0.0f, 0.0f, 0.0f};
 				m_d3dDeviceContext->OMSetBlendState(BlendState::BSTransparent, blendFact, 0xffffffff);
-				for (auto &object : Object2d)
+
+				bool changed2D = false;
+				if (Object2d != m_prev2dObjVec)
 				{
-					if (object->Get2DRenderer()->Enabled)
+					m_prev2dObjVec = Object2d;
+					changed2D = true;
+				}
+
+				static std::vector<GameObject*> orderer2DObject;
+
+				if (changed2D)
+				{
+					orderer2DObject = from(Object2d)
+						>> orderby_ascending([](GameObject* obj) {return obj->Get2DRenderer()->ZOrder; })
+						>> to_vector();
+				}
+
+				for (auto &object : orderer2DObject)
+				{
+					if (object->Get2DRenderer() != nullptr && object->Get2DRenderer()->Enabled)
 					{
 						m_tex2DShader->Render(m_d3dDeviceContext, object, currentScene->GetCamera(), m_textureManager);
 					}
@@ -396,6 +428,10 @@ namespace Elixir
 				m_d3dDeviceContext->OMSetBlendState(NULL, blendFact, 0xffffffff);
 				SetZBufferOn();
 			}
+		}
+		else
+		{
+			m_sceneManager->UpdateCurrentScene(dt);
 		}
 
 #if ELIXIR_EDITOR == true
