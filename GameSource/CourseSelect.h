@@ -1,26 +1,30 @@
+#pragma once
+
 namespace
 {
 	enum CourseID
 	{
-		course03,
-		test8,
+		lars,
+		dash,
 		hitorigoto
 	};
+
 	struct CourseData
 	{
 		std::string path;
 		std::string music;
 		std::string name;
+		std::string planetSkinPath;
 
-		CourseData(std::string p, std::string m, std::string n)
-			:path(p), music(m), name(n)
+		CourseData(std::string p, std::string m, std::string n, std::string pl)
+			:path(p), music(m), name(n), planetSkinPath(pl)
 		{};
 	};
 
 	CourseData CourseDataArray[3] =
 	{
-		CourseData("Resource/course03.pld","LarsM-Lovers","course03"),
-		CourseData("Resource/test8.pld","Dash","test8"),
-		CourseData("Resource/test8.pld","hitorigoto","Hitori Planet")
+		CourseData("Resource/course03.pld","LarsM-Lovers","course03", "Resource/PlanetSkins/planet01.png"),
+		CourseData("Resource/test8.pld","Dash","test8", "Resource/PlanetSkins/planet02.png"),
+		CourseData("Resource/test8.pld","hitorigoto","Hitori Planet", "Resource/PlanetSkins/planet03.png")
 	};
 }

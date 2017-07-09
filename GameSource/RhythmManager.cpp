@@ -7,7 +7,7 @@
 using namespace Elixir;
 using namespace cpplinq;
 
-void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif,int playerNum)
+void RhythmManager::Initialize(Elixir::SceneManager * sceneManager, DIFF dif, int playerNum)
 {
 	Manager = sceneManager;
 	m_Combo = 0;
@@ -38,14 +38,14 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif,in
 
 	m_timingBonus = 0;
 	//BGMファイル設定
-	AudioManager::GetInstance().AddControlledMusic("Resource/rhythmFolder/" + CourseDataArray[CourseID::course03].music +".mp3");
+	AudioManager::GetInstance().AddControlledMusic("Resource/rhythmFolder/" + CourseDataArray[CourseID::lars].music + ".mp3");
 	AudioManager::GetInstance().GetControlledMusic()->setIsPaused(true);
 
 	ENote::GetInstance().AddNote<int>("GetCombo" + playerNum, [this]() ->int {return this->GetCombo(); });
 	ENote::GetInstance().AddNote<int>("GetTimingBonus" + playerNum, [this]() ->int {return this->GetTimingBonus(); });
 
 	//PNFファイルゲット
-	auto FileContents = Manager->GetFileManager()->LoadFileLines("Resource/rhythmFolder/Pnf_Folder/" + CourseDataArray[CourseID::course03].music + ".pnf");
+	auto FileContents = Manager->GetFileManager()->LoadFileLines("Resource/rhythmFolder/Pnf_Folder/" + CourseDataArray[CourseID::lars].music + ".pnf");
 	//lineを,で分割して代入
 	for (auto & line : FileContents)
 	{
@@ -55,7 +55,7 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif,in
 	}
 	//LaneofNum
 	if (NumofLane != 3)
-	{	
+	{
 		for (int i = 0; i < m_NotesLaneNumber.size(); i++)
 		{
 			if (NumofLane == 2)
@@ -81,17 +81,17 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif,in
 	{
 		//Notes
 		auto hit2d = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_2D);
-		hit2d->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/" + COLOR_PATH[0]+L"_Hit.png");
+		hit2d->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/" + COLOR_PATH[0] + L"_Hit.png");
 		hit2d->GetTransform()->Rotation.x = -90;
 		hit2d->GetTransform()->Position.z += 5;
 		hit2d->SetTag(m_PlayerNum);
 		hit2d->Get2DRenderer()->Enabled = false;
 		auto _status = Status(hit2d, 1000, false);
-		m_NotesStatus.push_back(_status);		
+		m_NotesStatus.push_back(_status);
 	}
 
 	for (int i = 0; i < NumofLane; i++)
-	{	
+	{
 		//waveEfect
 		auto effectWave2d = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_2D);
 		effectWave2d->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Effect/" + WAVE_EFFECT_PATH[1] + L".png");
@@ -111,12 +111,12 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif,in
 		Screen2d->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/" + COLOR_PATH[i] + L"_Box.png");
 		Screen2d->GetTransform()->Position = m_LanePos[i];
 		Screen2d->SetTag(m_PlayerNum);
-		
+
 		//inputAnimation
 		ETween<F32> endAnim;
 		endAnim = endAnim.From(&Screen2d->GetTransform()->Scale.x).To(1.0f).Time(0.1f)
 			.From(&Screen2d->GetTransform()->Scale.y).To(1.0f).Time(0.1f);
-		
+
 		m_inputAnim = m_inputAnim.From(&Screen2d->GetTransform()->Scale.x).To(0.9f).Time(0.1f)
 			.From(&Screen2d->GetTransform()->Scale.y).To(0.9f).Time(0.1f)
 			.OnFinishChain(&endAnim);
@@ -126,7 +126,7 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif,in
 	m_TextEffect->SetTag(m_PlayerNum);
 	m_TextEffect->GetTransform()->Position = m_LanePos[1];
 	m_TextEffect->GetTransform()->Position.y += 120;
-	
+
 	m_textAnim = m_textAnim.From(&m_TextEffect->Get2DRenderer()->Color.a).To(0.0f).Time(1.0f)
 		.From(&m_TextEffect->GetTransform()->Position.y).To(m_TextEffect->GetTransform()->Position.y + 30.0f).Time(1.0f);
 
@@ -181,10 +181,10 @@ void RhythmManager::Update(float dt)
 		if (_status.active)
 		{
 			//最終スケール + ((タイミング - 現在の再生時間) * 初期スケール) / 1000
-			auto _scale = 0.9f + ((m_NotesTiming[_status.num] - (int)AudioManager::GetInstance().GetControlledMusic()->getPlayPosition()) * m_DefaultScale ) /1000;
+			auto _scale = 0.9f + ((m_NotesTiming[_status.num] - (int)AudioManager::GetInstance().GetControlledMusic()->getPlayPosition()) * m_DefaultScale) / 1000;
 			_status.obj->GetTransform()->Scale = Vec3f(_scale, _scale, 1);
 			_status.obj->Get2DRenderer()->Color.a = (-_scale + 1) / 3 + 1;
-		}		
+		}
 	}
 
 	static bool isF5Pressed = false;
@@ -210,9 +210,9 @@ void RhythmManager::Update(float dt)
 		isF5Pressed = false;
 	}
 
-	#pragma region input key 
+#pragma region input key 
 
-	if (CommandInterpreter::GetInstance().isCenterNotes(m_PlayerNum) && !m_modeEasy )
+	if (CommandInterpreter::GetInstance().isCenterNotes(m_PlayerNum) && !m_modeEasy)
 	{
 		if (!m_Press)
 		{
@@ -248,12 +248,12 @@ void RhythmManager::Update(float dt)
 
 	else
 		m_Press = false;
-	
+
 
 #pragma endregion
 
 	if (m_TimingCount >= m_NotesTiming.size())return;
-	
+
 	if (m_NotesTiming[m_TimingCount] - 1000 < (int)AudioManager::GetInstance().GetControlledMusic()->getPlayPosition())
 	{
 		for (auto& _status : m_NotesStatus)
@@ -342,7 +342,7 @@ void RhythmManager::HitTimingCheck(Status* _status)
 	{
 		_status->active = false;
 		m_Combo++;
-		
+
 		_status->obj->Get2DRenderer()->Enabled = false;
 		m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[2] + L".png");
 		//m_TextEffect->Get2DRenderer()->Enabled = true;

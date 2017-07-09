@@ -62,7 +62,7 @@ void ModeScene::Init()
 	m_camPos.x = camPos.x;
 	m_camPos.y = camPos.y;
 	m_camPos.z = camPos.z;
-	m_mainTEween = m_mainTEween.From(&m_camPos.z).To(m_camPos.z + 5.0f).Time(3.0f).Easing(ET_BACK_OUT);
+	m_mainTEween = m_mainTEween.From(&m_camPos.z).To(m_camPos.z + 5.0f).Time(1.0f).Easing(ET_BACK_OUT);
 	m_camLookAt = Vec3f(0.0f, 4.0f, 10.0f);
 
 	DirectX::XMFLOAT3 target = XMFLOAT3(m_camLookAt.x, m_camLookAt.y, m_camLookAt.z);
@@ -73,7 +73,7 @@ void ModeScene::Init()
 	auto multiTargetObj = Manager->GetCurrentScene()->GetObjectByName("MultiTarget");
 	m_multiTarget = multiTargetObj->GetTransform()->Position;
 
-	m_targetTween = m_targetTween.From(&m_camLookAt).To(m_singleTarget).Time(3.0f).Easing(ET_BACK_OUT);
+	m_targetTween = m_targetTween.From(&m_camLookAt).To(m_singleTarget).Time(1.0f).Easing(ET_BACK_OUT);
 
 	camera->Update();
 }
@@ -96,7 +96,6 @@ void ModeScene::Update(float dt)
 
 		if (GetAsyncKeyState('Z') & 0x8000)
 		{
-			
 			if (m_singlePlayerMode)
 			{
 				m_splitScreen = false;
@@ -104,7 +103,7 @@ void ModeScene::Update(float dt)
 				m_mainTEween = m_mainTEween.OnFinish([this]() {this->ChangeScene(); });
 				m_inputEnabled = false;
 			}
-			else if (m_singlePlayerMode)
+			else if (!m_singlePlayerMode)
 			{
 				m_splitScreen = true;
 				BackAnim();
