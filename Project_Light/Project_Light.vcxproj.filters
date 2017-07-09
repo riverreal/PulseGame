@@ -252,6 +252,9 @@
     <ClCompile Include="..\Source\System\Package.cpp">
       <Filter>Source Files\System</Filter>
     </ClCompile>
+    <ClCompile Include="..\GameSource\SpriteNumber.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\System\BaseApp.h">
@@ -793,6 +796,9 @@
     </ClInclude>
     <ClInclude Include="..\Source\System\Package.h">
       <Filter>Source Files\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameSource\SpriteNumber.h">
+      <Filter>Source Files\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
