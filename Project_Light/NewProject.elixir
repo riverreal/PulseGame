@@ -81,3 +81,7 @@
 <t><name>Resource/PlanetSkins/planet03.png</name><ID>96</ID></t>
 <t><name>Resource/PlanetSkins/planet04.jpg</name><ID>97</ID></t>
 <t><name>Resource/PlanetSkins/planet05.jpg</name><ID>98</ID></t>
+<t><name>Resource/MachineScene/PlayerLabel.png</name><ID>99</ID></t>
+<t><name>Resource/MachineScene/ship_panel.png</name><ID>100</ID></t>
+<t><name>Resource/MachineScene/1.png</name><ID>101</ID></t>
+<t><name>Resource/MachineScene/2.png</name><ID>102</ID></t>

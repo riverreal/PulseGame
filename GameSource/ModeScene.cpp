@@ -110,7 +110,6 @@ void ModeScene::Update(float dt)
 				m_mainTEween = m_mainTEween.OnFinish([this]() {this->ChangeScene(); });
 				m_inputEnabled = false;
 			}
-			
 		}
 	}
 
@@ -128,7 +127,6 @@ void ModeScene::Update(float dt)
 		m_targetTween.Update(dt);
 		m_mainTEween.Update(dt);
 	}
-	
 }
 
 void ModeScene::SetImage()

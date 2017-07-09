@@ -27,7 +27,7 @@ private:
 
 private:
 	bool m_inputEnabled;
-	MachineSelect m_machine;
+	MachineSelect m_machine = {};
 	ETween<float> m_mainTEween;
 	GameObject * m_title;
 	GameObject * m_panel;
