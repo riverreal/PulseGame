@@ -25,6 +25,8 @@ private:
 	Elixir::GameObject* m_player;
 	Elixir::GameObject* m_col1;
 	Elixir::GameObject* m_col2;
+	Elixir::GameObject* m_meterNeedle;
+	Elixir::GameObject* m_meterFrame;
 	int m_colIndex;
 	bool m_colHasDetection;
 	bool m_hasCollided;

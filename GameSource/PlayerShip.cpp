@@ -8,6 +8,7 @@
 
 using namespace Elixir;
 using namespace cpplinq;
+
 void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line, float radius, int playerNum)
 {
 	Manager = sceneManager;
@@ -38,6 +39,10 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 
 	m_camera->SetPosition(0.0f, 0.0f, 10.0f);
 
+	Manager->GetPackage()->LoadPackage("Packages/ingame/Mater.pkg");
+	m_meterFrame = Manager->GetCurrentScene()->GetObjectByName("MeterFrame");
+	m_meterNeedle = Manager->GetCurrentScene()->GetObjectByName("MeterNeedle");
+
 	m_PlayerNum = playerNum;
 	if (playerNum == 0)
 	{
@@ -51,7 +56,6 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 		m_player->GetTransform()->Scale = Vec3f(0.04f);
 	}
 	else
-
 	{
 		m_player = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
 		m_player->GetRenderer()->Model = Manager->GetModel()->AddModelFromFile("Resource/ships/Final.obj");
