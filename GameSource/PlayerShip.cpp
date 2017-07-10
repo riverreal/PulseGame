@@ -5,6 +5,9 @@
 #include "../Source/Helper/ENote.h"
 #include"../External Soruce/cpplinq.hpp"
 #include "Hitjudgment.h"
+#include "../Source/Helper/ENote.h"
+#include "CourseSelect.h"
+#include <stdlib.h>
 
 using namespace Elixir;
 using namespace cpplinq;
@@ -39,35 +42,25 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 
 	m_camera->SetPosition(0.0f, 0.0f, 10.0f);
 
-	Manager->GetPackage()->LoadPackage("Packages/ingame/Mater.pkg");
-	m_meterFrame = Manager->GetCurrentScene()->GetObjectByName("MeterFrame");
-	m_meterNeedle = Manager->GetCurrentScene()->GetObjectByName("MeterNeedle");
-
 	m_PlayerNum = playerNum;
-	if (playerNum == 0)
+	if (playerNum == 2)
 	{
-		m_player = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
-		m_player->GetRenderer()->Model = Manager->GetModel()->AddModelFromFile("Resource/ships/shipImp.obj");
-		m_player->GetRenderer()->Material.albedo = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipAlbedoEm.png");
-		m_player->GetRenderer()->Material.metallic = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipMetallic.png");
-		m_player->GetRenderer()->Material.normal = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipNormal.png");
-		m_player->GetRenderer()->Material.emissive = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipEmissive.png");
-		m_player->GetRenderer()->Material.roughness = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/75.png");
-		m_player->GetTransform()->Scale = Vec3f(0.04f);
+		//AI
+		int randomShip = rand() % 3;
+		auto shipPkg = Manager->GetPackage()->LoadPackage(MachineDataArray[randomShip].path);
+		m_player = shipPkg[0];
 	}
 	else
 	{
-		m_player = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
-		m_player->GetRenderer()->Model = Manager->GetModel()->AddModelFromFile("Resource/ships/Final.obj");
-		m_player->GetRenderer()->Material.albedo = Manager->GetTextureManager()->AddTexture(L"Resource/ships/Final_Material__482_BaseColor.png");
-		m_player->GetRenderer()->Material.metallic = Manager->GetTextureManager()->AddTexture(L"Resource/ships/Material__482_metallic.jpg");
-		m_player->GetRenderer()->Material.normal = Manager->GetTextureManager()->AddTexture(L"Resource/ships/Final_Material__482_Normal.png");
-		m_player->GetRenderer()->Material.emissive = Manager->GetTextureManager()->AddTexture(L"Resource/ships/Final_Material__482_Emissive.jpg");
-		m_player->GetRenderer()->Material.roughness = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/75.png");
-		m_player->GetTransform()->Scale = Vec3f(0.002f);
-		m_player->SetName("Number2");
+		//Player
+		std::string note = "GetPlayer" + std::to_string(playerNum + 1) + "Ship";
+		int shipNum = ENote::GetInstance().Notify<int>(note);
+		auto shipPkg = Manager->GetPackage()->LoadPackage(MachineDataArray[shipNum].path);
+		m_player = shipPkg[0];
 	}
 	
+	m_player->GetTransform()->Scale = m_player->GetTransform()->Scale * 0.2f;
+
 	m_player->GetTransform()->Position = MathHelper::GetPointInCMSpline(m_lineData[0], m_lineData[1], m_lineData[2], m_lineData[3], m_currentPos).Position;
 	m_target = MathHelper::GetPointInCMSpline(m_lineData[0], m_lineData[1], m_lineData[2], m_lineData[3], m_aheadPos).Position;
 	
@@ -82,6 +75,7 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	m_col1->GetRenderer()->Model = Manager->GetModel()->AddGeometry(MODEL_TYPE_SPHERE);
 	m_col1->GetTransform()->Position.z = 0.15f;
 	m_col1->GetTransform()->Scale = Vec3f(0.3f);
+	m_col1->GetRenderer()->Enabled = false;
 	m_player->AddChild(m_col1);
 
 	m_col2 = Manager->GetCurrentScene()->CreateObject(OBJECT_RENDER);
@@ -91,10 +85,27 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	m_col2->GetTransform()->Scale = Vec3f(5.0f);
 	m_col2->GetRenderer()->Enabled = false;
 	m_player->AddChild(m_col2);
+
+	if (m_PlayerNum == 0 || m_PlayerNum == 1)
+	{
+		Manager->GetPackage()->LoadPackage("Packages/ingame/Meter.pkg");
+		m_meterFrame = Manager->GetCurrentScene()->GetObjectByName("MeterFrame");
+		m_meterNeedle = Manager->GetCurrentScene()->GetObjectByName("MeterNeedle");
+		m_player->AddChild(m_meterFrame);
+		m_player->AddChild(m_meterNeedle);
+		m_meterFrame->GetTransform()->Scale = m_meterFrame->GetTransform()->Scale / m_player->GetTransform()->Scale.x * 0.08f;
+		m_meterNeedle->GetTransform()->Scale = m_meterNeedle->GetTransform()->Scale / m_player->GetTransform()->Scale.x * 0.08f;
+		m_meterNeedle->GetTransform()->Rotation.x = 90.f;
+		m_meterFrame->GetTransform()->Position.x += 0.7f;
+		m_meterNeedle->GetTransform()->Position.x += 0.7f;
+		m_meterFrame->GetTransform()->Position.y += 0.3f;
+		m_meterNeedle->GetTransform()->Position.y += 0.3f;
+		m_meterFrame->GetTransform()->Position.z += 1.6f;
+		m_meterNeedle->GetTransform()->Position.z += 1.601f;
+	}
 }
 void PlayerShip::UpdateShipPos(float dt)
 {
-
 	if (Hitjudgment::SpColliding(m_ObstacleList[m_colIndex], m_col1))
 	{
 		if (!m_hasCollided)
@@ -129,7 +140,14 @@ void PlayerShip::UpdateShipPos(float dt)
 		}
 	}
 	
-	auto speed = m_travelSpeed * dt +(m_currentCombo + m_timingBouns)* dt *0.001f;
+	auto bonusSpeed = (m_currentCombo + m_timingBouns)* dt *0.001f;
+	auto speed = m_travelSpeed * dt + bonusSpeed;
+
+	if (m_PlayerNum != 2)
+	{
+		m_meterNeedle->GetTransform()->Rotation.y = MathHelper::clamp(-33.3f + bonusSpeed * 100000.0f, -33.3f, 207.f);
+	}
+
 	m_currentPos+= speed;
 	m_aheadPos += speed;
 

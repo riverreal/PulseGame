@@ -40,6 +40,9 @@ void MachineSelect::Init()
 	m_pulse.StartScene("PulseGame");
 
 	m_twoPlayerMode = ENote::GetInstance().Notify<bool>("GetSplitScreen");
+
+	ENote::GetInstance().AddNote<int>("GetPlayer1Ship", [this]() { return this->GetPlayer1Ship(); });
+	ENote::GetInstance().AddNote<int>("GetPlayer2Ship", [this]() { return this->GetPlayer2Ship(); });
 	
 	from(Manager->GetCurrentScene()->GetChildren())
 		>> where([](GameObject* obj) {return obj->Get2DRenderer() != nullptr; })
@@ -279,7 +282,10 @@ void MachineSelect::ChangeScene()
 	else
 	{
 		AudioManager::GetInstance().StopAllMusic();
-		m_ship02 = m_selectedShip;
+		if (m_selectionNumber == 0)
+			m_ship01 = m_selectedShip;
+		else
+			m_ship02 = m_selectedShip;
 		m_selectionNumber = 0;
 		Manager->ChangeScene("PulseGame");
 	}
