@@ -1,0 +1,102 @@
+{
+   "PlayerLabel" : {
+      "Name" : "PlayerLabel",
+      "Renderer2D" : {
+         "Color" : {
+            "a" : 1.0,
+            "b" : 1.0,
+            "g" : 1.0,
+            "r" : 1.0
+         },
+         "Enabled" : true,
+         "TexID" : 99,
+         "ZOrder" : 0
+      },
+      "Transform" : {
+         "Dynamic" : true,
+         "Position" : {
+            "x" : -99.6300048828125,
+            "y" : 292.4000244140625,
+            "z" : 0.0
+         },
+         "Rotation" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "Scale" : {
+            "x" : 0.64000004529953003,
+            "y" : 0.63999998569488525,
+            "z" : 0.63999998569488525
+         },
+         "TexPos" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexRot" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexScale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 1.0
+         }
+      }
+   },
+   "SelectedPlanet" : {
+      "Name" : "SelectedPlanet",
+      "Renderer3D" : {
+         "CastShadow" : true,
+         "Enabled" : true,
+         "EnabledBackCulling" : true,
+         "Material" : {
+            "albedo" : 1,
+            "emissive" : 24,
+            "metallic" : 4,
+            "normal" : 2,
+            "roughness" : 3
+         },
+         "Model" : {
+            "ModelPath" : "",
+            "ModelTypePrimitive" : true,
+            "PrimitiveType" : 1
+         }
+      },
+      "Transform" : {
+         "Dynamic" : true,
+         "Position" : {
+            "x" : -12.600000381469727,
+            "y" : -9.6000003814697266,
+            "z" : 16.400001525878906
+         },
+         "Rotation" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "Scale" : {
+            "x" : 14.399999618530273,
+            "y" : 14.399999618530273,
+            "z" : 14.40000057220459
+         },
+         "TexPos" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexRot" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexScale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 1.0
+         }
+      }
+   }
+}
