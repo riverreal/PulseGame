@@ -37,7 +37,7 @@ void StageManager::Initialize(SceneManager* manager)
 
 	for (int i = 0; i < 100; i++)
 	{
-		CreateStarDust();
+		//CreateStarDust();
 	}
 }
 

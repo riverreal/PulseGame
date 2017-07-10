@@ -3,7 +3,6 @@
 #include "../Source/System/IElixirGame.h"
 #include "ModeScene.h"
 #include "../Source/Helper/ETween.h"
-#include "../External Soruce/rxcpp/rx.hpp"
 
 using namespace Elixir;
 
@@ -32,5 +31,5 @@ private:
 	ETween<float> m_crystalTween2;
 	GameObject* m_crystal;
 	GameObject * m_back;
-	rxcpp::subjects::subject<bool> m_trigger;
+
 };
