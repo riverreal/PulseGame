@@ -99,6 +99,7 @@ namespace Elixir
 		Light* GetLight();
 
 		Fog GetFog();
+		void SetFog(Fog fog);
 
 		//Set ready the scene
 		//And Initialize Systems

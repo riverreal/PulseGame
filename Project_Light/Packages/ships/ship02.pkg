@@ -1,0 +1,55 @@
+{
+   "ship02" : {
+      "Name" : "ship02",
+      "Renderer3D" : {
+         "CastShadow" : true,
+         "Enabled" : true,
+         "EnabledBackCulling" : true,
+         "Material" : {
+            "albedo" : 69,
+            "emissive" : 70,
+            "metallic" : 71,
+            "normal" : 72,
+            "roughness" : 3
+         },
+         "Model" : {
+            "ModelPath" : "Resource\\ships\\shipImp.obj",
+            "ModelTypePrimitive" : false,
+            "PrimitiveType" : 3452816845
+         }
+      },
+      "Transform" : {
+         "Dynamic" : true,
+         "Position" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "Rotation" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "Scale" : {
+            "x" : 0.23000000417232513,
+            "y" : 0.23000000417232513,
+            "z" : 0.23000000417232513
+         },
+         "TexPos" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexRot" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexScale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 1.0
+         }
+      }
+   }
+}

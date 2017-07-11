@@ -18,6 +18,10 @@ void StageManager::Initialize(SceneManager* manager)
 
 	auto dirL = m_manager->GetCurrentScene()->GetLight()->GetModDirectionalLight();
 
+	auto fog = Fog();
+	fog.Enabled = false;
+	m_manager->GetCurrentScene()->SetFog(fog);
+
 	dirL->LightColor[0] = 1.0f;
 	dirL->LightColor[1] = 1.0f;
 	dirL->LightColor[2] = 1.0f;
@@ -33,7 +37,7 @@ void StageManager::Initialize(SceneManager* manager)
 
 	for (int i = 0; i < 100; i++)
 	{
-		CreateStarDust();
+		//CreateStarDust();
 	}
 }
 

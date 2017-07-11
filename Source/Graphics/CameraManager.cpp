@@ -47,13 +47,11 @@ void Camera::SetLookAt(const XMFLOAT3& pos, const XMFLOAT3 &target, const XMFLOA
 
 void Camera::SetPosition(float x, float y, float z)
 {
-	ElixirLog("SetPos");
 	m_position = XMFLOAT3(x, y, z);
 }
 
 void Camera::SetPosition(DirectX::XMFLOAT3 pos)
 {
-	ElixirLog("SetPos!");
 	m_position = pos;
 }
 

@@ -110,3 +110,6 @@ bin/Debug/Intermediate/PlayerManager.obj
 bin/Debug/Intermediate/AI.obj
 bin/Debug/Intermediate/MachineSelect.obj
 bin/Debug/Intermediate/Hitjudgment.obj
+bin/Debug/Intermediate/StageManager.obj
+bin/Debug/Intermediate/SpriteNumber.obj
+bin/Debug/Intermediate/Package.obj

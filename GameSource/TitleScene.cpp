@@ -6,13 +6,6 @@
 using namespace Elixir;
 using namespace cpplinq;
 
-namespace Rx {
-	using namespace rxcpp;
-	using namespace rxcpp::subjects;
-	using namespace rxcpp::operators;
-	using namespace rxcpp::util;
-}
-
 //start
 void TitleScene::Init()
 {
@@ -37,15 +30,6 @@ void TitleScene::Init()
 		obj->GetTransform()->Position = obj->GetTransform()->Position * GameManager::GetInstance().GetDesignScale(); 
 		obj->GetTransform()->Scale = obj->GetTransform()->Scale * GameManager::GetInstance().GetDesignScale();
 	});
-
-	auto nextAsObservable = m_trigger.get_observable();
-	auto subscription = m_trigger.get_subscription();
-	nextAsObservable.subscribe([this](bool isNext) {
-		if (isNext)
-		{
-			this->BackAnim();
-		}
-	});
 }
 
 //Update
@@ -53,9 +37,10 @@ void TitleScene::Update(float dt)
 {
 	if (m_inputEnabled)
 	{
-		if (GetAsyncKeyState('Z') & 0x8000)
+		if (GetAsyncKeyState('Z') & 0x8000 && !m_isNextButtonPressed)
 		{
-			m_trigger.get_subscriber().on_next(true);
+			m_isNextButtonPressed = true;
+			BackAnim();
 		}
 	}
 	
@@ -123,7 +108,6 @@ void TitleScene::BackAnim()
 	m_back->Get2DRenderer()->Color.a = 1;
 	m_mainTEween = m_mainTEween.From(&m_back->GetTransform()->Position.x).To(0.0f).Time(0.7f);
 	m_mainTEween = m_mainTEween.OnFinish([this]() {this->ChangeScene(); });
-	m_trigger.get_subscription().unsubscribe();
 }
 
 void TitleScene::ChangeScene()

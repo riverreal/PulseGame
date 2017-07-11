@@ -1,0 +1,108 @@
+{
+   "MeterFrame" : {
+      "Name" : "MeterFrame",
+      "Renderer3D" : {
+         "CastShadow" : false,
+         "Enabled" : true,
+         "EnabledBackCulling" : false,
+         "Material" : {
+            "albedo" : 91,
+            "emissive" : 24,
+            "metallic" : 4,
+            "normal" : 2,
+            "roughness" : 3
+         },
+         "Model" : {
+            "ModelPath" : "",
+            "ModelTypePrimitive" : true,
+            "PrimitiveType" : 4
+         }
+      },
+      "Transform" : {
+         "Dynamic" : true,
+         "Position" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "Rotation" : {
+            "x" : -90.0,
+            "y" : 90.0,
+            "z" : 90.0
+         },
+         "Scale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 1.0
+         },
+         "TexPos" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexRot" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexScale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 1.0
+         }
+      }
+   },
+   "MeterNeedle" : {
+      "Name" : "MeterNeedle",
+      "Renderer3D" : {
+         "CastShadow" : false,
+         "Enabled" : true,
+         "EnabledBackCulling" : false,
+         "Material" : {
+            "albedo" : 92,
+            "emissive" : 24,
+            "metallic" : 4,
+            "normal" : 2,
+            "roughness" : 3
+         },
+         "Model" : {
+            "ModelPath" : "",
+            "ModelTypePrimitive" : true,
+            "PrimitiveType" : 4
+         }
+      },
+      "Transform" : {
+         "Dynamic" : true,
+         "Position" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "Rotation" : {
+            "x" : -90.0,
+            "y" : -30.000001907348633,
+            "z" : 90.0
+         },
+         "Scale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 1.0
+         },
+         "TexPos" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexRot" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexScale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 1.0
+         }
+      }
+   }
+}

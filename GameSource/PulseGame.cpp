@@ -25,7 +25,7 @@ void PulseGame::InitTestScene()
 
 	m_stageManager.Initialize(Manager);
 
-	m_lineData = LoadLine(Manager->GetFileManager()->LoadFile(CourseDataArray[CourseID::course03].path));
+	m_lineData = LoadLine(Manager->GetFileManager()->LoadFile(CourseDataArray[CourseID::lars].path));
 
 	auto smoothLine = MathHelper::CatmullromSpline(m_lineData, 20, false);
 	auto tangents = MathHelper::CatmullromSpline(m_lineData, 20, true);

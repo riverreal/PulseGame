@@ -19,11 +19,22 @@ public:
 	void BackScene();
 	void EnableInput();
 
+	int GetPlayer1Ship();
+	int GetPlayer2Ship();
+
 private:
 	bool m_inputEnabled;
+	bool m_twoPlayerMode;
 	PulseGame m_pulse;
 	ETween<float> m_mainTEween;
 	GameObject * m_title;
 	GameObject * m_panel;
 	GameObject * m_back;
+	GameObject* m_selectedPlanet;
+	GameObject* m_ships;
+	int m_maxShips;
+	int m_selectedShip;
+	int m_selectionNumber;
+	int m_ship01;
+	int m_ship02;
 };

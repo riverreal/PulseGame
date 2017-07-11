@@ -300,6 +300,11 @@ Fog Scene::GetFog()
 	return m_fog;
 }
 
+void Elixir::Scene::SetFog(Fog fog)
+{
+	m_fog = fog;
+}
+
 void Scene::SceneReady()
 {
 	m_nextFrameReady = true;

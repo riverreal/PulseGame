@@ -33,6 +33,7 @@ void Elixir::AudioManager::PlayMusic(std::string filename, bool loop)
 	if (m_initFailed)
 		return;
 
+	m_sEngine->stopAllSounds();
 	m_sEngine->play2D(filename.c_str(), loop);
 }
 
