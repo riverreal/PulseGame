@@ -121,4 +121,12 @@ private:
 	//For convinience
 	Elixir::SceneManager* Manager;
 	Elixir::GameObject* m_textParent;
+
+	//time
+	float m_flameCount = 0;
+	int m_secCount = 0;
+	int m_minCount = 0;
+	SpriteNumber m_spriteSecondCount;
+	SpriteNumber m_spriteMinuteCount;
+
 };

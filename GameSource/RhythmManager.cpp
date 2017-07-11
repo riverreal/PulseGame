@@ -18,13 +18,19 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager, DIFF dif, in
 		m_spriteNumber.Initialize(Manager);
 		m_textParent = m_spriteNumber.GetSpriteParent();
 		m_textParent->GetTransform()->Scale = Vec3f(0.15, 0.15, 0.15);
-		m_textParent->GetTransform()->Position = Vec3f(550, 180, 0);
+		m_textParent->GetTransform()->Position = Vec3f(550, 70, 0);
 		m_spriteNumber.UpdateSprite(0);
 
 		m_ComboLabel = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_2D);
 		m_ComboLabel->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/combo_text.png");
-		m_ComboLabel->GetTransform()->Position = Vec3f(560, 135, 0);
+		m_ComboLabel->GetTransform()->Position = Vec3f(560, 25, 0);
 		m_ComboLabel->GetTransform()->Scale = Vec3f(0.3, 0.3, 0.3);
+
+		//time
+		m_spriteSecondCount.Initialize(Manager);
+		m_spriteSecondCount.GetSpriteParent()->GetTransform()->Scale = Vec3f(0.15, 0.15, 0.15);
+		m_spriteSecondCount.GetSpriteParent()->GetTransform()->Position = Vec3f(550, 130, 0);
+		m_spriteSecondCount.UpdateSprite(0);
 
 	}
 
@@ -43,13 +49,9 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager, DIFF dif, in
 		m_LanePos[0].x = m_LanePos[1].x + 130;
 		m_LanePos[2].x = m_LanePos[1].x - 130;
 
-		m_textParent->GetTransform()->Position.x -= halfScreenW;//630
+		m_textParent->GetTransform()->Position.x -= halfScreenW;
 		m_spriteNumber.UpdateSprite(0);
 		m_ComboLabel->GetTransform()->Position.x -= halfScreenW;
-	}
-	else
-	{
-
 	}
 
 	if (playerNum == 1)
@@ -315,6 +317,23 @@ void RhythmManager::Update(float dt)
 
 		//ElixirLog("Ended!");
 	}
+	
+	/*if (m_PlayerNum != 2)
+	{
+		m_flameCount += 2;
+		if (m_flameCount > 60)
+		{
+			Log() << "sec:"<<m_secCount;
+			Log() << "music:" << AudioManager::GetInstance().GetControlledMusic()->getPlayPosition();
+			m_flameCount = 0;
+			m_secCount++;
+			m_spriteSecondCount.UpdateSprite(m_secCount);
+			if (m_secCount > 60)
+			{
+				m_secCount = 0;
+			}
+		}
+	}*/
 	m_tween.Update(dt);
 }
 

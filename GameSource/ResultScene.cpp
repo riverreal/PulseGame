@@ -23,6 +23,8 @@ void ResultScene::Init()
 	//SetNextButton();
 	*/
 
+	m_Machine = Manager->GetPackage()->LoadPackage(ENote::GetInstance().Notify<std::string>("WinnerMachine"))[0];
+
 	TextImage();
 	AudioManager::GetInstance().GetControlledMusic()->setIsPaused(true);
 }
@@ -50,7 +52,7 @@ void ResultScene::TextImage()
 	m_text->GetTransform()->Position = Vec3f(0, -200, 0);
 	//text->GetTransform()->Scale = Vec3f(0.2f, 0.2f, 0);
 
-
+	/*
 	m_Machine = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_RENDER);
 	m_Machine->GetRenderer()->Model = Manager->GetModel()->AddModelFromFile("Resource/ships/shipImp.obj");
 	m_Machine->GetRenderer()->Material.albedo = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipAlbedoEm.png");
@@ -61,7 +63,7 @@ void ResultScene::TextImage()
 	m_Machine->GetTransform()->Scale = Vec3f(0.3f);
 	m_Machine->GetTransform()->Position = Vec3f(0, 0, 5);
 	m_Machine->GetTransform()->Rotation = Vec3f(0, 30, 0);
-
+	*/
 	DirectX::XMFLOAT3 playerPos, upVec;
 	playerPos.x = m_Machine->GetTransform()->Position.x;
 	playerPos.y = m_Machine->GetTransform()->Position.y; 

@@ -55,8 +55,8 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	{
 		//Player
 		std::string note = "GetPlayer" + std::to_string(playerNum + 1) + "Ship";
-		int shipNum = ENote::GetInstance().Notify<int>(note);
-		auto shipPkg = Manager->GetPackage()->LoadPackage(MachineDataArray[shipNum].path);
+		m_shipNum = ENote::GetInstance().Notify<int>(note);
+		auto shipPkg = Manager->GetPackage()->LoadPackage(MachineDataArray[m_shipNum].path);
 		m_player = shipPkg[0];
 	}
 	
@@ -179,6 +179,8 @@ void PlayerShip::UpdateShipPos(float dt)
 
 		if (m_currentIndex + 3 >= m_lineData.size() - 2)
 		{
+			//setMachinePath
+			ENote::GetInstance().AddNote<std::string>("WinnerMachine", [this] {return MachineDataArray[m_shipNum].path; });
 			Manager->ChangeScene("ResultScene");
 		}
 	}

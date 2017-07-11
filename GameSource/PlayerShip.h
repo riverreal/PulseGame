@@ -20,6 +20,7 @@ private:
 	float m_aheadPos;
 	int m_aheadIndex;
 	int m_PlayerNum;
+	int m_shipNum;
 
 	int m_currentIndex;
 	Elixir::GameObject* m_player;
