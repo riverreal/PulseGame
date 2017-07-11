@@ -13,7 +13,16 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager , DIFF dif,in
 	m_Combo = 0;
 	int NumofLane = (int)dif;
 	m_PlayerNum = playerNum;
+	if (m_PlayerNum != 2)
+	{
+		m_spriteNumber.Initialize(Manager);
+		m_textParent = m_spriteNumber.GetSpriteParent();
+		m_textParent->GetTransform()->Scale = Vec3f(0.1, 0.1, 0.1);
+		m_textParent->GetTransform()->Position = Vec3f(200, 200, 0);
+		m_spriteNumber.UpdateSprite(0);
+	}
 
+	
 	bool isSplit = ENote::GetInstance().Notify<bool>("GetSplitScreen");
 
 	m_LanePos[0] = Vec3f(200, -210, 0);
@@ -171,6 +180,8 @@ void RhythmManager::Update(float dt)
 					m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[3] + L".png");
 					//m_TextEffect->Get2DRenderer()->Enabled = true;
 					m_tween.AddTweens(m_textAnim.GetTweens());
+					
+					if(m_PlayerNum != 2) m_spriteNumber.UpdateSprite(m_Combo);
 				}
 			}
 		}
@@ -326,7 +337,6 @@ void RhythmManager::HitTimingCheck(Status* _status)
 		m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[0] + L".png");
 		//m_TextEffect->Get2DRenderer()->Enabled = true;
 		m_tween.AddTweens(m_textAnim.GetTweens());
-
 	}
 	else if (timing <= GOOD_TIME / 2)
 	{
@@ -337,6 +347,7 @@ void RhythmManager::HitTimingCheck(Status* _status)
 		m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[1] + L".png");
 		//m_TextEffect->Get2DRenderer()->Enabled = true;
 		m_tween.AddTweens(m_textAnim.GetTweens());
+
 	}
 	else if (timing <= BAD_TIME / 2)
 	{
@@ -359,6 +370,8 @@ void RhythmManager::HitTimingCheck(Status* _status)
 		m_tween.AddTweens(m_textAnim.GetTweens());
 		missFlag = true;
 	}
+
+	if (m_PlayerNum != 2) m_spriteNumber.UpdateSprite(m_Combo);
 
 	if (!missFlag)
 	{

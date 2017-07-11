@@ -5,6 +5,7 @@
 #include "../Source/Helper/ETween.h"
 #include "CourseSelect.h"
 #include"CommandInterpreter.h"
+#include "SpriteNumber.h"
 
 
 enum DIFF
@@ -113,7 +114,9 @@ private:
 	Elixir::ETween<F32> m_waveAnim[3];
 
 
-	
+	SpriteNumber m_spriteNumber;
+
 	//For convinience
 	Elixir::SceneManager* Manager;
+	Elixir::GameObject* m_textParent;
 };
