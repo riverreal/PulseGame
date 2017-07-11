@@ -102,6 +102,8 @@ private:
 
 	//文字エフェクト
 	Elixir::GameObject *m_TextEffect;
+	//コンボラベル
+	Elixir::GameObject *m_ComboLabel;
 	
 	Status* MinStatus(int n);
 	//判定

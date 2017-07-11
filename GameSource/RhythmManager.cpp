@@ -17,9 +17,15 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager, DIFF dif, in
 	{
 		m_spriteNumber.Initialize(Manager);
 		m_textParent = m_spriteNumber.GetSpriteParent();
-		m_textParent->GetTransform()->Scale = Vec3f(0.1, 0.1, 0.1);
-		m_textParent->GetTransform()->Position = Vec3f(200, 200, 0);
+		m_textParent->GetTransform()->Scale = Vec3f(0.15, 0.15, 0.15);
+		m_textParent->GetTransform()->Position = Vec3f(550, 180, 0);
 		m_spriteNumber.UpdateSprite(0);
+
+		m_ComboLabel = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_2D);
+		m_ComboLabel->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/combo_text.png");
+		m_ComboLabel->GetTransform()->Position = Vec3f(560, 135, 0);
+		m_ComboLabel->GetTransform()->Scale = Vec3f(0.3, 0.3, 0.3);
+
 	}
 
 	
@@ -36,6 +42,14 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager, DIFF dif, in
 		m_LanePos[1].x = ((screenW / 4.0f) * 1) - halfScreenW;
 		m_LanePos[0].x = m_LanePos[1].x + 130;
 		m_LanePos[2].x = m_LanePos[1].x - 130;
+
+		m_textParent->GetTransform()->Position.x -= halfScreenW;//630
+		m_spriteNumber.UpdateSprite(0);
+		m_ComboLabel->GetTransform()->Position.x -= halfScreenW;
+	}
+	else
+	{
+
 	}
 
 	if (playerNum == 1)
@@ -43,18 +57,25 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager, DIFF dif, in
 		m_LanePos[0].x += halfScreenW;
 		m_LanePos[1].x += halfScreenW;
 		m_LanePos[2].x += halfScreenW;
+		
+		m_textParent->GetTransform()->Position.x += halfScreenW;
+		m_spriteNumber.UpdateSprite(0);
+		m_ComboLabel->GetTransform()->Position.x += halfScreenW;
 	}
 
 	m_timingBonus = 0;
+
+	int songNum = ENote::GetInstance().Notify<int>("GetSelectedSong");
+
 	//BGMファイル設定
-	AudioManager::GetInstance().AddControlledMusic("Resource/rhythmFolder/" + CourseDataArray[CourseID::lars].music + ".mp3");
+	AudioManager::GetInstance().AddControlledMusic("Resource/rhythmFolder/" + CourseDataArray[songNum].music + ".mp3");
 	AudioManager::GetInstance().GetControlledMusic()->setIsPaused(true);
 
 	ENote::GetInstance().AddNote<int>("GetCombo" + playerNum, [this]() ->int {return this->GetCombo(); });
 	ENote::GetInstance().AddNote<int>("GetTimingBonus" + playerNum, [this]() ->int {return this->GetTimingBonus(); });
 
 	//PNFファイルゲット
-	auto FileContents = Manager->GetFileManager()->LoadFileLines("Resource/rhythmFolder/Pnf_Folder/" + CourseDataArray[CourseID::lars].music + ".pnf");
+	auto FileContents = Manager->GetFileManager()->LoadFileLines("Resource/rhythmFolder/Pnf_Folder/" + CourseDataArray[songNum].music + ".pnf");
 	//lineを,で分割して代入
 	for (auto & line : FileContents)
 	{
