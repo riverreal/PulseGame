@@ -14,23 +14,32 @@ public:
 
 	void SetPlayerPos(float dt);
 
+	float GetPlayerRot();
+
 private:
+	void LateInit();
+
 	std::vector<Elixir::Vec3f> m_lineData;
 	float m_currentPos;
 	float m_aheadPos;
+	float m_fov;
 	int m_aheadIndex;
 	int m_PlayerNum;
 	int m_shipNum;
 
 	int m_currentIndex;
 	Elixir::GameObject* m_player;
+	Elixir::GameObject* m_opponent;
 	Elixir::GameObject* m_col1;
 	Elixir::GameObject* m_col2;
 	Elixir::GameObject* m_meterNeedle;
 	Elixir::GameObject* m_meterFrame;
+	Elixir::GameObject* m_playerArrow;
+
 	int m_colIndex;
 	bool m_colHasDetection;
 	bool m_hasCollided;
+	bool m_didLateInit;
 	Camera* m_camera;
 	//The target to look at
 	Elixir::Vec3f m_target;
@@ -39,6 +48,7 @@ private:
 	float m_travelSpeed;
 	float m_rotationSpeed;
 	float m_obstaclePenalty;
+	float m_slipStreamBonus;
 	float m_pathRadius;
 
 	float m_cameraRadius;

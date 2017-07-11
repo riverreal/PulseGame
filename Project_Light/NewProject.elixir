@@ -85,3 +85,5 @@
 <t><name>Resource/MachineScene/ship_panel.png</name><ID>100</ID></t>
 <t><name>Resource/MachineScene/1.png</name><ID>101</ID></t>
 <t><name>Resource/MachineScene/2.png</name><ID>102</ID></t>
+<t><name>Resource/rhythmFolder/rhythm_Img/Text_Img/combo_text.png</name><ID>103</ID></t>
+<t><name>Resource/PulseGameScene/playerPos.png</name><ID>104</ID></t>

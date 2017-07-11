@@ -42,7 +42,7 @@ void PulseGame::InitTestScene()
 	obj->GetRenderer()->Material.albedo = Manager->GetTextureManager()->AddTexture(L"Resource/blue.jpg");
 	obj->SetName("Tube");
 
-	obj->GetTransform()->TextureScale = Vec3f(80.0f, 6.0f, 1.0f);
+	obj->GetTransform()->TextureScale = Vec3f(230.0f, 10.0f, 1.0f);
 
 	m_playerManager.Release();
 	m_playerManager.AddPlayer(Manager, 0, m_lineData, radius, DIFF::HARD);

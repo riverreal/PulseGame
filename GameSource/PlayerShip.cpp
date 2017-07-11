@@ -17,12 +17,14 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	Manager = sceneManager;
 	m_currentIndex = 0;
 	m_aheadIndex = 0;
+	m_slipStreamBonus = 0;
 	m_obstaclePenalty = 100.0f;
 	m_travelSpeed = 0.05f;
 	m_lineData = line;
-	m_rotationAngle = playerNum * XM_PI / 2;
+	m_rotationAngle = playerNum * XM_PI / 6;
+	m_didLateInit = false;
 
-	m_rotationSpeed = 1.3f;
+	m_rotationSpeed = 1.0f;
 	m_cameraRadius = radius + 0.8f;
 	m_cameraZDistance = 1.0f;
 	m_pathRadius = radius + 0.5f;
@@ -35,6 +37,10 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	m_upVec = Vec3f(1.0f, 0.0f, 0.0f);
 	m_colHasDetection = false;
 	m_hasCollided = false;
+	m_fov = 0.8f;
+
+	int pNumIndex = playerNum == 0 ? 0 : 1;
+	ENote::GetInstance().AddNote<float>("GetPlayerRot" + pNumIndex, [this]() {return this->GetPlayerRot(); });
 
 	if (playerNum == 0)
 		m_camera = Manager->GetCurrentScene()->GetCamera();
@@ -60,6 +66,7 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 		m_player = shipPkg[0];
 	}
 	
+	m_player->SetName("Ship" + pNumIndex);
 	m_player->GetTransform()->Scale = m_player->GetTransform()->Scale * 0.2f;
 
 	m_player->GetTransform()->Position = MathHelper::GetPointInCMSpline(m_lineData[0], m_lineData[1], m_lineData[2], m_lineData[3], m_currentPos).Position;
@@ -87,26 +94,41 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	m_col2->GetRenderer()->Enabled = false;
 	m_player->AddChild(m_col2);
 
-	if (m_PlayerNum == 0 || m_PlayerNum == 1)
+	if (m_PlayerNum != 2)
 	{
-		Manager->GetPackage()->LoadPackage("Packages/ingame/Meter.pkg");
-		m_meterFrame = Manager->GetCurrentScene()->GetObjectByName("MeterFrame");
-		m_meterNeedle = Manager->GetCurrentScene()->GetObjectByName("MeterNeedle");
+		auto meters = Manager->GetPackage()->LoadPackage("Packages/ingame/Meter.pkg");
+		m_meterFrame = meters[0];
+		m_meterNeedle = meters[1];
 		m_player->AddChild(m_meterFrame);
 		m_player->AddChild(m_meterNeedle);
-		m_meterFrame->GetTransform()->Scale = m_meterFrame->GetTransform()->Scale / m_player->GetTransform()->Scale.x * 0.08f;
-		m_meterNeedle->GetTransform()->Scale = m_meterNeedle->GetTransform()->Scale / m_player->GetTransform()->Scale.x * 0.08f;
+		m_meterFrame->GetTransform()->Position.z += 0.3f / m_player->GetTransform()->Scale.x;
+		m_meterNeedle->GetTransform()->Position.z += 0.301f / m_player->GetTransform()->Scale.x;
 		m_meterNeedle->GetTransform()->Rotation.x = 90.f;
-		m_meterFrame->GetTransform()->Position.x += 0.7f;
-		m_meterNeedle->GetTransform()->Position.x += 0.7f;
-		m_meterFrame->GetTransform()->Position.y += 0.3f;
-		m_meterNeedle->GetTransform()->Position.y += 0.3f;
-		m_meterFrame->GetTransform()->Position.z += 1.6f;
-		m_meterNeedle->GetTransform()->Position.z += 1.601f;
+		m_meterFrame->GetTransform()->Position.x += 0.1f / m_player->GetTransform()->Scale.x;
+		m_meterNeedle->GetTransform()->Position.x += 0.1f / m_player->GetTransform()->Scale.x;
+		m_meterFrame->GetTransform()->Position.y += 0.05f / m_player->GetTransform()->Scale.x;
+		m_meterNeedle->GetTransform()->Position.y += 0.05f / m_player->GetTransform()->Scale.x;
+		m_meterFrame->GetTransform()->Scale = m_meterFrame->GetTransform()->Scale / m_player->GetTransform()->Scale.x;
+		m_meterNeedle->GetTransform()->Scale = m_meterNeedle->GetTransform()->Scale / m_player->GetTransform()->Scale.x;
+		m_meterNeedle->GetTransform()->Scale = m_meterNeedle->GetTransform()->Scale / 15;
+		m_meterFrame->GetTransform()->Scale = m_meterFrame->GetTransform()->Scale / 15;
+
+		m_playerArrow = Manager->GetCurrentScene()->CreateObject(OBJECT_RENDER);
+		m_playerArrow->GetRenderer()->Model = Manager->GetModel()->AddGeometry(MODEL_TYPE_PLAIN);
+		m_playerArrow->GetRenderer()->CastShadow = false;
+		m_playerArrow->GetRenderer()->EnableBackFaceCulling = false;
+		m_playerArrow->GetRenderer()->Material.albedo = Manager->GetTextureManager()->AddTexture(L"Resource/PulseGameScene/playerPos.png");
+		m_playerArrow->GetRenderer()->Material.emissive = Manager->GetTextureManager()->AddTexture(L"Resource/balls/25.png");
+		m_playerArrow->GetTransform()->Rotation = Vec3f(-90, 90, 90);
+		m_player->AddChild(m_playerArrow);
+		m_playerArrow->GetTransform()->Scale = m_playerArrow->GetTransform()->Scale / m_player->GetTransform()->Scale.x;
+		m_playerArrow->GetTransform()->Position.y += 2.2f / m_player->GetTransform()->Scale.x;
 	}
 }
 void PlayerShip::UpdateShipPos(float dt)
 {
+	LateInit();
+
 	if (Hitjudgment::SpColliding(m_ObstacleList[m_colIndex], m_col1))
 	{
 		if (!m_hasCollided)
@@ -144,7 +166,53 @@ void PlayerShip::UpdateShipPos(float dt)
 		}
 	}
 
-	auto bonusSpeed = (m_currentCombo + m_timingBouns - m_obstaclePenalty)* dt * 0.001f;
+	int oponentIndex = m_PlayerNum == 0 ? 1 : 0;
+	float oponentRot = ENote::GetInstance().Notify<float>("GetPlayerRot" + oponentIndex);
+
+	//slip stream!
+	if (oponentRot + 0.4f > m_rotationAngle && oponentRot - 0.4f < m_rotationAngle)
+	{
+		//if behind
+		float delta = m_player->GetTransform()->Position.Length() - m_opponent->GetTransform()->Position.Length();
+
+		if (delta < 0)
+		{
+			m_fov += 0.5f * dt;
+			if (m_fov > 1.2f)
+			{
+				m_fov = 1.2f;
+			}
+			else
+			{
+				m_camera->SetFOV(m_fov);
+				m_camera->BuildProjection();
+			}
+			
+			m_slipStreamBonus = 510.0f * dt;
+		}
+	}
+	else
+	{
+		if (m_slipStreamBonus > 0 || m_fov > 0.8f)
+		{
+			m_fov -= 0.5f * dt;
+
+			if (m_fov < 0.8f)
+			{
+				m_fov = 0.8f;
+			}
+			else
+			{
+				m_camera->SetFOV(m_fov);
+				m_camera->BuildProjection();
+			}
+
+			m_slipStreamBonus -= 1.0f * dt;
+			m_slipStreamBonus = MathHelper::Max(m_slipStreamBonus, 0.0f);
+		}
+	}
+
+	auto bonusSpeed = (m_currentCombo + m_timingBouns - m_obstaclePenalty + m_slipStreamBonus)* dt * 0.001f;
 	auto speed = m_travelSpeed * dt + bonusSpeed;
 
 	if (m_obstaclePenalty > 0)
@@ -323,5 +391,21 @@ void PlayerShip::SetPlayerPos(float dt)
 		target.x = m_target.x; target.y = m_target.y; target.z = m_target.z;
 
 		m_camera->SetLookAt(m_camera->GetPosition(), playerPos, upVec);
+	}
+}
+
+float PlayerShip::GetPlayerRot()
+{
+	return m_rotationAngle;
+}
+
+void PlayerShip::LateInit()
+{
+	if (!m_didLateInit)
+	{
+		m_didLateInit = true;
+
+		int opponentIndex = m_PlayerNum == 0 ? 1 : 0;
+		m_opponent = Manager->GetCurrentScene()->GetObjectByName("Ship" + opponentIndex);
 	}
 }
