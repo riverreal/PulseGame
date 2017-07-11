@@ -25,7 +25,9 @@ void PulseGame::InitTestScene()
 
 	m_stageManager.Initialize(Manager);
 
-	m_lineData = LoadLine(Manager->GetFileManager()->LoadFile(CourseDataArray[CourseID::lars].path));
+
+	int courseNum = ENote::GetInstance().Notify<int>("GetSelectedSong");
+	m_lineData = LoadLine(Manager->GetFileManager()->LoadFile(CourseDataArray[courseNum].path));
 
 	auto smoothLine = MathHelper::CatmullromSpline(m_lineData, 20, false);
 	auto tangents = MathHelper::CatmullromSpline(m_lineData, 20, true);
@@ -37,7 +39,9 @@ void PulseGame::InitTestScene()
 	obj->GetRenderer()->Model = Manager->GetModel()->AddTubeFromLineData(smoothLine, tangents, radius, smoothLine);
 	obj->GetRenderer()->Material.roughness = Manager->GetTextureManager()->AddTexture(L"Resource/balls/75.png");
 	obj->GetRenderer()->Material.metallic = Manager->GetTextureManager()->AddTexture(L"Resource/balls/25.png");
+	obj->GetRenderer()->Material.albedo = Manager->GetTextureManager()->AddTexture(L"Resource/blue.jpg");
 	obj->SetName("Tube");
+
 	obj->GetTransform()->TextureScale = Vec3f(80.0f, 6.0f, 1.0f);
 
 	m_playerManager.Release();
@@ -65,7 +69,6 @@ void PulseGame::UpdateTestScene(float dt)
 	{
 		m_pause = false;
 	}
-
 
 	if (!m_pause)
 	{
@@ -100,8 +103,6 @@ void PulseGame::Init()
 	StartAnim();
 
 	m_result.StartScene("ResultScene");
-
-
 }
 
 void PulseGame::Update(float dt)
