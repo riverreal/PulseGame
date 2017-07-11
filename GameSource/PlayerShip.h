@@ -37,6 +37,7 @@ private:
 	float m_rotationAngle;
 	float m_travelSpeed;
 	float m_rotationSpeed;
+	float m_obstaclePenalty;
 	float m_pathRadius;
 
 	float m_cameraRadius;

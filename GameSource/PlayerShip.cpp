@@ -17,6 +17,7 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	Manager = sceneManager;
 	m_currentIndex = 0;
 	m_aheadIndex = 0;
+	m_obstaclePenalty = 100.0f;
 	m_travelSpeed = 0.05f;
 	m_lineData = line;
 	m_rotationAngle = playerNum * XM_PI / 2;
@@ -64,7 +65,7 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	m_player->GetTransform()->Position = MathHelper::GetPointInCMSpline(m_lineData[0], m_lineData[1], m_lineData[2], m_lineData[3], m_currentPos).Position;
 	m_target = MathHelper::GetPointInCMSpline(m_lineData[0], m_lineData[1], m_lineData[2], m_lineData[3], m_aheadPos).Position;
 	
-	m_ObstacleList = Manager->LoadScene("Resource/test8couse.escene");
+	m_ObstacleList = Manager->GetPackage()->LoadPackage("Packages/ingame/Obstacle/Obstacle01.pkg");
 	m_ObstacleList = from(m_ObstacleList)
 		>> orderby_ascending([](GameObject* obj) {return obj->GetTransform()->Position.Length(); })
 		>> to_vector();
@@ -112,6 +113,9 @@ void PlayerShip::UpdateShipPos(float dt)
 		{
 			m_hasCollided = true;
 
+
+			m_obstaclePenalty += 100.0f;
+
 			//Hit process goes here!
 			ElixirLog("Collided!");
 		}
@@ -139,16 +143,25 @@ void PlayerShip::UpdateShipPos(float dt)
 			m_colIndex = MathHelper::clamp(m_colIndex, 0, m_ObstacleList.size()-1);
 		}
 	}
-	
-	auto bonusSpeed = (m_currentCombo + m_timingBouns)* dt *0.001f;
+
+	auto bonusSpeed = (m_currentCombo + m_timingBouns - m_obstaclePenalty)* dt * 0.001f;
 	auto speed = m_travelSpeed * dt + bonusSpeed;
+
+	if (m_obstaclePenalty > 0)
+	{
+		m_obstaclePenalty -= 100.0f * dt;
+		if (m_obstaclePenalty < 0)
+		{
+			m_obstaclePenalty = 0;
+		}
+	}
 
 	if (m_PlayerNum != 2)
 	{
 		m_meterNeedle->GetTransform()->Rotation.y = MathHelper::clamp(-33.3f + bonusSpeed * 100000.0f, -33.3f, 207.f);
 	}
 
-	m_currentPos+= speed;
+	m_currentPos += speed;
 	m_aheadPos += speed;
 
 	if (m_currentPos >= 1.0f)

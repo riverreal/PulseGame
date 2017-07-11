@@ -1,0 +1,320 @@
+{
+   "obs1" : {
+      "Name" : "obs1",
+      "Renderer3D" : {
+         "CastShadow" : true,
+         "Enabled" : true,
+         "EnabledBackCulling" : true,
+         "Material" : {
+            "albedo" : 28,
+            "emissive" : 4,
+            "metallic" : 4,
+            "normal" : 2,
+            "roughness" : 3
+         },
+         "Model" : {
+            "ModelPath" : "",
+            "ModelTypePrimitive" : true,
+            "PrimitiveType" : 0
+         }
+      },
+      "Transform" : {
+         "Dynamic" : false,
+         "Position" : {
+            "x" : 5.4600000381469727,
+            "y" : -0.26000002026557922,
+            "z" : -67.860000610351563
+         },
+         "Rotation" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 61.000003814697266
+         },
+         "Scale" : {
+            "x" : 3.0,
+            "y" : 3.0,
+            "z" : 3.0
+         },
+         "TexPos" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexRot" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexScale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 1.0
+         }
+      }
+   },
+   "obs2" : {
+      "Name" : "obs2",
+      "Renderer3D" : {
+         "CastShadow" : true,
+         "Enabled" : true,
+         "EnabledBackCulling" : true,
+         "Material" : {
+            "albedo" : 28,
+            "emissive" : 4,
+            "metallic" : 4,
+            "normal" : 2,
+            "roughness" : 3
+         },
+         "Model" : {
+            "ModelPath" : "",
+            "ModelTypePrimitive" : true,
+            "PrimitiveType" : 0
+         }
+      },
+      "Transform" : {
+         "Dynamic" : false,
+         "Position" : {
+            "x" : 6.880000114440918,
+            "y" : 1.2400000095367432,
+            "z" : -75.900001525878906
+         },
+         "Rotation" : {
+            "x" : 0.0,
+            "y" : 3.0000002384185791,
+            "z" : -12.40000057220459
+         },
+         "Scale" : {
+            "x" : 3.0,
+            "y" : 3.0,
+            "z" : 3.0
+         },
+         "TexPos" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexRot" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexScale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 1.0
+         }
+      }
+   },
+   "obs3" : {
+      "Name" : "obs3",
+      "Renderer3D" : {
+         "CastShadow" : true,
+         "Enabled" : true,
+         "EnabledBackCulling" : true,
+         "Material" : {
+            "albedo" : 28,
+            "emissive" : 4,
+            "metallic" : 4,
+            "normal" : 2,
+            "roughness" : 3
+         },
+         "Model" : {
+            "ModelPath" : "",
+            "ModelTypePrimitive" : true,
+            "PrimitiveType" : 0
+         }
+      },
+      "Transform" : {
+         "Dynamic" : false,
+         "Position" : {
+            "x" : 8.3000001907348633,
+            "y" : -0.58000004291534424,
+            "z" : -83.680000305175781
+         },
+         "Rotation" : {
+            "x" : 7.4000005722045898,
+            "y" : 2.2000000476837158,
+            "z" : -25.80000114440918
+         },
+         "Scale" : {
+            "x" : 3.0,
+            "y" : 3.0,
+            "z" : 3.0
+         },
+         "TexPos" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexRot" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexScale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 1.0
+         }
+      }
+   },
+   "obs4" : {
+      "Name" : "obs4",
+      "Renderer3D" : {
+         "CastShadow" : true,
+         "Enabled" : true,
+         "EnabledBackCulling" : true,
+         "Material" : {
+            "albedo" : 28,
+            "emissive" : 4,
+            "metallic" : 4,
+            "normal" : 2,
+            "roughness" : 3
+         },
+         "Model" : {
+            "ModelPath" : "",
+            "ModelTypePrimitive" : true,
+            "PrimitiveType" : 0
+         }
+      },
+      "Transform" : {
+         "Dynamic" : false,
+         "Position" : {
+            "x" : 14.80000114440918,
+            "y" : 7.9600005149841309,
+            "z" : -134.20001220703125
+         },
+         "Rotation" : {
+            "x" : 0.0,
+            "y" : -26.200000762939453,
+            "z" : 0.0
+         },
+         "Scale" : {
+            "x" : 2.0,
+            "y" : 2.0,
+            "z" : 2.0
+         },
+         "TexPos" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexRot" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexScale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 1.0
+         }
+      }
+   },
+   "obs5" : {
+      "Name" : "obs5",
+      "Renderer3D" : {
+         "CastShadow" : true,
+         "Enabled" : true,
+         "EnabledBackCulling" : true,
+         "Material" : {
+            "albedo" : 28,
+            "emissive" : 4,
+            "metallic" : 4,
+            "normal" : 2,
+            "roughness" : 3
+         },
+         "Model" : {
+            "ModelPath" : "",
+            "ModelTypePrimitive" : true,
+            "PrimitiveType" : 0
+         }
+      },
+      "Transform" : {
+         "Dynamic" : true,
+         "Position" : {
+            "x" : 19.320001602172852,
+            "y" : 6.5400004386901855,
+            "z" : -146.48001098632813
+         },
+         "Rotation" : {
+            "x" : 0.0,
+            "y" : -32.0,
+            "z" : 0.0
+         },
+         "Scale" : {
+            "x" : 2.0,
+            "y" : 2.0,
+            "z" : 2.0
+         },
+         "TexPos" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexRot" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexScale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 1.0
+         }
+      }
+   },
+   "obs6" : {
+      "Name" : "obs6",
+      "Renderer3D" : {
+         "CastShadow" : true,
+         "Enabled" : true,
+         "EnabledBackCulling" : true,
+         "Material" : {
+            "albedo" : 28,
+            "emissive" : 4,
+            "metallic" : 4,
+            "normal" : 2,
+            "roughness" : 3
+         },
+         "Model" : {
+            "ModelPath" : "",
+            "ModelTypePrimitive" : true,
+            "PrimitiveType" : 0
+         }
+      },
+      "Transform" : {
+         "Dynamic" : false,
+         "Position" : {
+            "x" : 68.980003356933594,
+            "y" : 16.200000762939453,
+            "z" : -210.20001220703125
+         },
+         "Rotation" : {
+            "x" : 6.0000004768371582,
+            "y" : -12.000000953674316,
+            "z" : 8.0
+         },
+         "Scale" : {
+            "x" : 4.0,
+            "y" : 4.0,
+            "z" : 4.0
+         },
+         "TexPos" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexRot" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexScale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 1.0
+         }
+      }
+   }
+}
