@@ -4,6 +4,7 @@
 #include "../Source/Helper/TypeHelper.h"
 #include "../Source/Graphics/CameraManager.h"
 #include "CommandInterpreter.h"
+#include "../Source/Helper/ETween.h"
 
 class PlayerShip
 {
@@ -15,6 +16,7 @@ public:
 	void SetPlayerPos(float dt);
 
 	float GetPlayerRot();
+	void ShipEffectAnim(bool grow);
 
 private:
 	void LateInit();
@@ -35,6 +37,8 @@ private:
 	Elixir::GameObject* m_meterNeedle;
 	Elixir::GameObject* m_meterFrame;
 	Elixir::GameObject* m_playerArrow;
+	Elixir::GameObject* m_shipEffect01;
+	Elixir::GameObject* m_shipEffect02;
 
 	int m_colIndex;
 	bool m_colHasDetection;
@@ -59,6 +63,8 @@ private:
 	int m_enemyShipNum;
 	Elixir::Vec3f m_upVec;
 	std::vector<Elixir::GameObject*>m_ObstacleList;
+	Elixir::ETween<float> m_effectGrow;
+	Elixir::ETween<float> m_effectShrink;
 	//For convinience
 	Elixir::SceneManager* Manager;
 };

@@ -231,6 +231,11 @@ namespace Elixir
 
 				if (tween.timeCounter >= tween.duration)
 				{
+					if (tween.reversed)
+						*tween.initialValue = tween.initialCpy;
+					else
+						*tween.initialValue = tween.finalValue;
+
 					tween.fromReady = false;
 					if (tween.callback)
 					{
@@ -243,11 +248,6 @@ namespace Elixir
 					}
 
 					tweensToDelete.push_back(tween);
-
-					if (tween.reversed)
-						*tween.initialValue = tween.initialCpy;
-					else
-						*tween.initialValue = tween.finalValue;
 				}
 
 				tween.timeCounter += dt;

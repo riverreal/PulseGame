@@ -57,6 +57,12 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 		m_shipNum = randomShip;
 		auto shipPkg = Manager->GetPackage()->LoadPackage(MachineDataArray[randomShip].path);
 		m_player = shipPkg[0];
+
+		auto shipEffect = Manager->GetPackage()->LoadPackage("Packages/ships/effect0" + std::to_string(randomShip + 1) + ".pkg");
+		m_shipEffect01 = shipEffect[0];
+		m_shipEffect02 = shipEffect[1];
+		m_player->AddChild(m_shipEffect01);
+		m_player->AddChild(m_shipEffect02);
 	}
 	else
 	{
@@ -65,7 +71,19 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 		m_shipNum = ENote::GetInstance().Notify<int>(note);
 		auto shipPkg = Manager->GetPackage()->LoadPackage(MachineDataArray[m_shipNum].path);
 		m_player = shipPkg[0];
+
+		auto shipEffect = Manager->GetPackage()->LoadPackage("Packages/ships/effect0" + std::to_string(m_shipNum + 1) + ".pkg");
+		m_shipEffect01 = shipEffect[0];
+		m_shipEffect02 = shipEffect[1];
+		m_player->AddChild(m_shipEffect01);
+		m_player->AddChild(m_shipEffect02);
 	}
+
+	m_shipEffect01->GetTransform()->Position = m_shipEffect01->GetTransform()->Position / m_player->GetTransform()->Scale.x;
+	m_shipEffect02->GetTransform()->Position = m_shipEffect02->GetTransform()->Position / m_player->GetTransform()->Scale.x;
+	m_shipEffect01->GetTransform()->Scale = m_shipEffect01->GetTransform()->Scale / m_player->GetTransform()->Scale.x;
+	m_shipEffect02->GetTransform()->Scale = m_shipEffect02->GetTransform()->Scale / m_player->GetTransform()->Scale.x;
+	ShipEffectAnim(true);
 
 	if (m_PlayerNum != 0)
 	{
@@ -304,6 +322,8 @@ void PlayerShip::UpdateShipPos(float dt)
 		m_rotationAngle -= 1.3f * dt;
 	}
 	
+	m_effectGrow.Update(dt);
+	m_effectShrink.Update(dt);
 }
 
 void PlayerShip::SetPlayerPos(float dt)
@@ -418,6 +438,22 @@ void PlayerShip::SetPlayerPos(float dt)
 float PlayerShip::GetPlayerRot()
 {
 	return m_rotationAngle;
+}
+
+void PlayerShip::ShipEffectAnim(bool grow)
+{
+	if (grow)
+	{
+		m_effectGrow = m_effectGrow.From(&m_shipEffect01->GetTransform()->Scale.z).To(m_shipEffect01->GetTransform()->Scale.z * 2.5f).Time(0.19f);
+		m_effectGrow = m_effectGrow.From(&m_shipEffect02->GetTransform()->Scale.z).To(m_shipEffect02->GetTransform()->Scale.z * 2.5f).Time(0.2f)
+			.OnFinish([this]() {this->ShipEffectAnim(false); });
+	}
+	else
+	{
+		m_effectShrink = m_effectShrink.From(&m_shipEffect01->GetTransform()->Scale.z).To(m_shipEffect01->GetTransform()->Scale.z / 2.5f).Time(0.19f);
+		m_effectShrink = m_effectShrink.From(&m_shipEffect02->GetTransform()->Scale.z).To(m_shipEffect02->GetTransform()->Scale.z / 2.5f).Time(0.2f)
+			.OnFinish([this]() {this->ShipEffectAnim(true); });
+	}
 }
 
 void PlayerShip::LateInit()

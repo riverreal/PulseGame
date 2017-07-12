@@ -1,0 +1,108 @@
+{
+   "ship01Effect" : {
+      "Name" : "ship01Effect",
+      "Renderer3D" : {
+         "CastShadow" : true,
+         "Enabled" : true,
+         "EnabledBackCulling" : true,
+         "Material" : {
+            "albedo" : 79,
+            "emissive" : 27,
+            "metallic" : 4,
+            "normal" : 2,
+            "roughness" : 3
+         },
+         "Model" : {
+            "ModelPath" : "",
+            "ModelTypePrimitive" : true,
+            "PrimitiveType" : 1
+         }
+      },
+      "Transform" : {
+         "Dynamic" : true,
+         "Position" : {
+            "x" : 0.10600000619888306,
+            "y" : 0.21400001645088196,
+            "z" : 0.67000001668930054
+         },
+         "Rotation" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "Scale" : {
+            "x" : 0.070000000298023224,
+            "y" : 0.070000000298023224,
+            "z" : 0.33000001311302185
+         },
+         "TexPos" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexRot" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexScale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 1.0
+         }
+      }
+   },
+   "ship02Effect" : {
+      "Name" : "ship02Effect",
+      "Renderer3D" : {
+         "CastShadow" : true,
+         "Enabled" : true,
+         "EnabledBackCulling" : true,
+         "Material" : {
+            "albedo" : 79,
+            "emissive" : 27,
+            "metallic" : 4,
+            "normal" : 2,
+            "roughness" : 3
+         },
+         "Model" : {
+            "ModelPath" : "",
+            "ModelTypePrimitive" : true,
+            "PrimitiveType" : 1
+         }
+      },
+      "Transform" : {
+         "Dynamic" : true,
+         "Position" : {
+            "x" : -0.10599999874830246,
+            "y" : 0.21400000154972076,
+            "z" : 0.67000001668930054
+         },
+         "Rotation" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "Scale" : {
+            "x" : 0.070000000298023224,
+            "y" : 0.070000000298023224,
+            "z" : 0.33000001311302185
+         },
+         "TexPos" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexRot" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexScale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 1.0
+         }
+      }
+   }
+}

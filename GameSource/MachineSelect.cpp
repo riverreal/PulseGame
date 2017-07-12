@@ -37,6 +37,8 @@ void MachineSelect::Init()
 	Manager->GetCurrentScene()->SetIrradiance(Manager->GetTextureManager()->AddTexture(L"Resources/Textures/Cubemaps/Irradiance/Irradiance.dds"));
 	Manager->GetCurrentScene()->SetEnvMap(Manager->GetTextureManager()->AddTexture(L"Resources/Textures/Cubemaps/earth_moon_skybox.dds"));
 
+	Manager->GetCurrentScene()->GetCamera()->SetPosition(0, 0, 0);
+
 	m_pulse.StartScene("PulseGame");
 
 	m_twoPlayerMode = ENote::GetInstance().Notify<bool>("GetSplitScreen");
