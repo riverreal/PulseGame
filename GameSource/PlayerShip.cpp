@@ -54,6 +54,7 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	{
 		//AI
 		int randomShip = rand() % 3;
+		m_shipNum = randomShip;
 		auto shipPkg = Manager->GetPackage()->LoadPackage(MachineDataArray[randomShip].path);
 		m_player = shipPkg[0];
 	}
@@ -64,6 +65,11 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 		m_shipNum = ENote::GetInstance().Notify<int>(note);
 		auto shipPkg = Manager->GetPackage()->LoadPackage(MachineDataArray[m_shipNum].path);
 		m_player = shipPkg[0];
+	}
+
+	if (m_PlayerNum != 0)
+	{
+		ENote::GetInstance().AddNote<int>("GetPlayerNumber", [this] {return m_PlayerNum;});
 	}
 	
 	m_player->SetName("Ship" + pNumIndex);
@@ -247,8 +253,23 @@ void PlayerShip::UpdateShipPos(float dt)
 
 		if (m_currentIndex + 3 >= m_lineData.size() - 2)
 		{
+			if (ENote::GetInstance().Notify<int>("GetPlayerNumber") != m_PlayerNum)
+			{
+				//Enemy
+				std::string note = "GetPlayer" + std::to_string(ENote::GetInstance().Notify<int>("GetPlayerNumber") + 1) + "Ship";
+				m_enemyShipNum = ENote::GetInstance().Notify<int>(note);
+				ENote::GetInstance().AddNote<std::string>("GetLoserMachine", [this] {return MachineDataArray[m_enemyShipNum].path; });
+			}
+			else
+			{
+				//Player
+				std::string note = "GetPlayer1Ship";
+				m_enemyShipNum = ENote::GetInstance().Notify<int>(note);
+				ENote::GetInstance().AddNote<std::string>("GetLoserMachine", [this] {return MachineDataArray[m_enemyShipNum].path; });
+			}
+
 			//setMachinePath
-			ENote::GetInstance().AddNote<std::string>("WinnerMachine", [this] {return MachineDataArray[m_shipNum].path; });
+			ENote::GetInstance().AddNote<std::string>("GetWinnerMachine", [this] {return MachineDataArray[m_shipNum].path; });
 			Manager->ChangeScene("ResultScene");
 		}
 	}

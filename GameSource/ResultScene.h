@@ -27,9 +27,12 @@ private:
 private:
 	
 	void TextImage();
-	GameObject* m_Machine;
+	GameObject* m_WinMachine;
 	GameObject* m_text;
 	ETween<Vec3f> m_MachineAnim;
 	ETween<Vec3f> m_textAnim;
 	ETween<Vec3f> m_textAnim2;
+
+	GameObject* m_LoseMachine;
+	ETween<Vec3f> m_LoseMachineAnim;
 };

@@ -56,6 +56,7 @@ private:
 
 	int m_currentCombo;
 	int m_timingBouns;
+	int m_enemyShipNum;
 	Elixir::Vec3f m_upVec;
 	std::vector<Elixir::GameObject*>m_ObstacleList;
 	//For convinience

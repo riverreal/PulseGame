@@ -23,8 +23,8 @@ void ResultScene::Init()
 	//SetNextButton();
 	*/
 
-	m_Machine = Manager->GetPackage()->LoadPackage(ENote::GetInstance().Notify<std::string>("WinnerMachine"))[0];
-
+	m_WinMachine = Manager->GetPackage()->LoadPackage(ENote::GetInstance().Notify<std::string>("GetWinnerMachine"))[0];
+	m_LoseMachine = Manager->GetPackage()->LoadPackage(ENote::GetInstance().Notify<std::string>("GetLoserMachine"))[0];
 	TextImage();
 	AudioManager::GetInstance().GetControlledMusic()->setIsPaused(true);
 }
@@ -41,6 +41,7 @@ void ResultScene::Update(float dt)
 
 	m_mainTEween.Update(dt);
 	m_MachineAnim.Update(dt);
+	m_LoseMachineAnim.Update(dt);
 	m_textAnim.Update(dt);
 	m_textAnim2.Update(dt);
 }
@@ -49,7 +50,7 @@ void ResultScene::TextImage()
 {
 	m_text = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
 	m_text->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/winner.png");
-	m_text->GetTransform()->Position = Vec3f(0, -200, 0);
+	m_text->GetTransform()->Position = Vec3f(-50, -200, 0);
 	//text->GetTransform()->Scale = Vec3f(0.2f, 0.2f, 0);
 
 	/*
@@ -60,20 +61,26 @@ void ResultScene::TextImage()
 	m_Machine->GetRenderer()->Material.normal = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipNormal.png");
 	m_Machine->GetRenderer()->Material.emissive = Manager->GetTextureManager()->AddTexture(L"Resource/ships/shipEmissive.png");
 	m_Machine->GetRenderer()->Material.roughness = Manager->GetTextureManager()->AddTexture(L"Resources/Textures/balls/75.png");
-	m_Machine->GetTransform()->Scale = Vec3f(0.3f);
-	m_Machine->GetTransform()->Position = Vec3f(0, 0, 5);
-	m_Machine->GetTransform()->Rotation = Vec3f(0, 30, 0);
 	*/
+	m_WinMachine->GetTransform()->Position = Vec3f(0, 0, 5);
+	m_WinMachine->GetTransform()->Rotation = Vec3f(0, 30, 0);
+	
 	DirectX::XMFLOAT3 playerPos, upVec;
-	playerPos.x = m_Machine->GetTransform()->Position.x;
-	playerPos.y = m_Machine->GetTransform()->Position.y; 
-	playerPos.z = m_Machine->GetTransform()->Position.z;
+	playerPos.x = m_WinMachine->GetTransform()->Position.x;
+	playerPos.y = m_WinMachine->GetTransform()->Position.y; 
+	playerPos.z = m_WinMachine->GetTransform()->Position.z;
 	upVec.x = 0; upVec.y = 1; upVec.z = 0;
-	Manager->GetCurrentScene()->GetCamera()->SetPosition(0, 3, 0);
+	Manager->GetCurrentScene()->GetCamera()->SetPosition(0, 3.5, 0);
 	Manager->GetCurrentScene()->GetCamera()->SetLookAt(Manager->GetCurrentScene()->GetCamera()->GetPosition(), playerPos, upVec);
-	m_Machine->GetTransform()->Position = Vec3f(60, 0, 60);
-	m_MachineAnim = m_MachineAnim.From(&m_Machine->GetTransform()->Position).To(Vec3f(0, 0, 5)).Time(4.0f).Easing(ET_QUINT_OUT);
+	m_WinMachine->GetTransform()->Position = Vec3f(60, 0, 60);
+	m_MachineAnim = m_MachineAnim.From(&m_WinMachine->GetTransform()->Position).To(Vec3f(-0.5f, 0, 5)).Time(4.0f).Easing(ET_QUINT_OUT);
 	TextAnimLoop(true);
+
+	m_LoseMachine->GetTransform()->Position = Vec3f(0, 0, 80);
+	m_LoseMachine->GetTransform()->Rotation = Vec3f(0, 40, 0);
+	m_MachineAnim = m_MachineAnim.From(&m_LoseMachine->GetTransform()->Position).To(Vec3f(3.5f, -0.5f, 10)).Time(5.5f).Easing(ET_QUINT_OUT);
+	
+
 }
 
 void ResultScene::TextAnimLoop(bool flag)
