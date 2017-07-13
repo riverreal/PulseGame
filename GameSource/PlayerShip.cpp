@@ -39,6 +39,26 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	m_hasCollided = false;
 	m_fov = 0.8f;
 
+	if (playerNum != 2)
+	{
+		bool isSplit = ENote::GetInstance().Notify<bool>("GetSplitScreen");
+		m_playerRankNumber = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_2D);
+		m_playerRankNumber->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/PulseGameScene/first.png");
+		m_playerRankNumber->GetTransform()->Scale = Vec3f(0.8f, 0.8f, 0.8f);
+		m_playerRankNumber->GetTransform()->Position = Vec3f(530, -300, 0);
+		m_playerRankNumber->SetName("RankSprite");
+		if (isSplit)
+		{
+			auto screenW = GameManager::GetInstance().GetScreenWidth();
+			auto halfScreenW = screenW * 0.5;
+
+			if (playerNum == 0)
+			{
+				m_playerRankNumber->GetTransform()->Position.x = -100;
+			}
+		}
+	}
+	
 	int pNumIndex = playerNum == 0 ? 0 : 1;
 	ENote::GetInstance().AddNote<float>("GetPlayerRot" + pNumIndex, [this]() {return this->GetPlayerRot(); });
 
@@ -324,6 +344,21 @@ void PlayerShip::UpdateShipPos(float dt)
 	
 	m_effectGrow.Update(dt);
 	m_effectShrink.Update(dt);
+	
+	if (m_PlayerNum != 2)
+	{
+
+		if (m_player->GetTransform()->Position.Length() > m_opponent->GetTransform()->Position.Length())
+		{
+			//1
+			m_playerRankNumber->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/PulseGameScene/first.png");
+		}
+		else
+		{
+			//2
+			m_playerRankNumber->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/PulseGameScene/second.png");
+		}
+	}
 }
 
 void PlayerShip::SetPlayerPos(float dt)

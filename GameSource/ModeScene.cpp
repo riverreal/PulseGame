@@ -87,11 +87,13 @@ void ModeScene::Update(float dt)
 		{
 			m_targetTween = m_targetTween.From(&m_camLookAt).To(m_singleTarget).Time(0.5f).Easing(ET_BACK_OUT);
 			m_singlePlayerMode = true;
+			AudioManager::GetInstance().PlaySoundEffect("Resource/SoundEffect/select09.mp3");
 		}
 		else if (GetAsyncKeyState(VK_RIGHT) & 0x8000 && m_singlePlayerMode)
 		{
 			m_targetTween = m_targetTween.From(&m_camLookAt).To(m_multiTarget).Time(0.5f).Easing(ET_BACK_OUT);
 			m_singlePlayerMode = false;
+			AudioManager::GetInstance().PlaySoundEffect("Resource/SoundEffect/select09.mp3");
 		}
 
 		if (GetAsyncKeyState('Z') & 0x8000)

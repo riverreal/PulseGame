@@ -39,6 +39,7 @@ private:
 	Elixir::GameObject* m_playerArrow;
 	Elixir::GameObject* m_shipEffect01;
 	Elixir::GameObject* m_shipEffect02;
+	Elixir::GameObject* m_playerRankNumber;
 
 	int m_colIndex;
 	bool m_colHasDetection;

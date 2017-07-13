@@ -92,8 +92,7 @@ void MachineSelect::Update(float dt)
 
 			m_mainTEween = m_mainTEween.From(&m_panel->GetTransform()->Position.x)
 				.To(600.0f * GameManager::GetInstance().GetDesignScale()).Time(0.4f).Easing(ET_BACK_OUT);
-
-
+			
 			ElixirLog("SelectedShip: " + std::to_string(m_selectedShip));
 		}
 
@@ -107,7 +106,8 @@ void MachineSelect::Update(float dt)
 
 			m_mainTEween = m_mainTEween.From(&m_panel->GetTransform()->Position.x)
 				.To(600.0f * GameManager::GetInstance().GetDesignScale()).Time(0.4f).Easing(ET_BACK_OUT);
-
+			
+			
 			ElixirLog("SelectedShip: " + std::to_string(m_selectedShip));
 		}
 
@@ -150,7 +150,7 @@ void MachineSelect::Update(float dt)
 
 			m_mainTEween = m_mainTEween.From(&m_panel->GetTransform()->Position.x)
 				.To(600.0f * GameManager::GetInstance().GetDesignScale()).Time(0.4f).Easing(ET_BACK_OUT);
-
+			AudioManager::GetInstance().PlaySoundEffect("Resource/SoundEffect/select09.mp3");
 			
 			ElixirLog("SelectedShip: " + std::to_string(m_selectedShip));
 		}
@@ -165,7 +165,7 @@ void MachineSelect::Update(float dt)
 
 			m_mainTEween = m_mainTEween.From(&m_panel->GetTransform()->Position.x)
 				.To(600.0f * GameManager::GetInstance().GetDesignScale()).Time(0.4f).Easing(ET_BACK_OUT);
-
+			AudioManager::GetInstance().PlaySoundEffect("Resource/SoundEffect/select09.mp3");
 			ElixirLog("SelectedShip: " + std::to_string(m_selectedShip));
 		}
 
@@ -179,7 +179,7 @@ void MachineSelect::Update(float dt)
 			m_mainTEween = m_mainTEween.From(&m_panel->GetTransform()->Position.x)
 				.To(600.0f * GameManager::GetInstance().GetDesignScale()).Time(0.4f).Easing(ET_BACK_OUT);
 
-
+			AudioManager::GetInstance().PlaySoundEffect("Resource/SoundEffect/select09.mp3");
 			ElixirLog("SelectedShip: " + std::to_string(m_selectedShip));
 		}
 
