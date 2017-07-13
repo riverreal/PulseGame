@@ -58,11 +58,30 @@ private:
 	//ノーツステータスリスト
 	std::vector<Status>m_NotesStatus;
 	//初期ポジション(レーン)
-	Elixir::Vec3f m_LanePos[3]
+	//HARD
+	Elixir::Vec3f m_LanePosH[3]
 	{
-		Elixir::Vec3f( 200,-150,0 ),
-		Elixir::Vec3f( 0,-180,0 ),
-		Elixir::Vec3f( -200,-150,0 )
+		Elixir::Vec3f(200, -210, 0),
+		Elixir::Vec3f(0, -240, 0),
+		Elixir::Vec3f(-200, -210, 0)
+	};
+	//NORMAL
+	Elixir::Vec3f m_LanePosN[2]
+	{
+		Elixir::Vec3f(200, -210, 0),
+		Elixir::Vec3f(-200, -210, 0)
+	};
+	//EASY
+	Elixir::Vec3f m_LanePosE[1]
+	{
+		Elixir::Vec3f(0, -240, 0),
+	};
+	//難易度別配列
+	Elixir::Vec3f *m_difLane[3]
+	{
+		m_LanePosE,
+		m_LanePosN,
+		m_LanePosH
 	};
 
 	//初期スケール
@@ -129,4 +148,5 @@ private:
 	SpriteNumber m_spriteSecondCount;
 	SpriteNumber m_spriteMinuteCount;
 
+	int m_difficulty;
 };

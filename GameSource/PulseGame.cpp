@@ -46,12 +46,19 @@ void PulseGame::InitTestScene()
 
 	Manager->GetPackage()->LoadPackage("Packages/ingame/environment.pkg");
 
+	int shipNum;
+	std::string note;
+	note = "GetPlayer1Ship";
+	shipNum = ENote::GetInstance().Notify<int>(note);
 	m_playerManager.Release();
-	m_playerManager.AddPlayer(Manager, 0, m_lineData, radius, DIFF::HARD);
-
+	m_playerManager.AddPlayer(Manager, 0, m_lineData, radius, static_cast<DIFF>(MachineDataArray[shipNum].layoutType));
+	
 	if (isSplit)
 	{
-		m_playerManager.AddPlayer(Manager, 1, m_lineData, radius, DIFF::HARD);
+		note = "GetPlayer2Ship";
+		shipNum = ENote::GetInstance().Notify<int>(note);
+		m_playerManager.AddPlayer(Manager, 1, m_lineData, radius, static_cast<DIFF>(MachineDataArray[shipNum].layoutType));
+		
 	}
 	else
 	{

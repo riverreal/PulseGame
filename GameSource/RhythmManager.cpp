@@ -11,7 +11,7 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager, DIFF dif, in
 {
 	Manager = sceneManager;
 	m_Combo = 0;
-	int NumofLane = (int)dif;
+	m_difficulty = (int)dif;
 	m_PlayerNum = playerNum;
 	if (m_PlayerNum != 2)
 	{
@@ -27,27 +27,40 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager, DIFF dif, in
 		m_ComboLabel->GetTransform()->Scale = Vec3f(0.3, 0.3, 0.3);
 
 		//time
+		/*
 		m_spriteSecondCount.Initialize(Manager);
 		m_spriteSecondCount.GetSpriteParent()->GetTransform()->Scale = Vec3f(0.15, 0.15, 0.15);
 		m_spriteSecondCount.GetSpriteParent()->GetTransform()->Position = Vec3f(550, 130, 0);
 		m_spriteSecondCount.UpdateSprite(0);
-
+		*/
 	}
 
-	
-	bool isSplit = ENote::GetInstance().Notify<bool>("GetSplitScreen");
 
-	m_LanePos[0] = Vec3f(200, -210, 0);
-	m_LanePos[1] = Vec3f(0, -240, 0);
-	m_LanePos[2] = Vec3f(-200, -210, 0);
+	bool isSplit = ENote::GetInstance().Notify<bool>("GetSplitScreen");
 
 	auto screenW = GameManager::GetInstance().GetScreenWidth();
 	auto halfScreenW = screenW * 0.5;
+	float centerPos = ((screenW / 4.0f) * 1) - halfScreenW;
 	if (isSplit)
 	{
-		m_LanePos[1].x = ((screenW / 4.0f) * 1) - halfScreenW;
-		m_LanePos[0].x = m_LanePos[1].x + 130;
-		m_LanePos[2].x = m_LanePos[1].x - 130;
+		switch (m_difficulty)
+		{
+		case 1:
+			m_LanePosE[0].x = centerPos;
+			break;
+		case 2:	
+			m_LanePosN[0].x = centerPos + 130;
+			m_LanePosN[1].x = centerPos - 130;
+
+			break;
+		case 3:
+			m_LanePosH[1].x = centerPos;
+			m_LanePosH[0].x = centerPos + 130;
+			m_LanePosH[2].x = centerPos - 130;
+			break;
+		default:
+			break;
+		}
 
 		m_textParent->GetTransform()->Position.x -= halfScreenW;
 		m_spriteNumber.UpdateSprite(0);
@@ -56,10 +69,26 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager, DIFF dif, in
 
 	if (playerNum == 1)
 	{
-		m_LanePos[0].x += halfScreenW;
-		m_LanePos[1].x += halfScreenW;
-		m_LanePos[2].x += halfScreenW;
 		
+		switch (m_difficulty)
+		{
+		case 1:
+			m_LanePosE[0].x += halfScreenW;
+			break;
+		case 2:
+			m_LanePosN[0].x += halfScreenW;
+			m_LanePosN[1].x += halfScreenW;
+
+			break;
+		case 3:
+			m_LanePosH[0].x += halfScreenW;
+			m_LanePosH[1].x += halfScreenW;
+			m_LanePosH[2].x += halfScreenW;
+			break;
+		default:
+			break;
+		}
+
 		m_textParent->GetTransform()->Position.x += halfScreenW;
 		m_spriteNumber.UpdateSprite(0);
 		m_ComboLabel->GetTransform()->Position.x += halfScreenW;
@@ -85,12 +114,12 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager, DIFF dif, in
 		m_NotesLaneNumber.push_back(std::stoi(val[0]));
 		m_NotesTiming.push_back(std::stold(val[1]));
 	}
-	//LaneofNum
-	if (NumofLane != 3)
+
+	if (m_difficulty != 3)
 	{
 		for (int i = 0; i < m_NotesLaneNumber.size(); i++)
 		{
-			if (NumofLane == 2)
+			if (m_difficulty == 2)
 			{
 				if (m_NotesLaneNumber[i] == 2)
 				{
@@ -101,7 +130,7 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager, DIFF dif, in
 				}
 				m_modeNormal = true;
 			}
-			else if (NumofLane == 1)
+			else if (m_difficulty == 1)
 			{
 				m_NotesLaneNumber[i] = 0;
 				m_modeEasy = true;
@@ -122,12 +151,12 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager, DIFF dif, in
 		m_NotesStatus.push_back(_status);
 	}
 
-	for (int i = 0; i < NumofLane; i++)
+	for (int i = 0; i < m_difficulty; i++)
 	{
 		//waveEfect
 		auto effectWave2d = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_2D);
 		effectWave2d->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Effect/" + WAVE_EFFECT_PATH[1] + L".png");
-		effectWave2d->GetTransform()->Position = m_LanePos[i];
+		effectWave2d->GetTransform()->Position = m_difLane[m_difficulty - 1][i];
 		effectWave2d->Get2DRenderer()->Color.a = 0.7f;
 		effectWave2d->SetTag(m_PlayerNum);
 
@@ -141,7 +170,8 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager, DIFF dif, in
 		//hitBox
 		auto Screen2d = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_2D);
 		Screen2d->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/" + COLOR_PATH[i] + L"_Box.png");
-		Screen2d->GetTransform()->Position = m_LanePos[i];
+		Screen2d->GetTransform()->Position = m_difLane[m_difficulty - 1][i];
+
 		Screen2d->SetTag(m_PlayerNum);
 
 		//inputAnimation
@@ -156,8 +186,18 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager, DIFF dif, in
 
 	m_TextEffect = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_2D);
 	m_TextEffect->SetTag(m_PlayerNum);
-	m_TextEffect->GetTransform()->Position = m_LanePos[1];
-	m_TextEffect->GetTransform()->Position.y += 120;
+
+	m_TextEffect->GetTransform()->Position = m_difLane[0][0];
+	//ƒ}ƒ‹ƒ`—p’²®
+	if (split)
+	{
+		m_TextEffect->GetTransform()->Position = centerPos;
+		if (playerNum == 1)
+		{
+			m_TextEffect->GetTransform()->Position.x += halfScreenW;
+		}
+	}
+	m_TextEffect->GetTransform()->Position.y += 240;
 	m_TextEffect->GetTransform()->Scale = m_TextEffect->GetTransform()->Scale * 0.8f;
 
 	m_textAnim = m_textAnim.From(&m_TextEffect->Get2DRenderer()->Color.a).To(0.0f).Time(1.0f)
@@ -204,8 +244,8 @@ void RhythmManager::Update(float dt)
 					m_TextEffect->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/" + TEXT_EFFECT_PATH[3] + L".png");
 					//m_TextEffect->Get2DRenderer()->Enabled = true;
 					m_tween.AddTweens(m_textAnim.GetTweens());
-					
-					if(m_PlayerNum != 2) m_spriteNumber.UpdateSprite(m_Combo);
+
+					if (m_PlayerNum != 2) m_spriteNumber.UpdateSprite(m_Combo);
 				}
 			}
 		}
@@ -299,7 +339,7 @@ void RhythmManager::Update(float dt)
 				_status.num = m_TimingCount;
 				_status.obj->Get2DRenderer()->Enabled = true;
 				_status.obj->GetTransform()->Scale = Vec3f(m_DefaultScale + 1, m_DefaultScale + 1, 1);
-				_status.obj->GetTransform()->Position = m_LanePos[m_NotesLaneNumber[_status.num]];
+				_status.obj->GetTransform()->Position = m_difLane[m_difficulty - 1][m_NotesLaneNumber[_status.num]];//m_LanePos[m_NotesLaneNumber[_status.num]];
 				_status.obj->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/" + COLOR_PATH[m_NotesLaneNumber[_status.num]] + L"_Hit.png");
 				_status.obj->Get2DRenderer()->Color.a = 0;
 				break;
@@ -318,7 +358,7 @@ void RhythmManager::Update(float dt)
 
 		//ElixirLog("Ended!");
 	}
-	
+
 	/*if (m_PlayerNum != 2)
 	{
 		m_flameCount += 2;
