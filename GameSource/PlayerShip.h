@@ -35,6 +35,7 @@ private:
 	Elixir::GameObject* m_meterNeedle;
 	Elixir::GameObject* m_meterFrame;
 	Elixir::GameObject* m_playerArrow;
+	Elixir::GameObject* m_playerRankNumber;
 
 	int m_colIndex;
 	bool m_colHasDetection;

@@ -87,22 +87,6 @@ void SongSelect::Update(float dt)
 			m_inputEnabled = false;
 		}
 
-		if (GetAsyncKeyState(VK_LEFT) & 0x8000 && m_inputEnabled)
-		{
-			if (m_selectedSong > 0)
-			{
-				m_inputEnabled = false;
-				m_selectedSong--;
-				m_mainTEween = m_mainTEween.From(&m_camPos.x).To(m_selectedSong*6.0f).Time(0.4f).Easing(ET_CUBIC_IN_OUT)
-					.OnFinish([this]() {this->EnableInput(); });
-				m_panel->GetTransform()->Position.y = 520;
-				m_mainTEween = m_mainTEween.From(&m_panel->GetTransform()->Position.y)
-					.To(285.0f * GameManager::GetInstance().GetDesignScale()).Time(0.5f).Easing(ET_BACK_OUT);
-				AudioManager::GetInstance().PlayMusic("Resource/rhythmFolder/" + CourseDataArray[m_selectedSong].music + ".mp3");
-			}
-
-		}
-
 		if (GetAsyncKeyState(VK_RIGHT) & 0x8000 && m_inputEnabled)
 		{
 			if (m_selectedSong < m_maxSelSongs - 1)
@@ -115,7 +99,26 @@ void SongSelect::Update(float dt)
 				m_mainTEween = m_mainTEween.From(&m_panel->GetTransform()->Position.y)
 					.To(285.0f * GameManager::GetInstance().GetDesignScale()).Time(0.5f).Easing(ET_BACK_OUT);
 				AudioManager::GetInstance().PlayMusic("Resource/rhythmFolder/" + CourseDataArray[m_selectedSong].music + ".mp3");
+				AudioManager::GetInstance().PlaySoundEffect("Resource/SoundEffect/SelectScene/select09.mp3");
 			}
+		}
+		if (GetAsyncKeyState(VK_LEFT) & 0x8000 && m_inputEnabled)
+		{
+			if (m_selectedSong > 0)
+			{
+				m_inputEnabled = false;
+				m_selectedSong--;
+				m_mainTEween = m_mainTEween.From(&m_camPos.x).To(m_selectedSong*6.0f).Time(0.4f).Easing(ET_CUBIC_IN_OUT)
+					.OnFinish([this]() {this->EnableInput(); });
+				m_panel->GetTransform()->Position.y = 520;
+				m_mainTEween = m_mainTEween.From(&m_panel->GetTransform()->Position.y)
+					.To(285.0f * GameManager::GetInstance().GetDesignScale()).Time(0.5f).Easing(ET_BACK_OUT);
+				
+				AudioManager::GetInstance().PlayMusic("Resource/rhythmFolder/" + CourseDataArray[m_selectedSong].music + ".mp3");
+				AudioManager::GetInstance().PlaySoundEffect("Resource/SoundEffect/select09.mp3");
+
+			}
+
 		}
 	}
 
