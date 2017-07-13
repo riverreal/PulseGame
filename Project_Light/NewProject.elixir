@@ -87,3 +87,9 @@
 <t><name>Resource/MachineScene/2.png</name><ID>102</ID></t>
 <t><name>Resource/rhythmFolder/rhythm_Img/Text_Img/combo_text.png</name><ID>103</ID></t>
 <t><name>Resource/PulseGameScene/playerPos.png</name><ID>104</ID></t>
+<t><name>Resource/ships/zhanji_lambert3SG_AlbedoTransparency.png</name><ID>105</ID></t>
+<t><name>Resource/ships/zhanji_lambert3SG_Emission.png</name><ID>106</ID></t>
+<t><name>Resource/ships/zhanji_lambert3SG_Normal.png</name><ID>107</ID></t>
+<t><name>Resource/ships/zhanji_lambert2SG_AlbedoTransparency.png</name><ID>108</ID></t>
+<t><name>Resource/ships/zhanji_lambert2SG_Emission.png</name><ID>109</ID></t>
+<t><name>Resource/ships/zhanji_lambert2SG_Normal.png</name><ID>110</ID></t>

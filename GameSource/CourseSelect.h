@@ -39,10 +39,11 @@ namespace
 		int layoutType;
 	};
 
-	MachineData MachineDataArray[3] =
+	MachineData MachineDataArray[4] =
 	{
 		MachineData("Packages/ships/ship01.pkg", 1.0f, 1.0f, 0),
 		MachineData("Packages/ships/ship02.pkg", 1.0f, 1.0f, 0),
-		MachineData("Packages/ships/ship03.pkg", 1.0f, 1.0f, 0)
+		MachineData("Packages/ships/ship03.pkg", 1.0f, 1.0f, 0),
+		MachineData("Packages/ships/ship04.pkg", 1.0f, 1.0f, 0)
 	};
 }

@@ -1,0 +1,108 @@
+{
+   "Planet" : {
+      "Name" : "Planet",
+      "Renderer3D" : {
+         "CastShadow" : true,
+         "Enabled" : true,
+         "EnabledBackCulling" : true,
+         "Material" : {
+            "albedo" : 94,
+            "emissive" : 26,
+            "metallic" : 4,
+            "normal" : 2,
+            "roughness" : 23
+         },
+         "Model" : {
+            "ModelPath" : "",
+            "ModelTypePrimitive" : true,
+            "PrimitiveType" : 1
+         }
+      },
+      "Transform" : {
+         "Dynamic" : true,
+         "Position" : {
+            "x" : 721.10003662109375,
+            "y" : -67.300003051757813,
+            "z" : -410.00003051757813
+         },
+         "Rotation" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "Scale" : {
+            "x" : 204.97999572753906,
+            "y" : 204.97999572753906,
+            "z" : 204.98001098632813
+         },
+         "TexPos" : {
+            "x" : 0.39000001549720764,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexRot" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexScale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 0.0
+         }
+      }
+   },
+   "Star" : {
+      "Name" : "Star",
+      "Renderer3D" : {
+         "CastShadow" : true,
+         "Enabled" : true,
+         "EnabledBackCulling" : false,
+         "Material" : {
+            "albedo" : 86,
+            "emissive" : 23,
+            "metallic" : 4,
+            "normal" : 2,
+            "roughness" : 3
+         },
+         "Model" : {
+            "ModelPath" : "",
+            "ModelTypePrimitive" : true,
+            "PrimitiveType" : 4
+         }
+      },
+      "Transform" : {
+         "Dynamic" : true,
+         "Position" : {
+            "x" : 837.47003173828125,
+            "y" : -15.520000457763672,
+            "z" : -334.00100708007813
+         },
+         "Rotation" : {
+            "x" : 0.0,
+            "y" : 50.400001525878906,
+            "z" : 95.200004577636719
+         },
+         "Scale" : {
+            "x" : 20.0,
+            "y" : 20.0,
+            "z" : 20.0
+         },
+         "TexPos" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexRot" : {
+            "x" : 0.0,
+            "y" : 0.0,
+            "z" : 0.0
+         },
+         "TexScale" : {
+            "x" : 1.0,
+            "y" : 1.0,
+            "z" : 0.0
+         }
+      }
+   }
+}

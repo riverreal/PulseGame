@@ -44,6 +44,8 @@ void PulseGame::InitTestScene()
 
 	obj->GetTransform()->TextureScale = Vec3f(230.0f, 10.0f, 1.0f);
 
+	Manager->GetPackage()->LoadPackage("Packages/ingame/environment.pkg");
+
 	m_playerManager.Release();
 	m_playerManager.AddPlayer(Manager, 0, m_lineData, radius, DIFF::HARD);
 
