@@ -17,10 +17,12 @@ public:
 
 	float GetPlayerRot();
 	void ShipEffectAnim(bool grow);
+	float GetProgressValue();
 
 private:
 	void LateInit();
 
+private:
 	std::vector<Elixir::Vec3f> m_lineData;
 	float m_currentPos;
 	float m_aheadPos;
@@ -28,6 +30,7 @@ private:
 	int m_aheadIndex;
 	int m_PlayerNum;
 	int m_shipNum;
+	float m_progressValue;
 
 	int m_currentIndex;
 	Elixir::GameObject* m_player;

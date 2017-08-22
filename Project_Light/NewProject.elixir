@@ -95,3 +95,5 @@
 <t><name>Resource/ships/zhanji_lambert2SG_Normal.png</name><ID>110</ID></t>
 <t><name>Resource/PulseGameScene/first.png</name><ID>111</ID></t>
 <t><name>Resource/PulseGameScene/second.png</name><ID>112</ID></t>
+<t><name>Resource/PulseGameScene/progressBar.png</name><ID>113</ID></t>
+<t><name>Resource/PulseGameScene/progressPoint.png</name><ID>114</ID></t>

@@ -23,6 +23,8 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	m_lineData = line;
 	m_rotationAngle = playerNum * XM_PI / 6;
 	m_didLateInit = false;
+	//max course index
+	m_progressValue = 0.0f;
 
 	m_rotationSpeed = 1.0f;
 	m_cameraRadius = radius + 0.8f;
@@ -61,6 +63,7 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	
 	int pNumIndex = playerNum == 0 ? 0 : 1;
 	ENote::GetInstance().AddNote<float>("GetPlayerRot" + pNumIndex, [this]() {return this->GetPlayerRot(); });
+	ENote::GetInstance().AddNote<float>("GetPlayerProgress" + std::to_string(pNumIndex), [this]() {return this->GetProgressValue(); });
 
 	if (playerNum == 0)
 		m_camera = Manager->GetCurrentScene()->GetCamera();
@@ -274,6 +277,7 @@ void PlayerShip::UpdateShipPos(float dt)
 	}
 
 	m_currentPos += speed;
+	m_progressValue += speed;
 	m_aheadPos += speed;
 
 	if (m_currentPos >= 1.0f)
@@ -281,6 +285,7 @@ void PlayerShip::UpdateShipPos(float dt)
 		m_currentPos -= 0.5f;
 		m_currentIndex++;
 
+		/*
 		if (m_currentIndex + 3 >= m_lineData.size())
 		{
 			m_currentIndex = 0;
@@ -288,6 +293,7 @@ void PlayerShip::UpdateShipPos(float dt)
 			m_currentPos = 0.5f;
 			m_aheadPos = 0.7f;
 		}
+		*/
 
 		if (m_currentIndex + 3 >= m_lineData.size() - 2)
 		{
@@ -489,6 +495,11 @@ void PlayerShip::ShipEffectAnim(bool grow)
 		m_effectShrink = m_effectShrink.From(&m_shipEffect02->GetTransform()->Scale.z).To(m_shipEffect02->GetTransform()->Scale.z / 2.5f).Time(0.2f)
 			.OnFinish([this]() {this->ShipEffectAnim(true); });
 	}
+}
+
+float PlayerShip::GetProgressValue()
+{
+	return m_progressValue;
 }
 
 void PlayerShip::LateInit()

@@ -2,6 +2,9 @@
 #include "../Source/System/GameManager.h"
 #include "../Source/Includes/LESystem.h"
 #include "../Source/Helper/ENote.h"
+#include "../External Soruce/cpplinq.hpp"
+
+using namespace cpplinq;
 
 void PulseGame::InitTestScene()
 {
@@ -65,6 +68,20 @@ void PulseGame::InitTestScene()
 		m_playerManager.AddAI(Manager, 2, m_lineData, radius, DIFF::HARD);
 	}
 	
+	//Progress-----------------------
+	m_maxProgressValue = (m_lineData.size() - 4) * 0.5f;
+
+	//Load from package
+	auto progressPkg = Manager->GetPackage()->LoadPackage("Packages/ingame/progress.pkg");
+	m_progressBar = from(progressPkg) >> where([](GameObject* obj) {return obj->GetName() == "progressBar"; }) >> first();
+	m_progressPoint1 = from(progressPkg) >> where([](GameObject* obj) {return obj->GetName() == "progressPoint1"; }) >> first();
+	m_progressPoint2 = from(progressPkg) >> where([](GameObject* obj) {return obj->GetName() == "progressPoint2"; }) >> first();
+	auto endPoint = from(progressPkg) >> where([](GameObject* obj) {return obj->GetName() == "progressEndPoint"; }) >> first();
+	m_progressEnd = endPoint->GetTransform()->Position;
+
+	m_progressP1Pos = m_progressPoint1->GetTransform()->Position.y;
+	m_progressP2Pos = m_progressPoint2->GetTransform()->Position.y;
+	m_progressPosRange = m_progressEnd.y - m_progressP1Pos;
 }
 
 void PulseGame::UpdateTestScene(float dt)
@@ -82,6 +99,7 @@ void PulseGame::UpdateTestScene(float dt)
 	if (!m_pause)
 	{
 		m_playerManager.Update(dt);
+		CalculateProgress();
 	}
 }
 
@@ -123,4 +141,26 @@ void PulseGame::Update(float dt)
 void PulseGame::ChangeScene()
 {
 	Manager->ChangeScene("ResultScene");
+}
+
+void PulseGame::CalculateProgress()
+{
+	//Only once per 2 frames
+	static bool skip = false;
+
+	skip = !skip;
+
+	//if (skip) return;
+
+	float progressP1 = ENote::GetInstance().Notify<float>("GetPlayerProgress0");
+	float progressP2 = ENote::GetInstance().Notify<float>("GetPlayerProgress1");
+
+	ElixirLog("P1: " + std::to_string(progressP1));
+	//ElixirLog("P2: " + std::to_string(progressP2));
+
+	float progressDeltaPos1 = (progressP1 * m_progressPosRange) / m_maxProgressValue;
+	float progressDeltaPos2 = (progressP2 * m_progressPosRange) / m_maxProgressValue;
+
+	m_progressPoint1->GetTransform()->Position.y = m_progressP1Pos + progressDeltaPos1;
+	m_progressPoint2->GetTransform()->Position.y = m_progressP1Pos + progressDeltaPos2;
 }
