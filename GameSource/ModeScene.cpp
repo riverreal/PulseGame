@@ -158,12 +158,12 @@ void ModeScene::BlackImage()
 
 void ModeScene::StartAnim()
 {
-	m_mainTEween = m_mainTEween.From(&m_back->GetTransform()->Position.x).To(-1500.0f).Time(0.4f);
+	m_mainTEween = m_mainTEween.From(&m_back->GetTransform()->Position.x).To(-3000.0f).Time(0.4f);
 }
 
 void ModeScene::BackAnim()
 {
-	m_back->GetTransform()->Position.x = 2000;
+	m_back->GetTransform()->Position.x = 3000;
 	m_mainTEween = m_mainTEween.From(&m_back->GetTransform()->Position.x).To(0.0f).Time(0.4f);
 }
 

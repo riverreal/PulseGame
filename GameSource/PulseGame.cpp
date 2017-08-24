@@ -78,10 +78,17 @@ void PulseGame::InitTestScene()
 	m_progressPoint2 = from(progressPkg) >> where([](GameObject* obj) {return obj->GetName() == "progressPoint2"; }) >> first();
 	auto endPoint = from(progressPkg) >> where([](GameObject* obj) {return obj->GetName() == "progressEndPoint"; }) >> first();
 	m_progressEnd = endPoint->GetTransform()->Position;
-
+	
 	m_progressP1Pos = m_progressPoint1->GetTransform()->Position.y;
 	m_progressP2Pos = m_progressPoint2->GetTransform()->Position.y;
 	m_progressPosRange = m_progressEnd.y - m_progressP1Pos;
+
+	//For PV recording
+	/*
+	m_progressBar->Get2DRenderer()->Enabled = false;
+	m_progressPoint1->Get2DRenderer()->Enabled = false;
+	m_progressPoint2->Get2DRenderer()->Enabled = false;
+	*/
 }
 
 void PulseGame::UpdateTestScene(float dt)
