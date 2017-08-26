@@ -54,6 +54,9 @@ void SongSelect::Init()
 	ETween<F32> afterTween;
 	afterTween = afterTween.From(&m_panel->GetTransform()->Position.y)
 		.To(285.0f * GameManager::GetInstance().GetDesignScale()).Time(0.5f).Easing(ET_BACK_OUT).OnFinish([this]() {this->EnableInput(); });
+	afterTween = afterTween.From(&m_courseInfo->GetTransform()->Position.y)
+		.To(235.0f * GameManager::GetInstance().GetDesignScale()).Time(0.5f).Easing(ET_BACK_OUT);
+
 	first_afterTween = first_afterTween.OnFinishChain(&afterTween);
 	m_mainTEween = m_mainTEween.OnFinishChain(&first_afterTween);
 
@@ -65,6 +68,7 @@ void SongSelect::Init()
 
 	AudioManager::GetInstance().PlayMusic("Resource/rhythmFolder/" + CourseDataArray[0].music + ".mp3");
 	m_maxSelSongs = sizeof(CourseDataArray) / sizeof(CourseDataArray[0]);
+
 }
 
 //Update
@@ -98,6 +102,10 @@ void SongSelect::Update(float dt)
 				m_panel->GetTransform()->Position.y = 520;
 				m_mainTEween = m_mainTEween.From(&m_panel->GetTransform()->Position.y)
 					.To(285.0f * GameManager::GetInstance().GetDesignScale()).Time(0.5f).Easing(ET_BACK_OUT);
+				m_mainTEween = m_mainTEween.From(&m_courseInfo->GetTransform()->Position.y)
+					.To(235.0f * GameManager::GetInstance().GetDesignScale()).Time(0.5f).Easing(ET_BACK_OUT);
+				
+				m_courseInfo->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(COURSE_INFO_PATH[m_selectedSong]);
 				AudioManager::GetInstance().PlayMusic("Resource/rhythmFolder/" + CourseDataArray[m_selectedSong].music + ".mp3");
 				AudioManager::GetInstance().PlaySoundEffect("Resource/SoundEffect/SelectScene/select09.mp3");
 			}
@@ -113,7 +121,10 @@ void SongSelect::Update(float dt)
 				m_panel->GetTransform()->Position.y = 520;
 				m_mainTEween = m_mainTEween.From(&m_panel->GetTransform()->Position.y)
 					.To(285.0f * GameManager::GetInstance().GetDesignScale()).Time(0.5f).Easing(ET_BACK_OUT);
+				m_mainTEween = m_mainTEween.From(&m_courseInfo->GetTransform()->Position.y)
+					.To(235.0f * GameManager::GetInstance().GetDesignScale()).Time(0.5f).Easing(ET_BACK_OUT);
 				
+				m_courseInfo->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(COURSE_INFO_PATH[m_selectedSong]);
 				AudioManager::GetInstance().PlayMusic("Resource/rhythmFolder/" + CourseDataArray[m_selectedSong].music + ".mp3");
 				AudioManager::GetInstance().PlaySoundEffect("Resource/SoundEffect/select09.mp3");
 
@@ -142,6 +153,13 @@ void SongSelect::SetImage()
 	m_panel->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/CourseScene/ship_panel2.png");
 	m_panel->GetTransform()->Position = Vec3f(0, 520, 0);
 	m_panel->GetTransform()->Scale = Vec3f(0.9f, 0.5f, 0);
+
+	m_courseInfo = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
+	m_courseInfo->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(COURSE_INFO_PATH[0]);
+	m_courseInfo->GetTransform()->Position = Vec3f(0, 480, 0);
+	m_courseInfo->GetTransform()->Scale = Vec3f(1.1f, 1.1f, 0);
+	m_courseInfo->SetName("Info");
+	
 
 	/*auto circle = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
 	circle->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/level_circle.png");

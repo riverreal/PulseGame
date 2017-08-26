@@ -34,7 +34,15 @@ private:
 	GameObject * m_start;
 	GameObject * m_back;
 	GameObject* m_planets;
+	GameObject* m_courseInfo;
 	Vec3f m_camPos;
+
+	const std::wstring COURSE_INFO_PATH[3]
+	{
+		L"Resource/CourseScene/Course-01.png",
+		L"Resource/CourseScene/Course-02.png",
+		L"Resource/CourseScene/Course-03.png"
+	};
 
 	int m_selectedSong;
 	int m_maxSelSongs;

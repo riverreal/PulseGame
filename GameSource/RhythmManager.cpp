@@ -189,7 +189,7 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager, DIFF dif, in
 
 	m_TextEffect->GetTransform()->Position = m_difLane[0][0];
 	//ƒ}ƒ‹ƒ`—p’²®
-	if (split)
+	if (isSplit)
 	{
 		m_TextEffect->GetTransform()->Position = centerPos;
 		if (playerNum == 1)
@@ -197,6 +197,7 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager, DIFF dif, in
 			m_TextEffect->GetTransform()->Position.x += halfScreenW;
 		}
 	}
+	
 	m_TextEffect->GetTransform()->Position.y += 240;
 	m_TextEffect->GetTransform()->Scale = m_TextEffect->GetTransform()->Scale * 0.8f;
 
@@ -337,11 +338,14 @@ void RhythmManager::Update(float dt)
 			{
 				_status.active = true;
 				_status.num = m_TimingCount;
-				_status.obj->Get2DRenderer()->Enabled = true;
-				_status.obj->GetTransform()->Scale = Vec3f(m_DefaultScale + 1, m_DefaultScale + 1, 1);
-				_status.obj->GetTransform()->Position = m_difLane[m_difficulty - 1][m_NotesLaneNumber[_status.num]];//m_LanePos[m_NotesLaneNumber[_status.num]];
-				_status.obj->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/" + COLOR_PATH[m_NotesLaneNumber[_status.num]] + L"_Hit.png");
-				_status.obj->Get2DRenderer()->Color.a = 0;
+				if (m_PlayerNum != 2)
+				{
+					_status.obj->Get2DRenderer()->Enabled = true;
+					_status.obj->GetTransform()->Scale = Vec3f(m_DefaultScale + 1, m_DefaultScale + 1, 1);
+					_status.obj->GetTransform()->Position = m_difLane[m_difficulty - 1][m_NotesLaneNumber[_status.num]];//m_LanePos[m_NotesLaneNumber[_status.num]];
+					_status.obj->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/" + COLOR_PATH[m_NotesLaneNumber[_status.num]] + L"_Hit.png");
+					_status.obj->Get2DRenderer()->Color.a = 0;
+				}
 				break;
 			}
 		}
