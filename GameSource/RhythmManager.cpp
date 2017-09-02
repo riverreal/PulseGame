@@ -60,11 +60,11 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager, DIFF dif, in
 
 			if (playerNum == 0)
 			{
-				m_speedEffect->GetTransform()->Position.x = -centerPos;
+				m_speedEffect->GetTransform()->Position.x = centerPos;
 			}
 			else
 			{
-				m_speedEffect->GetTransform()->Position.x = centerPos;
+				m_speedEffect->GetTransform()->Position.x = -centerPos;
 			}
 		}
 		else
