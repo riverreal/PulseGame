@@ -32,7 +32,7 @@ private:
 	ETween<float> m_mainTEween;
 	ResultScene m_result;
 	GameObject * m_back;
-
+	std::vector<GameObject*> m_progressPackage;
 
 	float m_maxProgressValue;
 	Vec3f m_progressEnd;

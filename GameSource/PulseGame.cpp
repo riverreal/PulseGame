@@ -28,7 +28,6 @@ void PulseGame::InitTestScene()
 
 	m_stageManager.Initialize(Manager);
 
-
 	int courseNum = ENote::GetInstance().Notify<int>("GetSelectedSong");
 	m_lineData = LoadLine(Manager->GetFileManager()->LoadFile(CourseDataArray[courseNum].path));
 
@@ -61,7 +60,6 @@ void PulseGame::InitTestScene()
 		note = "GetPlayer2Ship";
 		shipNum = ENote::GetInstance().Notify<int>(note);
 		m_playerManager.AddPlayer(Manager, 1, m_lineData, radius, static_cast<DIFF>(MachineDataArray[shipNum].layoutType));
-		
 	}
 	else
 	{
@@ -72,23 +70,27 @@ void PulseGame::InitTestScene()
 	m_maxProgressValue = (m_lineData.size() - 4) * 0.5f;
 
 	//Load from package
-	auto progressPkg = Manager->GetPackage()->LoadPackage("Packages/ingame/progress.pkg");
-	m_progressBar = from(progressPkg) >> where([](GameObject* obj) {return obj->GetName() == "progressBar"; }) >> first();
-	m_progressPoint1 = from(progressPkg) >> where([](GameObject* obj) {return obj->GetName() == "progressPoint1"; }) >> first();
-	m_progressPoint2 = from(progressPkg) >> where([](GameObject* obj) {return obj->GetName() == "progressPoint2"; }) >> first();
-	auto endPoint = from(progressPkg) >> where([](GameObject* obj) {return obj->GetName() == "progressEndPoint"; }) >> first();
+	m_progressPackage = Manager->GetPackage()->LoadPackage("Packages/ingame/progress.pkg");
+	m_progressBar = from(m_progressPackage) >> where([](GameObject* obj) {return obj->GetName() == "progressBar"; }) >> first();
+	m_progressPoint1 = from(m_progressPackage) >> where([](GameObject* obj) {return obj->GetName() == "progressPoint1"; }) >> first();
+	m_progressPoint2 = from(m_progressPackage) >> where([](GameObject* obj) {return obj->GetName() == "progressPoint2"; }) >> first();
+	auto endPoint = from(m_progressPackage) >> where([](GameObject* obj) {return obj->GetName() == "progressEndPoint"; }) >> first();
 	m_progressEnd = endPoint->GetTransform()->Position;
 	
 	m_progressP1Pos = m_progressPoint1->GetTransform()->Position.y;
 	m_progressP2Pos = m_progressPoint2->GetTransform()->Position.y;
+	m_progressPoint1->GetTransform()->Scale.y /= 2.0f;
+	m_progressPoint2->GetTransform()->Scale.y /= 2.0f;
 	m_progressPosRange = m_progressEnd.y - m_progressP1Pos;
 
-	//For PV recording
-	/*
-	m_progressBar->Get2DRenderer()->Enabled = false;
-	m_progressPoint1->Get2DRenderer()->Enabled = false;
-	m_progressPoint2->Get2DRenderer()->Enabled = false;
-	*/
+	if (!isSplit)
+	{
+		auto halfW = GameManager::GetInstance().GetScreenWidth() / 2;
+		for (auto &elem : m_progressPackage)
+		{
+			elem->GetTransform()->Position.x += halfW - 100;
+		}
+	}
 }
 
 void PulseGame::UpdateTestScene(float dt)
