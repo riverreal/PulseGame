@@ -126,7 +126,7 @@ void SongSelect::Update(float dt)
 				
 				m_courseInfo->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(COURSE_INFO_PATH[m_selectedSong]);
 				AudioManager::GetInstance().PlayMusic("Resource/rhythmFolder/" + CourseDataArray[m_selectedSong].music + ".mp3");
-				AudioManager::GetInstance().PlaySoundEffect("Resource/SoundEffect/select09.mp3");
+				AudioManager::GetInstance().PlaySoundEffect("Resource/SoundEffect/SelectScene/select09.mp3");
 
 			}
 
