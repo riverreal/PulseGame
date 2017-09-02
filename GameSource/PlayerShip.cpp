@@ -19,7 +19,7 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 	m_aheadIndex = 0;
 	m_slipStreamBonus = 0;
 	m_obstaclePenalty = 100.0f;
-	m_travelSpeed = 0.05f;
+	m_travelSpeed = 0.08f;
 	m_lineData = line;
 	m_rotationAngle = playerNum * XM_PI / 6;
 	m_didLateInit = false;
@@ -259,7 +259,7 @@ void PlayerShip::UpdateShipPos(float dt)
 		}
 	}
 
-	auto bonusSpeed = (m_currentCombo + m_timingBouns - m_obstaclePenalty + m_slipStreamBonus)* dt * 0.001f;
+	auto bonusSpeed = (m_currentCombo + m_timingBouns - m_obstaclePenalty + m_slipStreamBonus)* dt * 0.002f;
 	auto speed = m_travelSpeed * dt + bonusSpeed;
 
 	if (m_obstaclePenalty > 0)
