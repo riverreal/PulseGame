@@ -29,9 +29,19 @@ private:
 	ETween<float> m_mainTEween;
 	GameObject * m_title;
 	GameObject * m_panel;
+	GameObject * m_machineInfo;
 	GameObject * m_back;
 	GameObject* m_selectedPlanet;
 	GameObject* m_ships;
+
+	const std::wstring MACHINE_INFO_PATH[4]
+	{
+		L"Resource/MachineScene/H1.png",
+		L"Resource/MachineScene/scythe.png",
+		L"Resource/MachineScene/Beatle04.png",
+		L"Resource/MachineScene/spread.png"
+	};
+
 	int m_maxShips;
 	int m_selectedShip;
 	int m_selectionNumber;

@@ -25,7 +25,7 @@ namespace
 	{
 		CourseData("Resource/course03.pld","LarsM-Lovers","course03", "Resource/PlanetSkins/planet01.png"),
 		CourseData("Resource/test8.pld","Dash","test8", "Resource/PlanetSkins/planet02.png"),
-		CourseData("Resource/test8.pld","WierdDream","Hitori Planet", "Resource/PlanetSkins/planet03.png")
+		CourseData("Resource/course03.pld","WierdDream","Hitori Planet", "Resource/PlanetSkins/planet03.png")
 	};
 
 	struct MachineData

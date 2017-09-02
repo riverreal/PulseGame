@@ -92,6 +92,7 @@ void MachineSelect::Update(float dt)
 
 			m_mainTEween = m_mainTEween.From(&m_panel->GetTransform()->Position.x)
 				.To(600.0f * GameManager::GetInstance().GetDesignScale()).Time(0.4f).Easing(ET_BACK_OUT);
+			m_machineInfo->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(MACHINE_INFO_PATH[m_selectedShip]);
 			
 			ElixirLog("SelectedShip: " + std::to_string(m_selectedShip));
 		}
@@ -103,6 +104,7 @@ void MachineSelect::Update(float dt)
 
 			m_mainTEween = m_mainTEween.From(&m_ships->GetTransform()->Position.x).To(-m_selectedShip * 6.0f).Time(0.4f)
 				.OnFinish([this]() {this->EnableInput(); });
+			m_machineInfo->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(MACHINE_INFO_PATH[m_selectedShip]);
 
 			m_mainTEween = m_mainTEween.From(&m_panel->GetTransform()->Position.x)
 				.To(600.0f * GameManager::GetInstance().GetDesignScale()).Time(0.4f).Easing(ET_BACK_OUT);
@@ -151,6 +153,8 @@ void MachineSelect::Update(float dt)
 			m_mainTEween = m_mainTEween.From(&m_panel->GetTransform()->Position.x)
 				.To(600.0f * GameManager::GetInstance().GetDesignScale()).Time(0.4f).Easing(ET_BACK_OUT);
 			AudioManager::GetInstance().PlaySoundEffect("Resource/SoundEffect/select09.mp3");
+
+			m_machineInfo->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(MACHINE_INFO_PATH[m_selectedShip]);
 			
 			ElixirLog("SelectedShip: " + std::to_string(m_selectedShip));
 		}
@@ -166,6 +170,9 @@ void MachineSelect::Update(float dt)
 			m_mainTEween = m_mainTEween.From(&m_panel->GetTransform()->Position.x)
 				.To(600.0f * GameManager::GetInstance().GetDesignScale()).Time(0.4f).Easing(ET_BACK_OUT);
 			AudioManager::GetInstance().PlaySoundEffect("Resource/SoundEffect/select09.mp3");
+
+			m_machineInfo->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(MACHINE_INFO_PATH[m_selectedShip]);
+
 			ElixirLog("SelectedShip: " + std::to_string(m_selectedShip));
 		}
 
@@ -180,6 +187,9 @@ void MachineSelect::Update(float dt)
 				.To(600.0f * GameManager::GetInstance().GetDesignScale()).Time(0.4f).Easing(ET_BACK_OUT);
 
 			AudioManager::GetInstance().PlaySoundEffect("Resource/SoundEffect/select09.mp3");
+
+			m_machineInfo->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(MACHINE_INFO_PATH[m_selectedShip]);
+
 			ElixirLog("SelectedShip: " + std::to_string(m_selectedShip));
 		}
 
@@ -193,6 +203,8 @@ void MachineSelect::Update(float dt)
 
 			m_mainTEween = m_mainTEween.From(&m_panel->GetTransform()->Position.x)
 				.To(600.0f * GameManager::GetInstance().GetDesignScale()).Time(0.4f).Easing(ET_BACK_OUT);
+
+			m_machineInfo->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(MACHINE_INFO_PATH[m_selectedShip]);
 
 			ElixirLog("SelectedShip: " + std::to_string(m_selectedShip));
 		}
@@ -252,6 +264,13 @@ void MachineSelect::SetImage()
 		ship->GetTransform()->Rotation.x = -14.0f;
 		m_ships->AddChild(ship);
 	}
+
+	m_machineInfo = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
+	m_machineInfo->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(MACHINE_INFO_PATH[0]);
+	m_machineInfo->GetTransform()->Position = Vec3f(550, 0, 0);
+	m_machineInfo->GetTransform()->Scale = Vec3f(0.5f, 0.5f, 0);
+	m_machineInfo->SetName("Info");
+
 }
 
 void MachineSelect::BlackImage()
