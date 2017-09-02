@@ -13,6 +13,7 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager, DIFF dif, in
 	m_Combo = 0;
 	m_difficulty = (int)dif;
 	m_PlayerNum = playerNum;
+	m_spriteFrameCount = 0;
 	if (m_PlayerNum != 2)
 	{
 		m_spriteNumber.Initialize(Manager);
@@ -35,12 +36,44 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager, DIFF dif, in
 		*/
 	}
 
-
 	bool isSplit = ENote::GetInstance().Notify<bool>("GetSplitScreen");
-
 	auto screenW = GameManager::GetInstance().GetScreenWidth();
-	auto halfScreenW = screenW * 0.5;
+	auto halfScreenW = screenW * 0.5f;
 	float centerPos = ((screenW / 4.0f) * 1) - halfScreenW;
+
+	if (playerNum == 0 || playerNum == 1)
+	{
+		//prepare effect images
+		m_effectTextures.push_back(Manager->GetTextureManager()->AddTexture(L"Resource/RaceEffect/warp01.png"));
+		m_effectTextures.push_back(Manager->GetTextureManager()->AddTexture(L"Resource/RaceEffect/warp02.png"));
+		m_effectTextures.push_back(Manager->GetTextureManager()->AddTexture(L"Resource/RaceEffect/warp03.png"));
+		m_effectTextures.push_back(Manager->GetTextureManager()->AddTexture(L"Resource/RaceEffect/warp04.png"));
+		m_effectTextures.push_back(Manager->GetTextureManager()->AddTexture(L"Resource/RaceEffect/warp05.png"));
+		m_effectTextures.push_back(Manager->GetTextureManager()->AddTexture(L"Resource/RaceEffect/warp06.png"));
+		m_speedEffect = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
+		m_speedEffect->Get2DRenderer()->Texture = m_effectTextures[0];
+		m_speedEffect->Get2DRenderer()->Color.a = 0.0f;
+		if (isSplit)
+		{
+			m_speedEffect->GetTransform()->Scale.x = m_speedEffect->GetTransform()->Scale.x * (GameManager::GetInstance().GetScreenWidth() / (640*2));
+
+			if (playerNum == 0)
+			{
+				m_speedEffect->GetTransform()->Position.x = -centerPos;
+			}
+			else
+			{
+				m_speedEffect->GetTransform()->Position.x = centerPos;
+			}
+		}
+		else
+		{
+			m_speedEffect->GetTransform()->Scale.x = m_speedEffect->GetTransform()->Scale.x * (GameManager::GetInstance().GetScreenWidth() / 640);
+		}
+		
+		m_speedEffect->GetTransform()->Scale.y = m_speedEffect->GetTransform()->Scale.y * (GameManager::GetInstance().GetScreenWidth() / 480);
+	}
+
 	if (isSplit)
 	{
 		switch (m_difficulty)
@@ -379,6 +412,20 @@ void RhythmManager::Update(float dt)
 			}
 		}
 	}*/
+
+	if (m_PlayerNum == 0 || m_PlayerNum == 1)
+	{
+		m_speedEffect->Get2DRenderer()->Color.a = MathHelper::Max(((float)m_Combo) / 100.0f, 0.75f);
+
+		m_spriteFrameCount++;
+		if (m_spriteFrameCount >= 15.0f)
+		{
+			m_spriteFrameCount = 0;
+		}
+
+		m_speedEffect->Get2DRenderer()->Texture = m_effectTextures[(int)floor(m_spriteFrameCount / 2.5f)];
+	}
+
 	m_tween.Update(dt);
 }
 

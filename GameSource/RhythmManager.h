@@ -134,7 +134,10 @@ private:
 	Elixir::ETween<F32> m_inputAnim;
 	Elixir::ETween<F32> m_waveAnim[3];
 
-
+	std::vector<U32> m_effectTextures;
+	float m_effectAlpha;
+	Elixir::GameObject* m_speedEffect;
+	float m_spriteFrameCount;
 	SpriteNumber m_spriteNumber;
 
 	//For convinience
