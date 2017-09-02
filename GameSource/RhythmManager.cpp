@@ -51,6 +51,7 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager, DIFF dif, in
 		m_effectTextures.push_back(Manager->GetTextureManager()->AddTexture(L"Resource/RaceEffect/warp05.png"));
 		m_effectTextures.push_back(Manager->GetTextureManager()->AddTexture(L"Resource/RaceEffect/warp06.png"));
 		m_speedEffect = Manager->GetCurrentScene()->CreateObject(OBJECT_2D);
+		m_speedEffect->Get2DRenderer()->ZOrder = -10;
 		m_speedEffect->Get2DRenderer()->Texture = m_effectTextures[0];
 		m_speedEffect->Get2DRenderer()->Color.a = 0.0f;
 		if (isSplit)
@@ -415,7 +416,7 @@ void RhythmManager::Update(float dt)
 
 	if (m_PlayerNum == 0 || m_PlayerNum == 1)
 	{
-		m_speedEffect->Get2DRenderer()->Color.a = MathHelper::Min(((float)m_Combo) / 150.0f, 0.75f);
+		m_speedEffect->Get2DRenderer()->Color.a = MathHelper::Min(((float)m_Combo) / 150.0f, 0.55f);
 
 		m_spriteFrameCount++;
 		if (m_spriteFrameCount >= 15.0f)
