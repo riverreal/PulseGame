@@ -415,7 +415,7 @@ void RhythmManager::Update(float dt)
 
 	if (m_PlayerNum == 0 || m_PlayerNum == 1)
 	{
-		m_speedEffect->Get2DRenderer()->Color.a = MathHelper::Max(((float)m_Combo) / 100.0f, 0.75f);
+		m_speedEffect->Get2DRenderer()->Color.a = MathHelper::Min(((float)m_Combo) / 100.0f, 0.75f);
 
 		m_spriteFrameCount++;
 		if (m_spriteFrameCount >= 15.0f)
