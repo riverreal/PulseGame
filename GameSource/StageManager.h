@@ -8,7 +8,7 @@ class StageManager
 {
 public:
 	StageManager();
-	void Initialize(Elixir::SceneManager* manager);
+	void Initialize(Elixir::SceneManager* manager, int courseNum);
 
 private:
 	void CreateStarDust();

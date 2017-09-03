@@ -7,14 +7,26 @@ StageManager::StageManager()
 {
 }
 
-void StageManager::Initialize(SceneManager* manager)
+void StageManager::Initialize(SceneManager* manager, int courseNum)
 {
 	m_manager = manager;
 
 	srand(time(NULL));
 
 	m_manager->GetCurrentScene()->SetIrradiance(m_manager->GetTextureManager()->AddTexture(L"Resource/Cubemaps/Irradiance/Irradiance.dds"));
-	m_manager->GetCurrentScene()->SetEnvMap(m_manager->GetTextureManager()->AddTexture(L"Resource/Cubemaps/earth_moon_skybox.dds"));
+
+	if (courseNum == 0)
+	{
+		m_manager->GetCurrentScene()->SetEnvMap(m_manager->GetTextureManager()->AddTexture(L"Resources/Textures/Cubemaps/BlueNebula.dds"));
+	}
+	else if (courseNum == 1)
+	{
+		m_manager->GetCurrentScene()->SetEnvMap(m_manager->GetTextureManager()->AddTexture(L"Resources/Textures/Cubemaps/PurpleNebula.dds"));
+	}
+	else
+	{
+		m_manager->GetCurrentScene()->SetEnvMap(m_manager->GetTextureManager()->AddTexture(L"Resources/Textures/Cubemaps/GreenNebula.dds"));
+	}
 
 	auto dirL = m_manager->GetCurrentScene()->GetLight()->GetModDirectionalLight();
 
@@ -34,11 +46,6 @@ void StageManager::Initialize(SceneManager* manager)
 	dirL->Direction[2] = -0.8f;
 
 	m_manager->GetCurrentScene()->GetCamera()->SetPosition(0.0f, 0.0f, -10.0f);
-
-	for (int i = 0; i < 100; i++)
-	{
-		//CreateStarDust();
-	}
 }
 
 void StageManager::CreateStarDust()

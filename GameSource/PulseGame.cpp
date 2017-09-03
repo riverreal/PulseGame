@@ -26,9 +26,12 @@ void PulseGame::InitTestScene()
 	
 	m_pause = true;
 
-	m_stageManager.Initialize(Manager);
+	
 
 	int courseNum = ENote::GetInstance().Notify<int>("GetSelectedSong");
+
+	m_stageManager.Initialize(Manager, courseNum);
+
 	m_lineData = LoadLine(Manager->GetFileManager()->LoadFile(CourseDataArray[courseNum].path));
 
 	auto smoothLine = MathHelper::CatmullromSpline(m_lineData, 20, false);
