@@ -198,6 +198,8 @@ void ResultScene::BackAnim()
 
 void ResultScene::ChangeScene()
 {
-	Manager->ChangeScene("TitleScene");
+	//Manager->ChangeScene("TitleScene");
+	system("start Project_Light.exe");
+	PostQuitMessage(0);
 }
 
