@@ -294,6 +294,12 @@ void PlayerShip::UpdateShipPos(float dt)
 			m_aheadPos = 0.7f;
 		}
 		*/
+		
+		//setVolume
+		if (m_currentIndex + 3 >= m_lineData.size() - 5 && m_player->GetTransform()->Position.Length() > m_opponent->GetTransform()->Position.Length())
+		{
+			AudioManager::GetInstance().GetControlledMusic()->setVolume(AudioManager::GetInstance().GetControlledMusic()->getVolume() - (1.0 / 4));
+		}
 
 		if (m_currentIndex + 3 >= m_lineData.size() - 2)
 		{
