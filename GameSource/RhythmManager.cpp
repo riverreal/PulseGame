@@ -56,7 +56,7 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager, DIFF dif, in
 		m_speedEffect->Get2DRenderer()->Color.a = 0.0f;
 		if (isSplit)
 		{
-			m_speedEffect->GetTransform()->Scale.x = m_speedEffect->GetTransform()->Scale.x * (GameManager::GetInstance().GetScreenWidth() / (640*2));
+			m_speedEffect->GetTransform()->Scale.x = 1.5f;//m_speedEffect->GetTransform()->Scale.x * (GameManager::GetInstance().GetScreenWidth() / (960));
 
 			if (playerNum == 0)
 			{
