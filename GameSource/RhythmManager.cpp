@@ -19,12 +19,12 @@ void RhythmManager::Initialize(Elixir::SceneManager * sceneManager, DIFF dif, in
 		m_spriteNumber.Initialize(Manager);
 		m_textParent = m_spriteNumber.GetSpriteParent();
 		m_textParent->GetTransform()->Scale = Vec3f(0.15, 0.15, 0.15);
-		m_textParent->GetTransform()->Position = Vec3f(550, 70, 0);
+		m_textParent->GetTransform()->Position = Vec3f(810, 170, 0);
 		m_spriteNumber.UpdateSprite(0);
 
 		m_ComboLabel = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_2D);
 		m_ComboLabel->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/rhythmFolder/rhythm_Img/Text_Img/combo_text.png");
-		m_ComboLabel->GetTransform()->Position = Vec3f(560, 25, 0);
+		m_ComboLabel->GetTransform()->Position = Vec3f(820, 125, 0);
 		m_ComboLabel->GetTransform()->Scale = Vec3f(0.3, 0.3, 0.3);
 
 		//time

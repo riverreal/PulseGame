@@ -61,20 +61,20 @@ private:
 	//HARD
 	Elixir::Vec3f m_LanePosH[3]
 	{
-		Elixir::Vec3f(200, -210, 0),
-		Elixir::Vec3f(0, -240, 0),
-		Elixir::Vec3f(-200, -210, 0)
+		Elixir::Vec3f(200, -410, 0),
+		Elixir::Vec3f(0, -440, 0),
+		Elixir::Vec3f(-200, -410, 0)
 	};
 	//NORMAL
 	Elixir::Vec3f m_LanePosN[2]
 	{
-		Elixir::Vec3f(200, -210, 0),
-		Elixir::Vec3f(-200, -210, 0)
+		Elixir::Vec3f(200, -410, 0),
+		Elixir::Vec3f(-200, -410, 0)
 	};
 	//EASY
 	Elixir::Vec3f m_LanePosE[1]
 	{
-		Elixir::Vec3f(0, -240, 0),
+		Elixir::Vec3f(0, -440, 0),
 	};
 	//“ïˆÕ“x•Ê”z—ñ
 	Elixir::Vec3f *m_difLane[3]

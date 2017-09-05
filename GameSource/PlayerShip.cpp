@@ -47,7 +47,7 @@ void PlayerShip::Initialize(SceneManager * sceneManager, std::vector<Vec3f> line
 		m_playerRankNumber = Manager->GetCurrentScene()->CreateObject(OBJECT_PRESET::OBJECT_2D);
 		m_playerRankNumber->Get2DRenderer()->Texture = Manager->GetTextureManager()->AddTexture(L"Resource/PulseGameScene/first.png");
 		m_playerRankNumber->GetTransform()->Scale = Vec3f(0.8f, 0.8f, 0.8f);
-		m_playerRankNumber->GetTransform()->Position = Vec3f(530, -300, 0);
+		m_playerRankNumber->GetTransform()->Position = Vec3f(850, -400, 0);
 		m_playerRankNumber->SetName("RankSprite");
 		if (isSplit)
 		{
