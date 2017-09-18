@@ -5,7 +5,7 @@
 #pragma comment(lib, "d3dcompiler.lib")
 
 #define WIN32_LEAN_AND_MEAN
-#define ELIXIR_EDITOR true;
+#define ELIXIR_EDITOR false;
 
 #include <Windows.h>
 #include <windowsx.h>
